@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mimix86.Core", "Mimix86.Core\Mimix86.Core.csproj", "{4D95C8E4-6AE2-49CE-A348-F279FE926E03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mimix86.Core.Test", "Mimix86.Core.Test\Mimix86.Core.Test.csproj", "{D092FEB9-997F-46A5-A1B0-2D2059B530C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mimix86.Gui", "Mimix86.Gui\Mimix86.Gui.csproj", "{61C80FD8-97B9-413D-8E29-F814AFE13961}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4D95C8E4-6AE2-49CE-A348-F279FE926E03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D95C8E4-6AE2-49CE-A348-F279FE926E03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D95C8E4-6AE2-49CE-A348-F279FE926E03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D95C8E4-6AE2-49CE-A348-F279FE926E03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D092FEB9-997F-46A5-A1B0-2D2059B530C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D092FEB9-997F-46A5-A1B0-2D2059B530C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D092FEB9-997F-46A5-A1B0-2D2059B530C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D092FEB9-997F-46A5-A1B0-2D2059B530C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61C80FD8-97B9-413D-8E29-F814AFE13961}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61C80FD8-97B9-413D-8E29-F814AFE13961}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61C80FD8-97B9-413D-8E29-F814AFE13961}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61C80FD8-97B9-413D-8E29-F814AFE13961}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
