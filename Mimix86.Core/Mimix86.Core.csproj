@@ -4,6 +4,12 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>Enable</Nullable>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <EnablePreviewFeatures>True</EnablePreviewFeatures>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
+      <PackageReference Include="System.Runtime.Experimental" Version="6.0.2" />
+    </ItemGroup>
 
 </Project>
