@@ -25,26 +25,28 @@
  * =============================================================================
  */
 
+using System;
+
 namespace Mimix86.Core.Cpu.Decoder;
 
 /// <summary>
 /// Represents a single opcode entry and its <see cref="DecodeFlags" /> in the opcode maps.
 /// </summary>
-/// <param name="Opcode">The ID of the actual opcode.</param>
-/// <param name="Flags">The required flags to decode to this opcode entry.</param>
 [PublicAPI]
-public record OpcodeMapEntry(
-    Opcode Opcode,
-    DecodeFlags Flags)
+public class OpcodeMapEntry
 {
     /// <summary>
     /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with no flags.
     /// </summary>
     /// <param name="opcode">The ID of the actual opcode.</param>
-    [SuppressMessage("ReSharper", "InheritdocConsiderUsage")]
+    /// <exception cref="ArgumentNullException">If <paramref name="opcode" /> is <c>null</c>.</exception>
     public OpcodeMapEntry(Opcode opcode)
-        : this(opcode, new DecodeFlags())
-    { }
+    {
+        ArgumentNullException.ThrowIfNull(opcode);
+
+        Opcode = opcode;
+        Flags = new();
+    }
 
     /// <summary>
     /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with specified flags.
@@ -54,8 +56,32 @@ public record OpcodeMapEntry(
     /// The required flags to decode to this opcode entry.
     /// These will be passed verbatim to the constructor of <see cref="DecodeFlags" />.
     /// </param>
-    [SuppressMessage("ReSharper", "InheritdocConsiderUsage")]
+    /// <exception cref="ArgumentNullException">If <paramref name="opcode" /> is <c>null</c>.</exception>
     public OpcodeMapEntry(Opcode opcode, ulong flags)
-        : this(opcode, new DecodeFlags(flags))
-    { }
+    {
+        ArgumentNullException.ThrowIfNull(opcode);
+
+        Opcode = opcode;
+        Flags = new(flags);
+    }
+
+    /// <summary>
+    /// Represents a single opcode entry and its <see cref="DecodeFlags" /> in the opcode maps.
+    /// </summary>
+    /// <param name="opcode">The ID of the actual opcode.</param>
+    /// <param name="flags">The required flags to decode to this opcode entry.</param>
+    /// <exception cref="ArgumentNullException">If <paramref name="opcode" /> is <c>null</c>.</exception>
+    public OpcodeMapEntry(Opcode opcode, DecodeFlags flags)
+    {
+        ArgumentNullException.ThrowIfNull(opcode);
+
+        Opcode = opcode;
+        Flags = flags;
+    }
+
+    /// <summary>The ID of the actual opcode.</summary>
+    public Opcode Opcode { get; init; }
+
+    /// <summary>The required flags to decode to this opcode entry.</summary>
+    public DecodeFlags Flags { get; init; }
 }
