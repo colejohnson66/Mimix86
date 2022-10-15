@@ -4,7 +4,7 @@
  * =============================================================================
  * Purpose:
  *
- * A record containing a single entry in the opcode maps.
+ * A single entry in the opcode maps.
  * =============================================================================
  * Copyright (c) 2022 Cole Tobin
  *
@@ -36,51 +36,69 @@ namespace Mimix86.Core.Cpu.Decoder;
 public class OpcodeMapEntry
 {
     /// <summary>
-    /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with no flags.
+    /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with a supported CPU range of <c>5..5</c> and no
+    ///   decode flags.
     /// </summary>
     /// <param name="opcode">The ID of the actual opcode.</param>
-    /// <exception cref="ArgumentNullException">If <paramref name="opcode" /> is <c>null</c>.</exception>
     public OpcodeMapEntry(Opcode opcode)
-    {
-        ArgumentNullException.ThrowIfNull(opcode);
-
-        Opcode = opcode;
-        Flags = new();
-    }
+        : this(opcode, 5..5, 0)
+    { }
+    /// <summary>
+    /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with a specified supported CPU range and no decode
+    ///   flags.
+    /// </summary>
+    /// <param name="opcode">The ID of the actual opcode.</param>
+    /// <param name="supportedCpuLevels">The allowed range of CPU levels for this opcode to be supported.</param>
+    public OpcodeMapEntry(Opcode opcode, Range supportedCpuLevels)
+        : this(opcode, supportedCpuLevels, 0)
+    { }
 
     /// <summary>
-    /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with specified flags.
+    /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with a supported CPU range of <c>5..5</c> and
+    ///   specified decode flags.
     /// </summary>
     /// <param name="opcode">The ID of the actual opcode.</param>
     /// <param name="flags">
     /// The required flags to decode to this opcode entry.
     /// These will be passed verbatim to the constructor of <see cref="DecodeFlags" />.
     /// </param>
-    /// <exception cref="ArgumentNullException">If <paramref name="opcode" /> is <c>null</c>.</exception>
     public OpcodeMapEntry(Opcode opcode, ulong flags)
+        : this(opcode, 5..5, flags)
+    { }
+
+    /// <summary>
+    /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with a specified supported CPU range and specified
+    ///   decode flags.
+    /// </summary>
+    /// <param name="opcode">The ID of the actual opcode.</param>
+    /// <param name="supportedCpuLevels">The allowed range of CPU levels for this opcode to be supported.</param>
+    /// <param name="flags">
+    /// The required flags to decode to this opcode entry.
+    /// These will be passed verbatim to the constructor of <see cref="DecodeFlags" />.
+    /// </param>
+    public OpcodeMapEntry(Opcode opcode, Range supportedCpuLevels, ulong flags)
     {
-        ArgumentNullException.ThrowIfNull(opcode);
+        if (supportedCpuLevels.Start.Value is < 0 or > 5 || supportedCpuLevels.End.Value is < 0 or > 5)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(supportedCpuLevels),
+                supportedCpuLevels,
+                "Both ends of the supported CPU level range must be between zero and five, inclusive.");
+        }
+        if (supportedCpuLevels.Start.Value > supportedCpuLevels.End.Value)
+            throw new ArgumentException("Start of the supported CPU level range must be before the end.", nameof(supportedCpuLevels));
 
         Opcode = opcode;
+        SupportedCpuLevels = supportedCpuLevels;
         Flags = new(flags);
     }
 
-    /// <summary>
-    /// Represents a single opcode entry and its <see cref="DecodeFlags" /> in the opcode maps.
-    /// </summary>
-    /// <param name="opcode">The ID of the actual opcode.</param>
-    /// <param name="flags">The required flags to decode to this opcode entry.</param>
-    /// <exception cref="ArgumentNullException">If <paramref name="opcode" /> is <c>null</c>.</exception>
-    public OpcodeMapEntry(Opcode opcode, DecodeFlags flags)
-    {
-        ArgumentNullException.ThrowIfNull(opcode);
-
-        Opcode = opcode;
-        Flags = flags;
-    }
 
     /// <summary>The ID of the actual opcode.</summary>
     public Opcode Opcode { get; init; }
+
+    /// <summary>The allowed range of CPU levels for this opcode to be supported.</summary>
+    public Range SupportedCpuLevels { get; init; }
 
     /// <summary>The required flags to decode to this opcode entry.</summary>
     public DecodeFlags Flags { get; init; }
