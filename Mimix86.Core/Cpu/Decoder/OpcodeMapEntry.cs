@@ -36,25 +36,27 @@ namespace Mimix86.Core.Cpu.Decoder;
 public class OpcodeMapEntry
 {
     /// <summary>
-    /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with a supported CPU range of <c>5..5</c> and no
+    /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with a supported CPU range of <c>5..</c> and no
     ///   decode flags.
     /// </summary>
     /// <param name="opcode">The ID of the actual opcode.</param>
     public OpcodeMapEntry(Opcode opcode)
-        : this(opcode, 5..5, 0)
+        : this(opcode, 5.., 0)
     { }
     /// <summary>
     /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with a specified supported CPU range and no decode
     ///   flags.
     /// </summary>
     /// <param name="opcode">The ID of the actual opcode.</param>
-    /// <param name="supportedCpuLevels">The allowed range of CPU levels for this opcode to be supported.</param>
+    /// <param name="supportedCpuLevels">
+    /// The (inclusive) allowed range of CPU levels for this opcode to be supported.
+    /// </param>
     public OpcodeMapEntry(Opcode opcode, Range supportedCpuLevels)
         : this(opcode, supportedCpuLevels, 0)
     { }
 
     /// <summary>
-    /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with a supported CPU range of <c>5..5</c> and
+    /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with a supported CPU range of <c>5..</c> and
     ///   specified decode flags.
     /// </summary>
     /// <param name="opcode">The ID of the actual opcode.</param>
@@ -63,7 +65,7 @@ public class OpcodeMapEntry
     /// These will be passed verbatim to the constructor of <see cref="DecodeFlags" />.
     /// </param>
     public OpcodeMapEntry(Opcode opcode, ulong flags)
-        : this(opcode, 5..5, flags)
+        : this(opcode, 5.., flags)
     { }
 
     /// <summary>
@@ -71,19 +73,21 @@ public class OpcodeMapEntry
     ///   decode flags.
     /// </summary>
     /// <param name="opcode">The ID of the actual opcode.</param>
-    /// <param name="supportedCpuLevels">The allowed range of CPU levels for this opcode to be supported.</param>
+    /// <param name="supportedCpuLevels">
+    /// The (inclusive) allowed range of CPU levels for this opcode to be supported.
+    /// </param>
     /// <param name="flags">
     /// The required flags to decode to this opcode entry.
     /// These will be passed verbatim to the constructor of <see cref="DecodeFlags" />.
     /// </param>
     public OpcodeMapEntry(Opcode opcode, Range supportedCpuLevels, ulong flags)
     {
-        if (supportedCpuLevels.Start.Value is < 0 or > 5 || supportedCpuLevels.End.Value is < 0 or > 5)
+        if (supportedCpuLevels.Start.Value > 5 || supportedCpuLevels.End.Value > 5)
         {
             throw new ArgumentOutOfRangeException(
                 nameof(supportedCpuLevels),
                 supportedCpuLevels,
-                "Both ends of the supported CPU level range must be between zero and five, inclusive.");
+                "Both ends of the supported CPU level range must be less than or equal to five.");
         }
         if (supportedCpuLevels.Start.Value > supportedCpuLevels.End.Value)
             throw new ArgumentException("Start of the supported CPU level range must be before the end.", nameof(supportedCpuLevels));
@@ -97,7 +101,7 @@ public class OpcodeMapEntry
     /// <summary>The ID of the actual opcode.</summary>
     public Opcode Opcode { get; init; }
 
-    /// <summary>The allowed range of CPU levels for this opcode to be supported.</summary>
+    /// <summary>The (inclusive) allowed range of CPU levels for this opcode to be supported.</summary>
     public Range SupportedCpuLevels { get; init; }
 
     /// <summary>The required flags to decode to this opcode entry.</summary>

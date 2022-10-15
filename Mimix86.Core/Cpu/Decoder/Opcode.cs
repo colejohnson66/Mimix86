@@ -43,10 +43,10 @@ public enum Opcode
     Aaa,
 
     /// <summary> </summary>
-    Aad,
+    AadIb,
 
     /// <summary> </summary>
-    Aam,
+    AamIb,
 
     /// <summary> </summary>
     Aas,
@@ -109,11 +109,16 @@ public enum Opcode
     AndGwEw,
 
     /// <summary> </summary>
+    CallApww,
+    /// <summary> </summary>
     CallEw,
     /// <summary> </summary>
-    CallJz,
+    CallJw,
     /// <summary> </summary>
     CallMpww,
+
+    /// <summary> </summary>
+    Cbw,
 
     /// <summary> </summary>
     Clc,
@@ -152,6 +157,9 @@ public enum Opcode
     Cmpsw,
 
     /// <summary> </summary>
+    Cwd,
+
+    /// <summary> </summary>
     Daa,
 
     /// <summary> </summary>
@@ -165,22 +173,22 @@ public enum Opcode
     DecZw,
 
     /// <summary> </summary>
-    DivEbIb,
+    DivEb,
     /// <summary> </summary>
-    DivEwIw,
+    DivEw,
 
     /// <summary> </summary>
     Hlt,
 
     /// <summary> </summary>
-    IdivEbIb,
+    IdivEb,
     /// <summary> </summary>
-    IdivEwIw,
+    IdivEw,
 
     /// <summary> </summary>
-    ImulEbIb,
+    ImulEb,
     /// <summary> </summary>
-    ImulEwIw,
+    ImulEw,
 
     /// <summary> </summary>
     InALDX,
@@ -223,9 +231,12 @@ public enum Opcode
     /// <summary> </summary>
     JmpJb,
     /// <summary> </summary>
-    JmpJz,
+    JmpJw,
     /// <summary> </summary>
     JmpMpww,
+
+    /// <summary> </summary>
+    Lahf,
 
     /// <summary> </summary>
     LdsGwMw,
@@ -274,19 +285,22 @@ public enum Opcode
     Movsw,
 
     /// <summary> </summary>
-    MulEbIb,
+    MulEb,
     /// <summary> </summary>
-    MulEwIw,
+    MulEw,
 
     /// <summary> </summary>
-    NegEbIb,
+    NegEb,
     /// <summary> </summary>
-    NegEwIw,
+    NegEw,
 
     /// <summary> </summary>
-    NotEbIb,
+    Nop,
+
     /// <summary> </summary>
-    NotEwIw,
+    NotEb,
+    /// <summary> </summary>
+    NotEw,
 
     /// <summary> </summary>
     OrALIb,
@@ -314,7 +328,7 @@ public enum Opcode
     /// <summary> </summary>
     OutIbAL,
     /// <summary> </summary>
-    OutIbAW,
+    OutIbAX,
 
     /// <summary> </summary>
     PopEw,
@@ -331,6 +345,9 @@ public enum Opcode
     PopSS,
 
     /// <summary> </summary>
+    Popf,
+
+    /// <summary> </summary>
     PushEw,
     /// <summary> </summary>
     PushZw,
@@ -345,22 +362,25 @@ public enum Opcode
     PushSS,
 
     /// <summary> </summary>
+    Pushf,
+
+    /// <summary> </summary>
     RclEb1,
     /// <summary> </summary>
-    RclEbIb,
+    RclEbCL,
     /// <summary> </summary>
     RclEw1,
     /// <summary> </summary>
-    RclEwIb,
+    RclEwCL,
 
     /// <summary> </summary>
     RcrEb1,
     /// <summary> </summary>
-    RcrEbIb,
+    RcrEbCL,
     /// <summary> </summary>
     RcrEw1,
     /// <summary> </summary>
-    RcrEwIb,
+    RcrEwCL,
 
     /// <summary> </summary>
     Ret,
@@ -375,20 +395,23 @@ public enum Opcode
     /// <summary> </summary>
     RolEb1,
     /// <summary> </summary>
-    RolEbIb,
+    RolEbCL,
     /// <summary> </summary>
     RolEw1,
     /// <summary> </summary>
-    RolEwIb,
+    RolEwCL,
 
     /// <summary> </summary>
     RorEb1,
     /// <summary> </summary>
-    RorEbIb,
+    RorEbCL,
     /// <summary> </summary>
     RorEw1,
     /// <summary> </summary>
-    RorEwIb,
+    RorEwCL,
+
+    /// <summary> </summary>
+    Sahf,
 
     /// <summary> </summary>
     Salc,
@@ -396,11 +419,11 @@ public enum Opcode
     /// <summary> </summary>
     SarEb1,
     /// <summary> </summary>
-    SarEbIb,
+    SarEbCL,
     /// <summary> </summary>
     SarEw1,
     /// <summary> </summary>
-    SarEwIb,
+    SarEwCL,
 
     /// <summary> </summary>
     SbbALIb,
@@ -429,20 +452,20 @@ public enum Opcode
     /// <summary> </summary>
     ShlEb1,
     /// <summary> </summary>
-    ShlEbIb,
+    ShlEbCL,
     /// <summary> </summary>
     ShlEw1,
     /// <summary> </summary>
-    ShlEwIb,
+    ShlEwCL,
 
     /// <summary> </summary>
     ShrEb1,
     /// <summary> </summary>
-    ShrEbIb,
+    ShrEbCL,
     /// <summary> </summary>
     ShrEw1,
     /// <summary> </summary>
-    ShrEwIb,
+    ShrEwCL,
 
     /// <summary> </summary>
     Stc,
@@ -491,6 +514,9 @@ public enum Opcode
     TestEwIw,
 
     /// <summary> </summary>
+    Wait,
+
+    /// <summary> </summary>
     XchgAXZw,
     /// <summary> </summary>
     XchgEbGb,
@@ -520,7 +546,6 @@ public enum Opcode
     XorGwEw,
 
     // TODO: esc [D8-DF]
-    // TODO: loopnz/loopz/loop
 
     #endregion
 }
