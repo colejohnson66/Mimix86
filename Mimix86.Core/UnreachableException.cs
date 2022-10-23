@@ -26,7 +26,6 @@
  */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 
 namespace Mimix86.Core;
@@ -71,7 +70,7 @@ public sealed class UnreachableException : Exception
     /// <param name="context">
     /// The <see cref="StreamingContext" /> that holds contextual information about the source.
     /// </param>
-    protected UnreachableException(SerializationInfo info, StreamingContext context)
+    private UnreachableException(SerializationInfo info, StreamingContext context)
         : base(info, context)
     { }
 }

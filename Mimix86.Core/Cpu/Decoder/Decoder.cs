@@ -28,9 +28,12 @@ public static class Decoder
         {
             i++;
             if (i == byteStream.Length)
-                return null; // page fault would occur reading next byte; TODO: throw #PF
+            {
+                core.RaiseException(new(CpuExceptionCode.PF, 0)); // TODO: fault code
+                return null;
+            }
             if (i is 16)
-                return null; // overlong instruction; TODO: throw #GP
+                return null; // overlong instruction; TODO: throw #GP; how does 8086 handle it?
 
             byte b = byteStream[i];
 

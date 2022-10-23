@@ -25,6 +25,8 @@
  * =============================================================================
  */
 
+using System;
+
 namespace Mimix86.Core.Cpu;
 
 /// <summary>
@@ -55,4 +57,15 @@ public class CpuCore
     /// Get the default operand size for data accesses based on the current operating mode.
     /// </summary>
     public int DefaultOperandSize => Mode.BitWidth();
+
+
+    /// <summary>
+    /// Raise a CPU exception.
+    /// </summary>
+    /// <param name="exception">The exception being raised.</param>
+    /// <remarks>
+    /// These will not be processed until after the current instruction finishes executing.
+    /// </remarks>
+    public void RaiseException(CpuException exception) =>
+        throw new NotImplementedException();
 }
