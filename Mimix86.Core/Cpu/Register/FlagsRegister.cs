@@ -25,8 +25,6 @@
  * =============================================================================
  */
 
-using System;
-
 namespace Mimix86.Core.Cpu.Register;
 
 /// <summary>
@@ -166,24 +164,24 @@ public class FlagsRegister : Register16
         set => SetBit(11, value);
     }
 
-    /// <summary>
-    /// Get or set the I/O privilege level flag.
-    /// </summary>
-    /// <exception cref="ArgumentException">If <paramref name="value" /> is greater than three.</exception>
-    public byte IOPL
-    {
-        get => (byte)GetBits(12..14);
-        set
-        {
-            if (value > 0b11)
-                throw new ArgumentException("I/O Privilege Level must be between zero and three, inclusive.", nameof(value));
-
-            // clear out bits 12 and 13
-            const ushort MASK = 0b11 << 12;
-            ushort temp = (ushort)(RawValue & ~MASK);
-            RawValue = (ushort)(temp | (value << 12));
-        }
-    }
+    // /// <summary>
+    // /// Get or set the I/O privilege level flag.
+    // /// </summary>
+    // /// <exception cref="ArgumentException">If <paramref name="value" /> is greater than three.</exception>
+    // public byte IOPL
+    // {
+    //     get => (byte)GetBits(12..14);
+    //     set
+    //     {
+    //         if (value > 0b11)
+    //             throw new ArgumentException("I/O Privilege Level must be between zero and three, inclusive.", nameof(value));
+    //
+    //         // clear out bits 12 and 13
+    //         const ushort MASK = 0b11 << 12;
+    //         ushort temp = (ushort)(RawValue & ~MASK);
+    //         RawValue = (ushort)(temp | (value << 12));
+    //     }
+    // }
 
     // extra bits to add when 32 bit support is added:
     //   - RF:  bit 16; resume flag
