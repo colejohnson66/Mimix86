@@ -47,20 +47,20 @@ public enum ImmSize
     /// </summary>
     Word,
 
-    // add back with 80186+ support
+    // add with 80186+ support
     // /// <summary>
     // /// Indicates an immediate that is a word followed by a byte (three bytes).
     // /// </summary>
     // /// <remarks>This exists solely for <see cref="Opcode.EnterIwIb" />.</remarks>
     // WordByte,
 
-    // add back with 80386+ support
+    // add with 80386+ support
     // /// <summary>
     // /// Indicates an immediate that is a double-word (four bytes).
     // /// </summary>
     // Dword,
 
-    // add back with x86-64 support
+    // add with x86-64 support
     // /// <summary>
     // /// Indicates an immediate that is a quad-word (eight bytes).
     // /// </summary>
@@ -71,13 +71,13 @@ public enum ImmSize
     /// </summary>
     PointerWordWord,
 
-    // add back with 80386+ support
+    // add with 80386+ support
     // /// <summary>
     // /// Indicates an immediate that is a pointer with a double-word offset (two byte segment plus four byte offset).
     // /// </summary>
     // PointerWordDword,
 
-    // add back with x86-64 support
+    // add with x86-64 support
     // /// <summary>
     // /// Indicates an immediate that is a pointer with a quad-word offset (two byte segment plus eight byte offset).
     // /// </summary>

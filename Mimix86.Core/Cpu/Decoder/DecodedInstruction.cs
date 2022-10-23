@@ -50,7 +50,11 @@ public class DecodedInstruction
     /// </summary>
     public byte[] RawInstruction = Array.Empty<byte>();
 
-    // TODO: segments
+    /// <summary>
+    /// The segment override prefix.
+    /// </summary>
+    /// <remarks>If multiple segment overrides exist in the instruction stream, the last one takes priority.</remarks>
+    public Optional<SegmentNames> SegmentOverride { get; set; } = Optional<SegmentNames>.None;
 
     // future: CET segment
 
