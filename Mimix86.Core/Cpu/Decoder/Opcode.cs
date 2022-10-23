@@ -251,6 +251,15 @@ public enum Opcode
     Lodsw,
 
     /// <summary> </summary>
+    LoopJb,
+
+    /// <summary> </summary>
+    LoopeJb,
+
+    /// <summary> </summary>
+    LoopneJb,
+
+    /// <summary> </summary>
     MovALOb,
     /// <summary> </summary>
     MovAXOw,

@@ -381,7 +381,7 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] Opcode3A =
     {
         // CMP Gb, Eb
-        new(CmpEbGb, ..),
+        new(CmpGbEb, ..),
     };
 
     public static readonly OpcodeMapEntry[] Opcode3B =
@@ -1008,14 +1008,23 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] OpcodeDF = { };
 #pragma warning restore CA1825
 
-    // TODO: [E0] is LOOPNE
-    public static readonly OpcodeMapEntry[] OpcodeE0 = { };
+    public static readonly OpcodeMapEntry[] OpcodeE0 =
+    {
+        // LOOPNE Jb
+        new(LoopneJb, ..) { Immediate = ImmSize.Byte },
+    };
 
-    // TODO: [E1] is LOOPE
-    public static readonly OpcodeMapEntry[] OpcodeE1 = { };
+    public static readonly OpcodeMapEntry[] OpcodeE1 =
+    {
+        // LOOPE Jb
+        new(LoopeJb, ..) { Immediate = ImmSize.Byte },
+    };
 
-    // TODO: [E2] is LOOP
-    public static readonly OpcodeMapEntry[] OpcodeE2 = { };
+    public static readonly OpcodeMapEntry[] OpcodeE2 =
+    {
+        // LOOP Jb
+        new(LoopJb, ..) { Immediate = ImmSize.Byte },
+    };
 
     public static readonly OpcodeMapEntry[] OpcodeE3 =
     {
