@@ -34,14 +34,25 @@ namespace Mimix86.Core.Cpu;
 public class CpuCore
 {
     /// <summary>
-    /// Get the default address size for memory accesses based on the current operating mode.
+    /// Get the current CPU level.
+    /// This indicates what CPU is being emulated.
     /// </summary>
     [SuppressMessage("Performance", "CA1822:Mark members as static")]
-    public int DefaultAddressSize => 16;
+    public int CpuLevel => 0;
+
+    /// <summary>
+    /// Get the current operating mode.
+    /// </summary>
+    [SuppressMessage("Performance", "CA1822:Mark members as static")]
+    public CpuMode Mode => CpuMode.Real;
+
+    /// <summary>
+    /// Get the default address size for memory accesses based on the current operating mode.
+    /// </summary>
+    public int DefaultAddressSize => Mode.BitWidth();
 
     /// <summary>
     /// Get the default operand size for data accesses based on the current operating mode.
     /// </summary>
-    [SuppressMessage("Performance", "CA1822:Mark members as static")]
-    public int DefaultOperandSize => 16;
+    public int DefaultOperandSize => Mode.BitWidth();
 }

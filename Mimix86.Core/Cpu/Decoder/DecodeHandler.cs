@@ -60,7 +60,7 @@ namespace Mimix86.Core.Cpu.Decoder;
 public delegate Opcode DecodeHandler(
     Span<byte> byteStream,
     uint opByte,
-    DecodedInstruction instr,
+    Instruction instr,
     Optional<byte> ssePrefix,
     OpcodeMapEntry[]? opmapEntries,
     out int bytesConsumed);

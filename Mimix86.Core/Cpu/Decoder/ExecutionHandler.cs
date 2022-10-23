@@ -34,5 +34,5 @@ namespace Mimix86.Core.Cpu.Decoder;
 /// The CPU core currently executing this instruction.
 /// All register accesses, memory accesses, exceptions, etc. will be through this object.
 /// </param>
-/// <param name="instr">The <see cref="DecodedInstruction" /> object.</param>
-public delegate void ExecutionHandler(CpuCore core, DecodedInstruction instr);
+/// <param name="instr">The <see cref="Instruction" /> object.</param>
+public delegate void ExecutionHandler(CpuCore core, Instruction instr);

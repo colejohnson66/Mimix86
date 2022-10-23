@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   DecodedInstruction.cs
+ * File:   Instruction.cs
  * Author: Cole Tobin
  * =============================================================================
  * Purpose:
@@ -33,7 +33,7 @@ namespace Mimix86.Core.Cpu.Decoder;
 /// <summary>
 /// Represents a single decoded instruction.
 /// </summary>
-public class DecodedInstruction
+public class Instruction
 {
     /// <summary>
     /// The ID of the actual opcode that will be executed.
@@ -63,24 +63,22 @@ public class DecodedInstruction
     /// This, combined with <see cref="ASizeOverride" /> or <see cref="OSizeOverride" /> can be used to determine the
     ///   effective address and operand size.
     /// </summary>
-    public int ProcessorMode { get; }
+    public int ProcessorModeBitWidth { get; }
 
-    /// <summary>
-    /// Get or set a value indicating if the <c>ASIZE</c> (<c>[67]</c>) prefix was seen.
-    /// </summary>
-    public bool ASizeOverride { get; set; }
+    // /// <summary>
+    // /// Get or set a value indicating if the <c>ASIZE</c> (<c>[67]</c>) prefix was seen.
+    // /// </summary>
+    // public bool ASizeOverride { get; set; }
 
-    /// <summary>
-    /// Get or set a value indicating if the <c>OSIZE</c> (<c>[66]</c>) prefix was seen.
-    /// </summary>
-    public bool OSizeOverride { get; set; }
+    // /// <summary>
+    // /// Get or set a value indicating if the <c>OSIZE</c> (<c>[66]</c>) prefix was seen.
+    // /// </summary>
+    // public bool OSizeOverride { get; set; }
 
     /// <summary>
     /// Get or set a value indicating if the <c>LOCK</c> (<c>[F0]</c>) prefix was seen.
     /// </summary>
     public bool LockPrefix { get; set; }
-
-    // TODO: loop [F0]..=[F3]?
 
     /// <summary>
     /// Get or set the <c>REP</c> prefix that was first encountered, if any exist.
@@ -117,17 +115,17 @@ public class DecodedInstruction
     // future: W, Z, B, LL, v'vvvv, and aaa
 
     /// <summary>
-    /// Construct a new <see cref="DecodedInstruction" /> object with a specified CPU mode bit width.
+    /// Construct a new <see cref="Instruction" /> object with a specified CPU mode bit width.
     /// </summary>
-    /// <param name="processorMode">The current bit width of the current CPU mode.</param>
+    /// <param name="processorModeBitWidth">The current bit width of the current CPU mode.</param>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// If <paramref name="processorMode" /> is not 16, 32, or 64.
+    /// If <paramref name="processorModeBitWidth" /> is not 16, 32, or 64.
     /// </exception>
-    public DecodedInstruction(int processorMode)
+    public Instruction(int processorModeBitWidth)
     {
-        if (processorMode is not (16 or 32 or 64))
-            throw new ArgumentOutOfRangeException(nameof(processorMode), processorMode, "Unknown processor bit width.");
+        if (processorModeBitWidth is not (16 or 32 or 64))
+            throw new ArgumentOutOfRangeException(nameof(processorModeBitWidth), processorModeBitWidth, "Unknown processor bit width.");
 
-        ProcessorMode = processorMode;
+        ProcessorModeBitWidth = processorModeBitWidth;
     }
 }

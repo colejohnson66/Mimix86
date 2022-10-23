@@ -17,10 +17,10 @@ public static class Decoder
     /// <param name="core">The CPU core that is decoding this instruction.</param>
     /// <param name="byteStream">The bytes from memory beginning at the current instruction.</param>
     /// <returns>The decoded instruction object.</returns>
-    public static DecodedInstruction? Decode(CpuCore core, Span<byte> byteStream)
+    public static Instruction? Decode(CpuCore core, Span<byte> byteStream)
     {
-        DecodedInstruction instr = new(core.DefaultOperandSize); // TODO: incorrect; use the actual mode
-        DecodeDescriptor descriptor = new(0); // TODO: use CPU level
+        Instruction instr = new(core.DefaultOperandSize);
+        DecodeDescriptor descriptor = new(core.CpuLevel);
 
         int i = -1;
         uint opByte;
@@ -107,7 +107,7 @@ public static class Decoder
     public static Opcode DecodeSimple(
         Span<byte> byteStream,
         uint opByte,
-        DecodedInstruction instr,
+        Instruction instr,
         Optional<byte> ssePrefix,
         OpcodeMapEntry[]? opmapEntries,
         out int bytesConsumed)
@@ -138,7 +138,7 @@ public static class Decoder
     public static Opcode DecodeImmediate(
         Span<byte> byteStream,
         uint opByte,
-        DecodedInstruction instr,
+        Instruction instr,
         Optional<byte> ssePrefix,
         OpcodeMapEntry[]? opmapEntries,
         out int bytesConsumed)
@@ -172,7 +172,7 @@ public static class Decoder
     public static Opcode DecodeModRM(
         Span<byte> byteStream,
         uint opByte,
-        DecodedInstruction instr,
+        Instruction instr,
         Optional<byte> ssePrefix,
         OpcodeMapEntry[]? opmapEntries,
         out int bytesConsumed)
@@ -199,7 +199,7 @@ public static class Decoder
     public static Opcode DecodeUD(
         Span<byte> byteStream,
         uint opByte,
-        DecodedInstruction instr,
+        Instruction instr,
         Optional<byte> ssePrefix,
         OpcodeMapEntry[]? opmapEntries,
         out int bytesConsumed)
@@ -221,7 +221,7 @@ public static class Decoder
     private static OpcodeMapEntry FindOpcode(DecodeFlagsBuilder extractedFlags, OpcodeMapEntry[]? opmapEntries) =>
         opmapEntries?.FirstOrDefault(entry => extractedFlags.Matches(entry.Flags)) ?? OpcodeMap.OpcodeError[0];
 
-    private static bool ReadImmediate(Span<byte> byteStream, OpcodeMapEntry entry, DecodedInstruction instr, out int bytesRead)
+    private static bool ReadImmediate(Span<byte> byteStream, OpcodeMapEntry entry, Instruction instr, out int bytesRead)
     {
         bytesRead = 0;
 
