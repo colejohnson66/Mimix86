@@ -135,7 +135,7 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] Opcode0F =
     {
         // [8086] POP CS
-        new(PopCS, ..0),
+        new(PopCS, ..0), // documented as "illegal"
     };
 
     public static readonly OpcodeMapEntry[] Opcode10 =
@@ -562,8 +562,10 @@ public static class OpcodeMap
         new(CmpEwIw, .., REG7) { Immediate = ImmSize.Word },
     };
 
+    // TODO: 8086 manual/datasheet suggests OR/AND/XOR not allowed in [82]
     // [82] is an undefined copy of [80]; handled in decoder
 
+    // TODO: 8086 manual/datasheet suggests OR/AND/XOR not allowed in [83]
     public static readonly OpcodeMapEntry[] Opcode83 =
     {
         // "group 1" Ev, Ib
@@ -628,7 +630,7 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] Opcode8C =
     {
         // MOV Ew, Sw
-        new(MovEwSw, ..),
+        new(MovEwSw, ..), // TODO: what happens on 8086 if Sw is >=4?
     };
 
     public static readonly OpcodeMapEntry[] Opcode8D =
@@ -640,13 +642,13 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] Opcode8E =
     {
         // MOV Sw, Ew
-        new(MovSwGw, ..),
+        new(MovSwGw, ..), // TODO: what happens on 8086 if Sw is >=4?
     };
 
     public static readonly OpcodeMapEntry[] Opcode8F =
     {
         // "group 1A"
-        new(PopEw, ..0), // [8086] matches all; TODO: verify
+        new(PopEw, ..0), // [8086] matches all?; TODO: verify
     };
 
     public static readonly OpcodeMapEntry[] Opcode90 =
@@ -856,13 +858,13 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] OpcodeC6 =
     {
         // "group 11" Eb, Ib
-        new(MovEbIb, ..0) { Immediate = ImmSize.Byte }, // [8086] matches all; TODO: verify
+        new(MovEbIb, ..0) { Immediate = ImmSize.Byte }, // [8086] matches all?; TODO: verify
     };
 
     public static readonly OpcodeMapEntry[] OpcodeC7 =
     {
         // "group 11" Ev, Iz
-        new(MovEwIw, ..0) { Immediate = ImmSize.Word }, // [8086] matches all; TODO: verify
+        new(MovEwIw, ..0) { Immediate = ImmSize.Word }, // [8086] matches all?; TODO: verify
     };
 
     public static readonly OpcodeMapEntry[] OpcodeC8 =
@@ -980,7 +982,7 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] OpcodeD6 =
     {
         // SALC
-        new(Salc, ..),
+        new(Salc, ..), // TODO: not documented on 8086; was it present?
     };
 
     public static readonly OpcodeMapEntry[] OpcodeD7 =
