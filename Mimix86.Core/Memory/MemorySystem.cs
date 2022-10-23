@@ -37,38 +37,40 @@ namespace Mimix86.Core.Memory;
 /// <summary>
 /// Represents the entirety of the memory system.
 /// </summary>
+[PublicAPI]
 public static class MemorySystem
 {
     /// <summary>
     /// A delegate to invoke when reading from a memory chunk.
     /// </summary>
-    /// <param name="address">The physical address being read from.</param>
+    /// <param name="address">The address marking the beginning of the memory being read from.</param>
     /// <param name="buffer">The buffer to place the read bytes.</param>
-    /// <param name="param">The "param" parameter when <see cref="RegisterMemoryHandler" /> was invoked.</param>
-    public delegate bool ReadDelegate(ulong address, Span<byte> buffer, object? param);
+    /// <returns><c>true</c> if the data was read successfully; <c>false</c> otherwise.</returns>
+    public delegate bool ReadDelegate(PhysicalAddress address, Span<byte> buffer);
 
     /// <summary>
     /// A delegate to invoke when writing to a memory chunk.
     /// </summary>
-    /// <param name="address">The physical address being written to.</param>
+    /// <param name="address">The address marking the beginning of the memory being written to.</param>
     /// <param name="data">The bytes to write.</param>
-    /// <param name="param">The "param" parameter when <see cref="RegisterMemoryHandler" /> was invoked.</param>
-    public delegate bool WriteDelegate(ulong address, ReadOnlySpan<byte> data, object? param);
+    /// <returns><c>true</c> if the data was written successfully; <c>false</c> otherwise.</returns>
+    public delegate bool WriteDelegate(PhysicalAddress address, ReadOnlySpan<byte> data);
 
     /// <summary>
     /// A delegate to invoke when performing DMA access to a memory chunk.
     /// </summary>
-    /// <param name="address">The physical address being read/written to.</param>
-    /// <param name="param">The "param" parameter when <see cref="RegisterMemoryHandler" /> was invoked.</param>
-    public delegate Span<byte> DmaDelegate(ulong address, object? param);
-
-
-    public const ulong MAXIMUM_MEMORY_ADDRESS = 0xFF_FFFF;
-
+    /// <param name="address">The address marking the beginning of the memory being read/written to.</param>
+    /// <param name="span">
+    /// If the DMA request was successful, a <see cref="Span{T}">Span&lt;byte&gt;</see> to the backing memory array,
+    ///   beginning at <paramref name="address" />.
+    /// </param>
+    /// <returns><c>true</c> if the DMA request was successful; <c>false</c> otherwise.</returns>
+    public delegate bool DmaDelegate(PhysicalAddress address, out Span<byte> span);
 
     private const int BITS_PER_CHUNK_INDEX = 20; // 1M
     // each array element is a list of chunk handlers for the whole 1M
-    private static readonly List<ChunkHandler>?[] Handlers = new List<ChunkHandler>?[MAXIMUM_MEMORY_ADDRESS >> BITS_PER_CHUNK_INDEX];
+    private static readonly List<ChunkHandler>?[] Handlers =
+        new List<ChunkHandler>?[Config.PHYSICAL_ADDRESS_BITS - BITS_PER_CHUNK_INDEX + 1];
 
 
     /// <summary>
@@ -79,28 +81,25 @@ public static class MemorySystem
     /// <param name="end">The (inclusive) ending address this chunk will handle.</param>
     /// <param name="read">The delegate to invoke when reading from this chunk.</param>
     /// <param name="write">
-    /// The delegate to invoke when writing to this chunk, or <c>null</c> for read-only chunks.
+    /// The delegate to invoke when writing to this chunk, or <c>null</c> if this chunk is read-only.
     /// </param>
     /// <param name="dma">
-    /// The delegate to invoke for DMA access to this chunk, or <c>null</c> if DMA is unsupported.
-    /// </param>
-    /// <param name="param">
-    /// A caller-defined object to be passed into the read/write/DMA delegates on all calls.
+    /// The delegate to invoke for DMA access to this chunk, or <c>null</c> if this chunk does not support DMA.
     /// </param>
     /// <exception cref="ArgumentException">
     /// If <paramref name="end" /> is less than <paramref name="start" />.
     /// </exception>
     /// <exception cref="ArgumentException">
-    /// If <paramref name="end" /> is greater than <see cref="MAXIMUM_MEMORY_ADDRESS" />.
+    /// If <paramref name="end" /> is greater than the maximum supported physical address.
     /// </exception>
     /// <exception cref="InvalidOperationException">
     /// If an existing handler already claimed ownership over the start/end rage.
     /// </exception>
-    public static void RegisterMemoryHandler(ulong start, ulong end, ReadDelegate read, WriteDelegate? write, DmaDelegate? dma, object? param = null)
+    public static void RegisterMemoryHandler(PhysicalAddress start, PhysicalAddress end, ReadDelegate read, WriteDelegate? write, DmaDelegate? dma)
     {
         if (start > end)
             throw new ArgumentException("Starting address of a handler must be less than or equal to the ending address.");
-        if (end > MAXIMUM_MEMORY_ADDRESS)
+        if (end > Config.MAXIMUM_PHYSICAL_ADDRESS)
             throw new ArgumentException("End address must be lower than the maximum supported memory.");
 
         ulong firstIndex = start >> BITS_PER_CHUNK_INDEX;
@@ -118,7 +117,7 @@ public static class MemorySystem
         }
 
         // register it
-        ChunkHandler newHandler = new(start, end, read, write, dma, param);
+        ChunkHandler newHandler = new(start, end, read, write, dma);
         for (ulong i = firstIndex; i <= lastIndex; i++)
             GetOrCreateChunk(i).Add(newHandler);
     }
@@ -136,5 +135,10 @@ public static class MemorySystem
     }
 
 
-    private record ChunkHandler(ulong Start, ulong End, ReadDelegate Read, WriteDelegate? Write, DmaDelegate? Dma, object? Parameter);
+    private record ChunkHandler(
+        PhysicalAddress Start,
+        PhysicalAddress End,
+        ReadDelegate Read,
+        WriteDelegate? Write,
+        DmaDelegate? Dma);
 }
