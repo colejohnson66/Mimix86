@@ -81,7 +81,7 @@ public static class Decoder
 
         Debug.Assert(entry.OpcodeMapEntries is not null); // all prefixes must be handled above
 
-        instr.Opcode = entry.Handler(rest, opByte, instr, Optional<byte>.None, entry.OpcodeMapEntries, out int bytesRead);
+        instr.Opcode = entry.Handler(core, rest, opByte, instr, Optional<byte>.None, entry.OpcodeMapEntries, out int bytesRead);
 
         // TODO: handle LOCK prefix; only allowed on select opcodes and destination must be memory
 
@@ -93,6 +93,7 @@ public static class Decoder
     /// <summary>
     /// Decode a "simple" instruction; i.e. one that ends at the opcode byte.
     /// </summary>
+    /// <param name="core">The CPU core that is decoding this instruction.</param>
     /// <param name="byteStream">The input byte stream beginning after <paramref name="opByte" />.</param>
     /// <param name="opByte">The byte that triggered the call to the handler (with normalized prefixes).</param>
     /// <param name="instr">The decoded instruction object currently being built.</param>
@@ -105,6 +106,7 @@ public static class Decoder
     /// <param name="bytesConsumed">The number of bytes consumed by this function (always one).</param>
     /// <returns>The decoded opcode, or <see cref="Opcode.Error" /> if one doesn't exist.</returns>
     public static Opcode DecodeSimple(
+        CpuCore core,
         Span<byte> byteStream,
         uint opByte,
         Instruction instr,
@@ -115,7 +117,7 @@ public static class Decoder
         DecodeFlagsBuilder builder = new();
 
         bytesConsumed = 0; // nothing consumed; op byte consumed in `Decode`
-        OpcodeMapEntry entry = FindOpcode(builder, opmapEntries);
+        OpcodeMapEntry entry = FindOpcode(core, builder, opmapEntries);
         Debug.Assert(entry.Immediate is ImmSize.None);
         return entry.Opcode;
     }
@@ -124,6 +126,7 @@ public static class Decoder
     /// <summary>
     /// Decode an instruction with an immediate, and not ModR/M byte.
     /// </summary>
+    /// <param name="core">The CPU core that is decoding this instruction.</param>
     /// <param name="byteStream">The input byte stream beginning after <paramref name="opByte" />.</param>
     /// <param name="opByte">The byte that triggered the call to the handler (with normalized prefixes).</param>
     /// <param name="instr">The decoded instruction object currently being built.</param>
@@ -136,6 +139,7 @@ public static class Decoder
     /// <param name="bytesConsumed">The number of bytes consumed by this function.</param>
     /// <returns>The decoded opcode, or <see cref="Opcode.Error" /> if one doesn't exist.</returns>
     public static Opcode DecodeImmediate(
+        CpuCore core,
         Span<byte> byteStream,
         uint opByte,
         Instruction instr,
@@ -145,7 +149,7 @@ public static class Decoder
     {
         DecodeFlagsBuilder builder = new();
 
-        OpcodeMapEntry entry = FindOpcode(builder, opmapEntries);
+        OpcodeMapEntry entry = FindOpcode(core, builder, opmapEntries);
 
         // ReSharper disable once ConvertIfStatementToReturnStatement
         if (!ReadImmediate(byteStream, entry, instr, out bytesConsumed))
@@ -158,6 +162,7 @@ public static class Decoder
     /// <summary>
     /// Decode an instruction with a ModR/M byte, and (optionally) an immediate.
     /// </summary>
+    /// <param name="core">The CPU core that is decoding this instruction.</param>
     /// <param name="byteStream">The input byte stream beginning after <paramref name="opByte" />.</param>
     /// <param name="opByte">The byte that triggered the call to the handler (with normalized prefixes).</param>
     /// <param name="instr">The decoded instruction object currently being built.</param>
@@ -170,6 +175,7 @@ public static class Decoder
     /// <param name="bytesConsumed">The number of bytes consumed by this function.</param>
     /// <returns>The decoded opcode, or <see cref="Opcode.Error" /> if one doesn't exist.</returns>
     public static Opcode DecodeModRM(
+        CpuCore core,
         Span<byte> byteStream,
         uint opByte,
         Instruction instr,
@@ -185,6 +191,7 @@ public static class Decoder
     /// "Decode" an undefined instruction; i.e. one that doesn't exist.
     /// All parameters are ignored.
     /// </summary>
+    /// <param name="core">The CPU core that is decoding this instruction.</param>
     /// <param name="byteStream">The input byte stream beginning after <paramref name="opByte" />.</param>
     /// <param name="opByte">The byte that triggered the call to the handler (with normalized prefixes).</param>
     /// <param name="instr">The decoded instruction object currently being built.</param>
@@ -197,6 +204,7 @@ public static class Decoder
     /// <param name="bytesConsumed">The number of bytes consumed by this function (always zero).</param>
     /// <returns><see cref="Opcode.Error" />, regardless of the parameters.</returns>
     public static Opcode DecodeUD(
+        CpuCore core,
         Span<byte> byteStream,
         uint opByte,
         Instruction instr,
@@ -217,9 +225,21 @@ public static class Decoder
     // future: EVEX
 
 
-    // ReSharper disable once ParameterTypeCanBeEnumerable.Local
-    private static OpcodeMapEntry FindOpcode(DecodeFlagsBuilder extractedFlags, OpcodeMapEntry[]? opmapEntries) =>
-        opmapEntries?.FirstOrDefault(entry => extractedFlags.Matches(entry.Flags)) ?? OpcodeMap.OpcodeError[0];
+    private static OpcodeMapEntry FindOpcode(CpuCore core, DecodeFlagsBuilder extractedFlags, OpcodeMapEntry[]? opmapEntries)
+    {
+        foreach (OpcodeMapEntry entry in opmapEntries ?? Enumerable.Empty<OpcodeMapEntry>())
+        {
+            // check CPU level
+            if (core.CpuLevel < entry.SupportedCpuLevels.Start.Value ||
+                core.CpuLevel > entry.SupportedCpuLevels.End.Value)
+                continue;
+
+            if (extractedFlags.Matches(entry.Flags))
+                return entry;
+        }
+
+        return OpcodeMap.OpcodeError[0];
+    }
 
     private static bool ReadImmediate(Span<byte> byteStream, OpcodeMapEntry entry, Instruction instr, out int bytesRead)
     {

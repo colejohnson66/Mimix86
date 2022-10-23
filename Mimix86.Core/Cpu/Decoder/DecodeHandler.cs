@@ -33,6 +33,7 @@ namespace Mimix86.Core.Cpu.Decoder;
 /// <summary>
 /// The type of a function decode handler.
 /// </summary>
+/// <param name="core">The CPU core that is decoding this instruction.</param>
 /// <param name="byteStream">The input byte stream beginning after <paramref name="opByte" />.</param>
 /// <param name="opByte">
 /// The byte that triggered the call to the handler (with normalized prefixes; see remarks).
@@ -58,6 +59,7 @@ namespace Mimix86.Core.Cpu.Decoder;
 /// For example, if the opcode is <c>0F&#xA0;02</c>, <paramref name="opByte" /> would be <c>0x0F02</c>.
 /// </remarks>
 public delegate Opcode DecodeHandler(
+    CpuCore core,
     Span<byte> byteStream,
     uint opByte,
     Instruction instr,
