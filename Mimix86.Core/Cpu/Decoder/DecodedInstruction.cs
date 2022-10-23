@@ -66,14 +66,21 @@ public class DecodedInstruction
     public int ProcessorMode { get; }
 
     /// <summary>
-    /// Get or set a value indicating if the <c>ASIZE</c> (<c>0x67</c>) prefix was seen.
+    /// Get or set a value indicating if the <c>ASIZE</c> (<c>[67]</c>) prefix was seen.
     /// </summary>
     public bool ASizeOverride { get; set; }
 
     /// <summary>
-    /// Get or set a value indicating if the <c>OSIZE</c> (<c>0x66</c>) prefix was seen.
+    /// Get or set a value indicating if the <c>OSIZE</c> (<c>[66]</c>) prefix was seen.
     /// </summary>
     public bool OSizeOverride { get; set; }
+
+    /// <summary>
+    /// Get or set a value indicating if the <c>LOCK</c> (<c>[F0]</c>) prefix was seen.
+    /// </summary>
+    public bool LockPrefix { get; set; }
+
+    // TODO: loop [F0]..=[F3]?
 
     /// <summary>
     /// Get or set the <c>REP</c> prefix that was first encountered, if any exist.
@@ -85,10 +92,10 @@ public class DecodedInstruction
     /// </summary>
     public Optional<byte> ModRM { get; set; } = Optional<byte>.None;
 
-    /// <summary>
-    /// Get or set the SIB byte, if it exists.
-    /// </summary>
-    public Optional<byte> Sib { get; set; } = Optional<byte>.None;
+    // /// <summary>
+    // /// Get or set the SIB byte, if it exists.
+    // /// </summary>
+    // public Optional<byte> Sib { get; set; } = Optional<byte>.None;
 
     /// <summary>
     /// Get or set the displacement, if it exists.

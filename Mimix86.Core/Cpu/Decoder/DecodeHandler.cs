@@ -33,10 +33,7 @@ namespace Mimix86.Core.Cpu.Decoder;
 /// <summary>
 /// The type of a function decode handler.
 /// </summary>
-/// <param name="byteStream">
-/// The input byte stream beginning at the start of the instruction, and ending after 15 bytes or the end of the page
-///   (whichever comes first).
-/// </param>
+/// <param name="byteStream">The input byte stream beginning after <paramref name="opByte" />.</param>
 /// <param name="opByte">
 /// The byte that triggered the call to the handler (with normalized prefixes; see remarks).
 /// </param>

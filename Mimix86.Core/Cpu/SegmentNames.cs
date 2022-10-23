@@ -36,22 +36,22 @@ public enum SegmentNames : byte
     /// <summary>
     /// Indicates the <c>ES</c> (extra) segment, with the prefix byte, <c>[26]</c>.
     /// </summary>
-    ES = 0x26,
+    [UsedImplicitly] ES = 0x26,
 
     /// <summary>
     /// Indicates the <c>CS</c> (code) segment, with the prefix byte, <c>[2E]</c>.
     /// </summary>
-    CS = 0x2E,
+    [UsedImplicitly] CS = 0x2E,
 
     /// <summary>
     /// Indicates the <c>SS</c> (stack) segment, with the prefix byte, <c>[36]</c>.
     /// </summary>
-    SS = 0x36,
+    [UsedImplicitly] SS = 0x36,
 
     /// <summary>
     /// Indicates the <c>DS</c> (data) segment, with the prefix byte, <c>[3E]</c>.
     /// </summary>
-    DS = 0x3E,
+    [UsedImplicitly] DS = 0x3E,
 
     // add with 80386+ support
     // /// <summary>
