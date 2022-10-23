@@ -28,7 +28,7 @@
 namespace Mimix86.Core.Cpu.Decoder;
 
 /// <summary>
-/// Represents the various immediate sizes for use with <see cref="DecodeDescriptors.ImmediateDescriptor" />.
+/// Represents the various immediate sizes for use by <see cref="OpcodeMapEntry" /> objects.
 /// </summary>
 public enum ImmSize
 {
@@ -47,87 +47,39 @@ public enum ImmSize
     /// </summary>
     Word,
 
-    /// <summary>
-    /// Indicates an immediate that is a word followed by a byte (three bytes).
-    /// </summary>
-    /// <remarks>This exists solely for <see cref="Opcode.EnterIwIb" />.</remarks>
-    WordByte,
+    // add back with 80186+ support
+    // /// <summary>
+    // /// Indicates an immediate that is a word followed by a byte (three bytes).
+    // /// </summary>
+    // /// <remarks>This exists solely for <see cref="Opcode.EnterIwIb" />.</remarks>
+    // WordByte,
+
+    // add back with 80386+ support
+    // /// <summary>
+    // /// Indicates an immediate that is a double-word (four bytes).
+    // /// </summary>
+    // Dword,
+
+    // add back with x86-64 support
+    // /// <summary>
+    // /// Indicates an immediate that is a quad-word (eight bytes).
+    // /// </summary>
+    // Qword,
 
     /// <summary>
-    /// Indicates an immediate with a <c>'v'</c> suffix.
+    /// Indicates an immediate that is a pointer with a word offset (two byte segment plus two byte offset).
     /// </summary>
-    /// <remarks>
-    /// Immediates of this form have the following mapping to the number of bits in the immediate:
-    /// <list type="table">
-    ///   <listheader>
-    ///     <term>Effective OSIZE</term>
-    ///     <description>Immediate size</description>
-    ///   </listheader>
-    ///   <item>
-    ///     <term>16-bit</term>
-    ///     <description>16 bits</description>
-    ///   </item>
-    ///   <item>
-    ///     <term>32-bit</term>
-    ///     <description>32 bits</description>
-    ///   </item>
-    ///   <item>
-    ///     <term>64-bit</term>
-    ///     <description>64 bits</description>
-    ///   </item>
-    /// </list>
-    /// </remarks>
-    ImmV,
+    PointerWordWord,
 
-    /// <summary>
-    /// Indicates an immediate with a <c>'z'</c> suffix.
-    /// </summary>
-    /// <remarks>
-    /// Immediates of this form have the following mapping to the number of bits in the immediate:
-    /// <list type="table">
-    ///   <listheader>
-    ///     <term>Effective OSIZE</term>
-    ///     <description>Immediate size</description>
-    ///   </listheader>
-    ///   <item>
-    ///     <term>16-bit</term>
-    ///     <description>16 bits</description>
-    ///   </item>
-    ///   <item>
-    ///     <term>32-bit</term>
-    ///     <description>32 bits</description>
-    ///   </item>
-    ///   <item>
-    ///     <term>64-bit</term>
-    ///     <description>32 bits</description>
-    ///   </item>
-    /// </list>
-    /// </remarks>
-    ImmZ,
+    // add back with 80386+ support
+    // /// <summary>
+    // /// Indicates an immediate that is a pointer with a double-word offset (two byte segment plus four byte offset).
+    // /// </summary>
+    // PointerWordDword,
 
-    /// <summary>
-    /// Indicates a far pointer immediate (those with a <c>'p'</c> suffix).
-    /// </summary>
-    /// <remarks>
-    /// Immediates of this form have the following mapping to the number of bits in the immediate:
-    /// <list type="table">
-    ///   <listheader>
-    ///     <term>Effective OSIZE</term>
-    ///     <description>Immediate size</description>
-    ///   </listheader>
-    ///   <item>
-    ///     <term>16-bit</term>
-    ///     <description>16+16 (32) bits</description>
-    ///   </item>
-    ///   <item>
-    ///     <term>32-bit</term>
-    ///     <description>16+32 (48) bits</description>
-    ///   </item>
-    ///   <item>
-    ///     <term>64-bit</term>
-    ///     <description>16+64 (80) bits</description>
-    ///   </item>
-    /// </list>
-    /// </remarks>
-    Pointer,
+    // add back with x86-64 support
+    // /// <summary>
+    // /// Indicates an immediate that is a pointer with a quad-word offset (two byte segment plus eight byte offset).
+    // /// </summary>
+    // PointerWordQword,
 }

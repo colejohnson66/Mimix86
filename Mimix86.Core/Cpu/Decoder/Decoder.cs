@@ -4,7 +4,7 @@ using System;
 namespace Mimix86.Core.Cpu.Decoder;
 
 /// <summary>
-/// Contains the various decode methods used by <see cref="DecodeDescriptors" />.
+/// Contains the various decode methods used by <see cref="DecodeDescriptor" />.
 /// </summary>
 public static class Decoder
 {
