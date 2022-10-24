@@ -26,6 +26,7 @@
  * =============================================================================
  */
 
+using Mimix86.Core.Cpu;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,8 @@ namespace Mimix86.Core.Memory;
 [PublicAPI]
 public static class MemorySystem
 {
+    #region Delegates
+
     /// <summary>
     /// A delegate to invoke when reading from a memory chunk.
     /// </summary>
@@ -67,11 +70,25 @@ public static class MemorySystem
     /// <returns><c>true</c> if the DMA request was successful; <c>false</c> otherwise.</returns>
     public delegate bool DmaDelegate(PhysicalAddress address, out Span<byte> span);
 
+    #endregion
+
+
     private const int BITS_PER_CHUNK_INDEX = 20; // 1M
     // each array element is a list of chunk handlers for the whole 1M
     private static readonly List<ChunkHandler>?[] Handlers =
         new List<ChunkHandler>?[Config.PHYSICAL_ADDRESS_BITS - BITS_PER_CHUNK_INDEX + 1];
 
+
+    // future: 80386+
+    // private static bool _smRamAvailable;
+    // private static bool _smRamEnabled;
+    // private static bool _smRamRestricted;
+
+
+    private static PhysicalAddress _biosRomAddress;
+
+
+    #region Handlers
 
     /// <summary>
     /// Register a memory chunk handler for a specified range of addresses with specified read and optional write and
@@ -134,6 +151,56 @@ public static class MemorySystem
         return list;
     }
 
+    #endregion
+
+
+    #region Read/Write
+
+    public static void Read(CpuCore core, PhysicalAddress address, Span<byte> data)
+    {
+        if (address >> BITS_PER_CHUNK_INDEX != (address + (ulong)data.Length - 1) >> BITS_PER_CHUNK_INDEX)
+            throw new ArgumentException("Crossing page.");
+
+        PhysicalAddress a20Address = new(address & 0xF_FFFFul); // TODO: this is prob incorrect
+        // bool isBios = a20Address >= _biosRomAddress;
+
+        // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
+        foreach (ChunkHandler handler in GetOrCreateChunk(address))
+        {
+            if (a20Address < handler.Start || a20Address + (ulong)data.Length > handler.End)
+                continue;
+            if (handler.Read(address, data))
+                return;
+        }
+
+        // TODO: handle the rest
+        throw new NotImplementedException();
+    }
+
+    public static void Write(CpuCore core, PhysicalAddress address, ReadOnlySpan<byte> data)
+    {
+        if (address >> BITS_PER_CHUNK_INDEX != (address + (ulong)data.Length - 1) >> BITS_PER_CHUNK_INDEX)
+            throw new ArgumentException("Crossing page.");
+
+        PhysicalAddress a20Address = new(address & 0xF_FFFFul); // TODO: this is prob incorrect
+        // bool isBios = a20Address >= _biosRomAddress;
+
+        // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
+        foreach (ChunkHandler handler in GetOrCreateChunk(address))
+        {
+            if (a20Address < handler.Start || a20Address + (ulong)data.Length > handler.End)
+                continue;
+            if (handler.Write is null)
+                break;
+            if (handler.Write(address, data))
+                return;
+        }
+
+        // TODO: handle the rest
+        throw new NotImplementedException();
+    }
+
+    #endregion
 
     private record ChunkHandler(
         PhysicalAddress Start,

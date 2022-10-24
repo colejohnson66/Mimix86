@@ -27,6 +27,8 @@
  * =============================================================================
  */
 
+using System;
+
 namespace Mimix86.Core;
 
 /// <summary>
@@ -34,6 +36,7 @@ namespace Mimix86.Core;
 /// </summary>
 [PublicAPI]
 public struct PhysicalAddress
+    : IEquatable<PhysicalAddress>
 {
     /// <summary>
     /// Construct a new <see cref="PhysicalAddress" /> with a specified value.
@@ -106,4 +109,21 @@ public struct PhysicalAddress
         lhs.Value <= rhs.Value;
 
     #endregion
+
+
+    /// <inheritdoc />
+    public bool Equals(PhysicalAddress other) =>
+        Value == other.Value;
+
+    /// <inheritdoc />
+    public override bool Equals(object? obj) =>
+        obj is PhysicalAddress other && Equals(other);
+
+    /// <inheritdoc />
+    public override int GetHashCode() =>
+        Value.GetHashCode();
+
+    /// <inheritdoc />
+    public override string ToString() =>
+        Value.ToString("x8"); // $"{Value >> 32:x8}_{Value:x8}";
 }
