@@ -60,8 +60,6 @@ public class Instruction
 
     /// <summary>
     /// The current processor mode.
-    /// This, combined with <see cref="ASizeOverride" /> or <see cref="OSizeOverride" /> can be used to determine the
-    ///   effective address and operand size.
     /// </summary>
     public int ProcessorModeBitWidth { get; }
 
