@@ -25,8 +25,6 @@
  * =============================================================================
  */
 
-using System;
-
 namespace Mimix86.Core.Cpu.Decoder;
 
 /// <summary>
@@ -59,27 +57,25 @@ public class DecodeFlagsBuilder
          * └───────┴───────────┴───────────┘
          */
 
-        // ModMem() / ModReg()
-        bool modReg = (b & 0xC0) is 0xC0;
-        _value |= modReg ? DecodeFlags.MOD_REG : DecodeFlags.MOD_MEM;
+        // mod
+        _value |= (b & 0xC0) is 0xC0 ? DecodeFlags.MOD_REG : DecodeFlags.MOD_MEM;
 
-        RM((b >> 3) & 7);
-        Reg(b & 7);
-    }
+        // reg
+        _value |= ((b >> 3) & 7) switch
+        {
+            0 => DecodeFlags.REG0,
+            1 => DecodeFlags.REG1,
+            2 => DecodeFlags.REG2,
+            3 => DecodeFlags.REG3,
+            4 => DecodeFlags.REG4,
+            5 => DecodeFlags.REG5,
+            6 => DecodeFlags.REG6,
+            7 => DecodeFlags.REG7,
+            _ => throw new UnreachableException(),
+        };
 
-    /// <summary>
-    /// Set the value of the ModR/M byte's R/M field.
-    /// </summary>
-    /// <param name="rm">The value of the ModR/M byte's R/M field.</param>
-    /// <exception cref="ArgumentOutOfRangeException">
-    /// If <paramref name="rm" /> is less than zero or greater than 7.
-    /// </exception>
-    public void RM(int rm)
-    {
-        if (rm is < 0 or > 7)
-            throw new ArgumentOutOfRangeException(nameof(rm), rm, "Required ModR/M R/M value must be between zero and seven, inclusive.");
-
-        _value |= rm switch
+        // r/m
+        _value |= (b & 7) switch
         {
             0 => DecodeFlags.RM0,
             1 => DecodeFlags.RM1,
@@ -92,44 +88,6 @@ public class DecodeFlagsBuilder
             _ => throw new UnreachableException(),
         };
     }
-
-    /// <summary>
-    /// Set the value of the ModR/M byte's register field.
-    /// </summary>
-    /// <param name="reg">The value of the ModR/M byte's register field.</param>
-    /// <exception cref="ArgumentOutOfRangeException">
-    /// If <paramref name="reg" /> is less than zero or greater than 7.
-    /// </exception>
-    public void Reg(int reg)
-    {
-        if (reg is < 0 or > 7)
-            throw new ArgumentOutOfRangeException(nameof(reg), reg, "Required ModR/M register value must be between zero and seven, inclusive.");
-
-        _value |= reg switch
-        {
-            0 => DecodeFlags.REG0,
-            1 => DecodeFlags.REG1,
-            2 => DecodeFlags.REG2,
-            3 => DecodeFlags.REG3,
-            4 => DecodeFlags.REG4,
-            5 => DecodeFlags.REG5,
-            6 => DecodeFlags.REG6,
-            7 => DecodeFlags.REG7,
-            _ => throw new UnreachableException(),
-        };
-    }
-
-    /// <summary>
-    /// Set the value of the ModR/M byte's mod field to indicate register form (i.e. <c>0b11</c>).
-    /// </summary>
-    public void ModRegister() =>
-        _value |= DecodeFlags.MOD_REG;
-
-    /// <summary>
-    /// Set the value of the ModR/M byte's mod field to indicate memory form (i.e. not <c>0b11</c>).
-    /// </summary>
-    public void ModMemory() =>
-        _value |= DecodeFlags.MOD_MEM;
 
 
     // future: instruction set (16, 32, 64)
