@@ -36,12 +36,12 @@ public static class Decoder
                 return null; // overlong instruction; TODO: throw #GP; how does 8086 handle it?
 
             byte b = byteStream[i];
-
             switch (b)
             {
                 // "group 1" lock and repeat prefixes
-                // TODO: aren't these exclusive? (one or the other, not both)
+                // TODO: these are exclusive; how does the 8086 handle it?
                 case 0xF0:
+                case 0xF1 when core.CpuLevel is 0:
                     instr.LockPrefix = true;
                     break;
                 case 0xF2 or 0xF3:
@@ -58,12 +58,12 @@ public static class Decoder
                 //     break;
 
                 // // "group 3" OSIZE prefix
-                // case 0x66:
+                // case 0x66 when core.CpuLevel >= 3:
                 //     instr.OSizeOverride = true;
                 //     break;
 
                 // // "group 4" ASIZE prefix
-                // case 0x67:
+                // case 0x67 when core.CpuLevel >= 3:
                 //     instr.ASizeOverride = true;
                 //     break;
 
