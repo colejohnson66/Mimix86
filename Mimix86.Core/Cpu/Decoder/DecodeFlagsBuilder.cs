@@ -48,6 +48,26 @@ public class DecodeFlagsBuilder
 
 
     /// <summary>
+    /// Set the value of the ModR/M byte's mod, reg, and R/M fields.
+    /// </summary>
+    /// <param name="b">The value of the ModR/M byte.</param>
+    public void ModRM(byte b)
+    {
+        /* ┌───┬───┬───┬───┬───┬───┬───┬───┐
+         * │ 7 │ 6 │ 5 │ 4 │ 3 │ 2 │ 1 │ 0 │
+         * │  Mod  │    Reg    │    R/M    │
+         * └───────┴───────────┴───────────┘
+         */
+
+        // ModMem() / ModReg()
+        bool modReg = (b & 0xC0) is 0xC0;
+        _value |= modReg ? DecodeFlags.MOD_REG : DecodeFlags.MOD_MEM;
+
+        RM((b >> 3) & 7);
+        Reg(b & 7);
+    }
+
+    /// <summary>
     /// Set the value of the ModR/M byte's R/M field.
     /// </summary>
     /// <param name="rm">The value of the ModR/M byte's R/M field.</param>

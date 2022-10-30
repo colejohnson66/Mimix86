@@ -11,6 +11,7 @@ namespace Mimix86.Core.Cpu.Decoder;
 /// </summary>
 public static class Decoder
 {
+    // TODO: replace `byteStream` with some kind of memory reader object that handles page faults and A20 wrapping for us
     /// <summary>
     /// Decode a single instruction.
     /// </summary>
@@ -117,11 +118,12 @@ public static class Decoder
         OpcodeMapEntry[]? opmapEntries,
         out int bytesConsumed)
     {
-        DecodeFlagsBuilder builder = new();
+        DecodeFlagsBuilder builder = new(); // no decode flags... yet
 
-        bytesConsumed = 0; // nothing consumed; op byte consumed in `Decode`
         OpcodeMapEntry entry = FindOpcode(core, builder, opmapEntries);
         Debug.Assert(entry.Immediate is ImmSize.None);
+
+        bytesConsumed = 0; // nothing consumed; op byte consumed in `Decode`
         return entry.Opcode;
     }
 
@@ -150,15 +152,15 @@ public static class Decoder
         OpcodeMapEntry[]? opmapEntries,
         out int bytesConsumed)
     {
-        DecodeFlagsBuilder builder = new();
+        DecodeFlagsBuilder builder = new(); // no decode flags... yet
 
         OpcodeMapEntry entry = FindOpcode(core, builder, opmapEntries);
 
         // ReSharper disable once ConvertIfStatementToReturnStatement
-        if (!ReadImmediate(byteStream, entry, instr, out bytesConsumed))
-            return Opcode.Error;
+        if (ReadImmediate(byteStream, entry, instr, out bytesConsumed))
+            return entry.Opcode;
 
-        return entry.Opcode;
+        return Opcode.Error;
     }
 
 
@@ -186,7 +188,32 @@ public static class Decoder
         OpcodeMapEntry[]? opmapEntries,
         out int bytesConsumed)
     {
-        throw new NotImplementedException();
+        bytesConsumed = 0;
+        if (byteStream.Length is 0)
+            return Opcode.Error;
+
+        byte b = byteStream[0];
+        instr.ModRM = new(b);
+
+        DecodeFlagsBuilder builder = new();
+        builder.ModRM(b);
+
+        OpcodeMapEntry entry = FindOpcode(core, builder, opmapEntries);
+
+        if (entry.Immediate is not ImmSize.None)
+        {
+            if (ReadImmediate(byteStream[1..], entry, instr, out int immBytes))
+            {
+                bytesConsumed = immBytes + 1;
+                return entry.Opcode;
+            }
+
+            bytesConsumed = 1;
+            return Opcode.Error;
+        }
+
+        bytesConsumed = 1;
+        return entry.Opcode;
     }
 
 
