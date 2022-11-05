@@ -32,12 +32,16 @@ namespace DslLib;
 internal static class Program
 {
     private const string INPUT =
-        """
-        # 8086+
-        ADD [Eb Gb] [00 /r] ..
-        ADD [Ew Gw] [01 /r] .. [OS16]
-        ADD [Gb Eb] [02 /r] ..
-        """;
+        "# 8086+\r\n" +
+        "ADD [Eb Gb] [00 /r] ..\r\n" +
+        "ADD [Ew Gw] [01 /r] .. [OS16]\r\n" +
+        "ADD [Gb Eb] [02 /r] ..\r\n" +
+        "ADD [Gw Ew] [03 /r] .. [OS16]\r\n" +
+        "ADD [AL Ib] [04 ib] ..\r\n" +
+        "ADD [AX Iw] [05 iw] .. [OS16]\r\n" +
+        "PUSH [ES] [06] ..\r\n" +
+        "# ...\r\n" +
+        "DAA [] [27] ..\r\n";
 
     public static void Main()
     {

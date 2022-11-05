@@ -3,9 +3,8 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net6.0</TargetFramework>
-        <Nullable>Enable</Nullable>
-        <GenerateDocumentationFile>True</GenerateDocumentationFile>
-        <EnablePreviewFeatures>True</EnablePreviewFeatures>
+        <Nullable>enable</Nullable>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
