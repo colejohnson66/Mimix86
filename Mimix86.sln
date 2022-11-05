@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DslLib", "DslLib\DslLib.csproj", "{E28AACEB-EB41-4ECB-8C73-6136AEC26E45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstructionHandlerBuilder", "InstructionHandlerBuilder\InstructionHandlerBuilder.csproj", "{7DD68CE8-270C-40BB-956F-CAAF17A76F14}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mimix86.Core", "Mimix86.Core\Mimix86.Core.csproj", "{4D95C8E4-6AE2-49CE-A348-F279FE926E03}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mimix86.Core.Test", "Mimix86.Core.Test\Mimix86.Core.Test.csproj", "{D092FEB9-997F-46A5-A1B0-2D2059B530C5}"
@@ -28,10 +26,6 @@ Global
 		{E28AACEB-EB41-4ECB-8C73-6136AEC26E45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E28AACEB-EB41-4ECB-8C73-6136AEC26E45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E28AACEB-EB41-4ECB-8C73-6136AEC26E45}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7DD68CE8-270C-40BB-956F-CAAF17A76F14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7DD68CE8-270C-40BB-956F-CAAF17A76F14}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7DD68CE8-270C-40BB-956F-CAAF17A76F14}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7DD68CE8-270C-40BB-956F-CAAF17A76F14}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4D95C8E4-6AE2-49CE-A348-F279FE926E03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4D95C8E4-6AE2-49CE-A348-F279FE926E03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D95C8E4-6AE2-49CE-A348-F279FE926E03}.Release|Any CPU.ActiveCfg = Release|Any CPU
