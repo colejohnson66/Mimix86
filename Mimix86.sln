@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mimix86.Core", "Mimix86.Cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mimix86.Core.Test", "Mimix86.Core.Test\Mimix86.Core.Test.csproj", "{D092FEB9-997F-46A5-A1B0-2D2059B530C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mimix86.Generators", "Mimix86.Generators\Mimix86.Generators.csproj", "{E026B2EA-F37F-4DF0-9A85-08C1620BA5B2}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mimix86.Gui", "Mimix86.Gui\Mimix86.Gui.csproj", "{61C80FD8-97B9-413D-8E29-F814AFE13961}"
 EndProject
 Global
@@ -38,6 +40,10 @@ Global
 		{D092FEB9-997F-46A5-A1B0-2D2059B530C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D092FEB9-997F-46A5-A1B0-2D2059B530C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D092FEB9-997F-46A5-A1B0-2D2059B530C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E026B2EA-F37F-4DF0-9A85-08C1620BA5B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E026B2EA-F37F-4DF0-9A85-08C1620BA5B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E026B2EA-F37F-4DF0-9A85-08C1620BA5B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E026B2EA-F37F-4DF0-9A85-08C1620BA5B2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{61C80FD8-97B9-413D-8E29-F814AFE13961}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{61C80FD8-97B9-413D-8E29-F814AFE13961}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61C80FD8-97B9-413D-8E29-F814AFE13961}.Release|Any CPU.ActiveCfg = Release|Any CPU
