@@ -38,6 +38,23 @@ public partial class Opcode : IEquatable<Opcode>
     /// Construct a new <see cref="Opcode" /> with a specified mnemonic and execution handler.
     /// </summary>
     /// <param name="mnemonic">The mnemonic for this opcode.</param>
+    /// <param name="handler">The execution handler for this opcode.</param>
+    /// <exception cref="ArgumentNullException">If <paramref name="mnemonic" /> is <c>null</c>.</exception>
+    /// <exception cref="ArgumentNullException">If <paramref name="handler" /> is <c>null</c>.</exception>
+    public Opcode(string mnemonic, ExecutionHandler handler)
+    {
+        ArgumentNullException.ThrowIfNull(mnemonic);
+        ArgumentNullException.ThrowIfNull(handler);
+
+        Mnemonic = mnemonic;
+        Operands = null;
+        Handler = handler;
+    }
+
+    /// <summary>
+    /// Construct a new <see cref="Opcode" /> with a specified mnemonic, operands, and execution handler.
+    /// </summary>
+    /// <param name="mnemonic">The mnemonic for this opcode.</param>
     /// <param name="operands">
     /// A space-separated list of the operands for this opcode, or <c>null</c> if there aren't any.
     /// </param>
