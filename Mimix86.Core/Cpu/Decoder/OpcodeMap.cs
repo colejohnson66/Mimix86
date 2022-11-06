@@ -744,7 +744,7 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] OpcodeA5 =
     {
         // MOVSW / ...
-        new(Movsb, ..),
+        new(Movsw, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeA6 =
