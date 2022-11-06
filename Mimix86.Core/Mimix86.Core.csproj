@@ -2,15 +2,15 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <Nullable>Enable</Nullable>
-        <GenerateDocumentationFile>True</GenerateDocumentationFile>
-        <EnablePreviewFeatures>True</EnablePreviewFeatures>
+        <Nullable>enable</Nullable>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <EnablePreviewFeatures>true</EnablePreviewFeatures>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="DotNext" Version="4.7.4" />
-      <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
-      <PackageReference Include="System.Runtime.Experimental" Version="6.0.2" />
+        <PackageReference Include="DotNext" Version="4.7.4" />
+        <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
+        <PackageReference Include="System.Runtime.Experimental" Version="6.0.2" />
     </ItemGroup>
 
 </Project>
