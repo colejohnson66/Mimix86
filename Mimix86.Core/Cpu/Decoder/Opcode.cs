@@ -94,6 +94,11 @@ public partial class Opcode : IEquatable<Opcode>
     /// </summary>
     public OpcodeFlags Flags { get; init; }
 
+    /// <summary>
+    /// Get the size of the immediate for this opcode entry.
+    /// </summary>
+    public ImmSize Immediate { get; init; } = ImmSize.None;
+
 
     /// <inheritdoc />
     public bool Equals(Opcode? other)

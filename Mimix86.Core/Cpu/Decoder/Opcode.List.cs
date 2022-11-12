@@ -4,7 +4,7 @@
  * =============================================================================
  * Purpose:
  *
- * <TODO>
+ * Lists all the supported opcodes.
  * =============================================================================
  * Copyright (c) 2022 Cole Tobin
  *
@@ -41,9 +41,9 @@ public partial class Opcode
 
     public static Opcode Aaa { get; } = new("aaa", Execution.Aaa._);
 
-    public static Opcode AadIb { get; } = new("aad", "Ib", Aad.Ib);
+    public static Opcode AadIb { get; } = new("aad", "Ib", Aad.Ib) { Immediate = ImmSize.Byte };
 
-    public static Opcode AamIb { get; } = new("aam", "Ib", Aam.Ib);
+    public static Opcode AamIb { get; } = new("aam", "Ib", Aam.Ib) { Immediate = ImmSize.Byte };
 
     public static Opcode Aas { get; } = new("aas", Execution.Aas._);
 
@@ -51,33 +51,33 @@ public partial class Opcode
     public static Opcode AdcEwGw { get; } = new("adc", "Ew Gw", Adc.EwGw) { Flags = OpcodeFlags.Lockable };
     public static Opcode AdcGbEb { get; } = new("adc", "Gb Eb", Adc.GbEb);
     public static Opcode AdcGwEw { get; } = new("adc", "Gw Ew", Adc.GwEw);
-    public static Opcode AdcALIb { get; } = new("adc", "AL Ib", Adc.ALIb);
-    public static Opcode AdcAXIw { get; } = new("adc", "AX Iw", Adc.AXIw);
-    public static Opcode AdcEbIb { get; } = new("adc", "Eb Ib", Adc.EbIb) { Flags = OpcodeFlags.Lockable };
-    public static Opcode AdcEwIb { get; } = new("adc", "Ew Ib", Adc.EwIb) { Flags = OpcodeFlags.Lockable };
-    public static Opcode AdcEwIw { get; } = new("adc", "Ew Iw", Adc.EwIw) { Flags = OpcodeFlags.Lockable };
+    public static Opcode AdcALIb { get; } = new("adc", "AL Ib", Adc.ALIb) { Immediate = ImmSize.Byte };
+    public static Opcode AdcAXIw { get; } = new("adc", "AX Iw", Adc.AXIw) { Immediate = ImmSize.Word };
+    public static Opcode AdcEbIb { get; } = new("adc", "Eb Ib", Adc.EbIb) { Flags = OpcodeFlags.Lockable, Immediate = ImmSize.Byte };
+    public static Opcode AdcEwIb { get; } = new("adc", "Ew Ib", Adc.EwIb) { Flags = OpcodeFlags.Lockable, Immediate = ImmSize.Byte };
+    public static Opcode AdcEwIw { get; } = new("adc", "Ew Iw", Adc.EwIw) { Flags = OpcodeFlags.Lockable, Immediate = ImmSize.Word };
 
     public static Opcode AddEbGb { get; } = new("add", "Eb Gb", Add.EbGb) { Flags = OpcodeFlags.Lockable };
     public static Opcode AddEwGw { get; } = new("add", "Ew Gw", Add.EwGw) { Flags = OpcodeFlags.Lockable };
     public static Opcode AddGbEb { get; } = new("add", "Gb Eb", Add.GbEb);
     public static Opcode AddGwEw { get; } = new("add", "Gw Ew", Add.GwEw);
-    public static Opcode AddALIb { get; } = new("add", "AL Ib", Add.ALIb);
-    public static Opcode AddAXIw { get; } = new("add", "AX Iw", Add.AXIw);
-    public static Opcode AddEbIb { get; } = new("add", "Eb Ib", Add.EbIb) { Flags = OpcodeFlags.Lockable };
-    public static Opcode AddEwIb { get; } = new("add", "Ew Ib", Add.EwIb) { Flags = OpcodeFlags.Lockable };
-    public static Opcode AddEwIw { get; } = new("add", "Ew Iw", Add.EwIw) { Flags = OpcodeFlags.Lockable };
+    public static Opcode AddALIb { get; } = new("add", "AL Ib", Add.ALIb) { Immediate = ImmSize.Byte };
+    public static Opcode AddAXIw { get; } = new("add", "AX Iw", Add.AXIw) { Immediate = ImmSize.Word };
+    public static Opcode AddEbIb { get; } = new("add", "Eb Ib", Add.EbIb) { Flags = OpcodeFlags.Lockable, Immediate = ImmSize.Byte };
+    public static Opcode AddEwIb { get; } = new("add", "Ew Ib", Add.EwIb) { Flags = OpcodeFlags.Lockable, Immediate = ImmSize.Byte };
+    public static Opcode AddEwIw { get; } = new("add", "Ew Iw", Add.EwIw) { Flags = OpcodeFlags.Lockable, Immediate = ImmSize.Word };
 
     public static Opcode AndEbGb { get; } = new("and", "Eb Gb", And.EbGb) { Flags = OpcodeFlags.Lockable };
     public static Opcode AndEwGw { get; } = new("and", "Ew Gw", And.EwGw) { Flags = OpcodeFlags.Lockable };
     public static Opcode AndGbEb { get; } = new("and", "Gb Eb", And.GbEb);
     public static Opcode AndGwEw { get; } = new("and", "Gw Ew", And.GwEw);
-    public static Opcode AndALIb { get; } = new("and", "AL Ib", And.ALIb);
-    public static Opcode AndAXIw { get; } = new("and", "AX Iw", And.AXIw);
-    public static Opcode AndEbIb { get; } = new("and", "Eb Ib", And.EbIb) { Flags = OpcodeFlags.Lockable };
-    public static Opcode AndEwIb { get; } = new("and", "Ew Ib", And.EwIb) { Flags = OpcodeFlags.Lockable };
-    public static Opcode AndEwIw { get; } = new("and", "Ew Iw", And.EwIw) { Flags = OpcodeFlags.Lockable };
+    public static Opcode AndALIb { get; } = new("and", "AL Ib", And.ALIb) { Immediate = ImmSize.Byte };
+    public static Opcode AndAXIw { get; } = new("and", "AX Iw", And.AXIw) { Immediate = ImmSize.Word };
+    public static Opcode AndEbIb { get; } = new("and", "Eb Ib", And.EbIb) { Flags = OpcodeFlags.Lockable, Immediate = ImmSize.Byte };
+    public static Opcode AndEwIb { get; } = new("and", "Ew Ib", And.EwIb) { Flags = OpcodeFlags.Lockable, Immediate = ImmSize.Byte };
+    public static Opcode AndEwIw { get; } = new("and", "Ew Iw", And.EwIw) { Flags = OpcodeFlags.Lockable, Immediate = ImmSize.Word };
 
-    public static Opcode CallApww { get; } = new("call", "apww", Call.Apww);
+    public static Opcode CallApww { get; } = new("call", "apww", Call.Apww) { Immediate = ImmSize.PointerWordWord };
     public static Opcode CallEw { get; } = new("call", "ew", Call.Ew);
     public static Opcode CallJw { get; } = new("call", "jw", Call.Jw);
     public static Opcode CallMpww { get; } = new("call", "mpww", Call.Mpww);
@@ -96,11 +96,11 @@ public partial class Opcode
     public static Opcode CmpEwGw { get; } = new("cmp", "Ew Gw", Cmp.EwGw);
     public static Opcode CmpGbEb { get; } = new("cmp", "Gb Eb", Cmp.GbEb);
     public static Opcode CmpGwEw { get; } = new("cmp", "Gw Ew", Cmp.GwEw);
-    public static Opcode CmpALIb { get; } = new("cmp", "AL Ib", Cmp.ALIb);
-    public static Opcode CmpAXIw { get; } = new("cmp", "AX Iw", Cmp.AXIw);
-    public static Opcode CmpEbIb { get; } = new("cmp", "Eb Ib", Cmp.EbIb);
-    public static Opcode CmpEwIb { get; } = new("cmp", "Ew Ib", Cmp.EwIb);
-    public static Opcode CmpEwIw { get; } = new("cmp", "Ew Iw", Cmp.EwIw);
+    public static Opcode CmpALIb { get; } = new("cmp", "AL Ib", Cmp.ALIb) { Immediate = ImmSize.Byte };
+    public static Opcode CmpAXIw { get; } = new("cmp", "AX Iw", Cmp.AXIw) { Immediate = ImmSize.Word };
+    public static Opcode CmpEbIb { get; } = new("cmp", "Eb Ib", Cmp.EbIb) { Immediate = ImmSize.Byte };
+    public static Opcode CmpEwIb { get; } = new("cmp", "Ew Ib", Cmp.EwIb) { Immediate = ImmSize.Byte };
+    public static Opcode CmpEwIw { get; } = new("cmp", "Ew Iw", Cmp.EwIw) { Immediate = ImmSize.Word };
 
     public static Opcode Cmpsb { get; } = new("cmpsb", Execution.Cmpsb._);
 
@@ -128,29 +128,29 @@ public partial class Opcode
     public static Opcode ImulEw { get; } = new("imul", "Ew", Imul.Ew);
 
     public static Opcode InALDX { get; } = new("in", "AL DX", In.ALDX);
-    public static Opcode InALIb { get; } = new("in", "AL Ib", In.ALIb);
+    public static Opcode InALIb { get; } = new("in", "AL Ib", In.ALIb) { Immediate = ImmSize.Byte };
     public static Opcode InAXDX { get; } = new("in", "AX DX", In.AXDX);
-    public static Opcode InAXIb { get; } = new("in", "AX Ib", In.AXIb);
+    public static Opcode InAXIb { get; } = new("in", "AX Ib", In.AXIb) { Immediate = ImmSize.Byte };
 
     public static Opcode IncEb { get; } = new("inc", "Eb", Inc.Eb) { Flags = OpcodeFlags.Lockable };
     public static Opcode IncEw { get; } = new("inc", "Ew", Inc.Ew) { Flags = OpcodeFlags.Lockable };
     public static Opcode IncZw { get; } = new("inc", "Zw", Inc.Zw);
 
     public static Opcode Int3 { get; } = new("int", "3", Int._3);
-    public static Opcode IntIb { get; } = new("int", "Ib", Int.Ib);
+    public static Opcode IntIb { get; } = new("int", "Ib", Int.Ib) { Immediate = ImmSize.Byte };
 
     public static Opcode Into { get; } = new("into", Execution.Into._);
 
     public static Opcode Iret { get; } = new("iret", Execution.Iret._);
 
-    public static Opcode JccJb { get; } = new("jcc", "Jb", Jcc.Jb);
+    public static Opcode JccJb { get; } = new("jcc", "Jb", Jcc.Jb) { Immediate = ImmSize.Byte };
 
-    public static Opcode JcxzJb { get; } = new("jcxz", "Jb", Jcxz.Jb);
+    public static Opcode JcxzJb { get; } = new("jcxz", "Jb", Jcxz.Jb) { Immediate = ImmSize.Byte };
 
-    public static Opcode JmpApww { get; } = new("jmp", "Apww", Jmp.Apww);
+    public static Opcode JmpApww { get; } = new("jmp", "Apww", Jmp.Apww) { Immediate = ImmSize.PointerWordWord };
     public static Opcode JmpEw { get; } = new("jmp", "Ew", Jmp.Ew);
-    public static Opcode JmpJb { get; } = new("jmp", "Jb", Jmp.Jb);
-    public static Opcode JmpJw { get; } = new("jmp", "Jw", Jmp.Jw);
+    public static Opcode JmpJb { get; } = new("jmp", "Jb", Jmp.Jb) { Immediate = ImmSize.Byte };
+    public static Opcode JmpJw { get; } = new("jmp", "Jw", Jmp.Jw) { Immediate = ImmSize.Word };
     public static Opcode JmpMpww { get; } = new("jmp", "Mpww", Jmp.Mpww);
 
     public static Opcode Lahf { get; } = new("lahf", Execution.Lahf._);
@@ -164,24 +164,24 @@ public partial class Opcode
     public static Opcode Lodsb { get; } = new("lodsb", Execution.Lodsb._);
     public static Opcode Lodsw { get; } = new("lodsw", Execution.Lodsw._);
 
-    public static Opcode LoopJb { get; } = new("loop", "Jb", Loop.Jb);
-    public static Opcode LoopeJb { get; } = new("loope", "Jb", Loope.Jb);
-    public static Opcode LoopneJb { get; } = new("loopne", "Jb", Loopne.Jb);
+    public static Opcode LoopJb { get; } = new("loop", "Jb", Loop.Jb) { Immediate = ImmSize.Byte };
+    public static Opcode LoopeJb { get; } = new("loope", "Jb", Loope.Jb) { Immediate = ImmSize.Byte };
+    public static Opcode LoopneJb { get; } = new("loopne", "Jb", Loopne.Jb) { Immediate = ImmSize.Byte };
 
-    public static Opcode MovALOb { get; } = new("mov", "AL Ob", Mov.ALOb);
-    public static Opcode MovAXOw { get; } = new("mov", "AX Ow", Mov.AXOw);
+    public static Opcode MovALOb { get; } = new("mov", "AL Ob", Mov.ALOb) { Immediate = ImmSize.Byte };
+    public static Opcode MovAXOw { get; } = new("mov", "AX Ow", Mov.AXOw) { Immediate = ImmSize.Word };
     public static Opcode MovEbGb { get; } = new("mov", "Eb Gb", Mov.EbGb);
-    public static Opcode MovEbIb { get; } = new("mov", "Eb Ib", Mov.EbIb);
+    public static Opcode MovEbIb { get; } = new("mov", "Eb Ib", Mov.EbIb) { Immediate = ImmSize.Byte };
     public static Opcode MovEwGw { get; } = new("mov", "Ew Gw", Mov.EwGw);
-    public static Opcode MovEwIw { get; } = new("mov", "Ew Iw", Mov.EwIw);
+    public static Opcode MovEwIw { get; } = new("mov", "Ew Iw", Mov.EwIw) { Immediate = ImmSize.Word };
     public static Opcode MovEwSw { get; } = new("mov", "Ew Sw", Mov.EwSw);
     public static Opcode MovGbEb { get; } = new("mov", "Gb Eb", Mov.GbEb);
     public static Opcode MovGwEw { get; } = new("mov", "Gw Ew", Mov.GwEw);
-    public static Opcode MovObAL { get; } = new("mov", "Ob AL", Mov.ObAL);
-    public static Opcode MovOwAX { get; } = new("mov", "Ow AX", Mov.OwAX);
+    public static Opcode MovObAL { get; } = new("mov", "Ob AL", Mov.ObAL) { Immediate = ImmSize.Byte };
+    public static Opcode MovOwAX { get; } = new("mov", "Ow AX", Mov.OwAX) { Immediate = ImmSize.Word };
     public static Opcode MovSwGw { get; } = new("mov", "Sw Gw", Mov.SwGw);
-    public static Opcode MovZbIb { get; } = new("mov", "Zb Ib", Mov.ZbIb);
-    public static Opcode MovZwIw { get; } = new("mov", "Zw Iw", Mov.ZwIw);
+    public static Opcode MovZbIb { get; } = new("mov", "Zb Ib", Mov.ZbIb) { Immediate = ImmSize.Byte };
+    public static Opcode MovZwIw { get; } = new("mov", "Zw Iw", Mov.ZwIw) { Immediate = ImmSize.Word };
 
     public static Opcode Movsb { get; } = new("movsb", Execution.Movsb._);
     public static Opcode Movsw { get; } = new("movsw", Execution.Movsw._);
@@ -201,11 +201,11 @@ public partial class Opcode
     public static Opcode OrEwGw { get; } = new("or", "Ew Gw", Or.EwGw) { Flags = OpcodeFlags.Lockable };
     public static Opcode OrGbEb { get; } = new("or", "Gb Eb", Or.GbEb);
     public static Opcode OrGwEw { get; } = new("or", "Gw Ew", Or.GwEw);
-    public static Opcode OrALIb { get; } = new("or", "AL Ib", Or.ALIb);
-    public static Opcode OrAXIw { get; } = new("or", "AX Iw", Or.AXIw);
-    public static Opcode OrEbIb { get; } = new("or", "Eb Ib", Or.EbIb) { Flags = OpcodeFlags.Lockable };
-    public static Opcode OrEwIb { get; } = new("or", "Ew Ib", Or.EwIb) { Flags = OpcodeFlags.Lockable };
-    public static Opcode OrEwIw { get; } = new("or", "Ew Iw", Or.EwIw) { Flags = OpcodeFlags.Lockable };
+    public static Opcode OrALIb { get; } = new("or", "AL Ib", Or.ALIb) { Immediate = ImmSize.Byte };
+    public static Opcode OrAXIw { get; } = new("or", "AX Iw", Or.AXIw) { Immediate = ImmSize.Word };
+    public static Opcode OrEbIb { get; } = new("or", "Eb Ib", Or.EbIb) { Flags = OpcodeFlags.Lockable, Immediate = ImmSize.Byte };
+    public static Opcode OrEwIb { get; } = new("or", "Ew Ib", Or.EwIb) { Flags = OpcodeFlags.Lockable, Immediate = ImmSize.Byte };
+    public static Opcode OrEwIw { get; } = new("or", "Ew Iw", Or.EwIw) { Flags = OpcodeFlags.Lockable, Immediate = ImmSize.Word };
 
     public static Opcode OutDXAL { get; } = new("out", "DX AL", Out.DXAL);
     public static Opcode OutDXAX { get; } = new("out", "DX AX", Out.DXAX);
@@ -241,10 +241,10 @@ public partial class Opcode
     public static Opcode RcrEwCL { get; } = new("rcr", "Ew CL", Rcr.EwCL);
 
     public static Opcode Ret { get; } = new("ret", Execution.Ret._);
-    public static Opcode RetIw { get; } = new("ret", "Iw", Execution.Ret.Iw);
+    public static Opcode RetIw { get; } = new("ret", "Iw", Execution.Ret.Iw) { Immediate = ImmSize.Word };
 
     public static Opcode Retf { get; } = new("retf", Execution.Retf._);
-    public static Opcode RetfIw { get; } = new("retf", "Iw", Execution.Retf.Iw);
+    public static Opcode RetfIw { get; } = new("retf", "Iw", Execution.Retf.Iw) { Immediate = ImmSize.Word };
 
     public static Opcode RolEb1 { get; } = new("rol", "Eb 1", Rol.Eb1);
     public static Opcode RolEbCL { get; } = new("rol", "Eb CL", Rol.EbCL);
@@ -269,11 +269,11 @@ public partial class Opcode
     public static Opcode SbbEwGw { get; } = new("sbb", "Ew Gw", Sbb.EwGw) { Flags = OpcodeFlags.Lockable };
     public static Opcode SbbGbEb { get; } = new("sbb", "Gb Eb", Sbb.GbEb);
     public static Opcode SbbGwEw { get; } = new("sbb", "Gw Ew", Sbb.GwEw);
-    public static Opcode SbbALIb { get; } = new("sbb", "AL Ib", Sbb.ALIb);
-    public static Opcode SbbAXIw { get; } = new("sbb", "AX Iw", Sbb.AXIw);
-    public static Opcode SbbEbIb { get; } = new("sbb", "Eb Ib", Sbb.EbIb) { Flags = OpcodeFlags.Lockable };
-    public static Opcode SbbEwIb { get; } = new("sbb", "Ew Ib", Sbb.EwIb) { Flags = OpcodeFlags.Lockable };
-    public static Opcode SbbEwIw { get; } = new("sbb", "Ew Iw", Sbb.EwIw) { Flags = OpcodeFlags.Lockable };
+    public static Opcode SbbALIb { get; } = new("sbb", "AL Ib", Sbb.ALIb) { Immediate = ImmSize.Byte };
+    public static Opcode SbbAXIw { get; } = new("sbb", "AX Iw", Sbb.AXIw) { Immediate = ImmSize.Word };
+    public static Opcode SbbEbIb { get; } = new("sbb", "Eb Ib", Sbb.EbIb) { Flags = OpcodeFlags.Lockable, Immediate = ImmSize.Byte };
+    public static Opcode SbbEwIb { get; } = new("sbb", "Ew Ib", Sbb.EwIb) { Flags = OpcodeFlags.Lockable, Immediate = ImmSize.Byte };
+    public static Opcode SbbEwIw { get; } = new("sbb", "Ew Iw", Sbb.EwIw) { Flags = OpcodeFlags.Lockable, Immediate = ImmSize.Word };
 
     public static Opcode Scasb { get; } = new("scasb", Execution.Scasb._);
     public static Opcode Scasw { get; } = new("scasw", Execution.Scasw._);
@@ -301,18 +301,18 @@ public partial class Opcode
     public static Opcode SubEwGw { get; } = new("sub", "Ew Gw", Sub.EwGw) { Flags = OpcodeFlags.Lockable };
     public static Opcode SubGbEb { get; } = new("sub", "Gb Eb", Sub.GbEb);
     public static Opcode SubGwEw { get; } = new("sub", "Gw Ew", Sub.GwEw);
-    public static Opcode SubALIb { get; } = new("sub", "AL Ib", Sub.ALIb);
-    public static Opcode SubAXIw { get; } = new("sub", "AX Iw", Sub.AXIw);
-    public static Opcode SubEbIb { get; } = new("sub", "Eb Ib", Sub.EbIb) { Flags = OpcodeFlags.Lockable };
-    public static Opcode SubEwIb { get; } = new("sub", "Ew Ib", Sub.EwIb) { Flags = OpcodeFlags.Lockable };
-    public static Opcode SubEwIw { get; } = new("sub", "Ew Iw", Sub.EwIw) { Flags = OpcodeFlags.Lockable };
+    public static Opcode SubALIb { get; } = new("sub", "AL Ib", Sub.ALIb) { Immediate = ImmSize.Byte };
+    public static Opcode SubAXIw { get; } = new("sub", "AX Iw", Sub.AXIw) { Immediate = ImmSize.Word };
+    public static Opcode SubEbIb { get; } = new("sub", "Eb Ib", Sub.EbIb) { Flags = OpcodeFlags.Lockable, Immediate = ImmSize.Byte };
+    public static Opcode SubEwIb { get; } = new("sub", "Ew Ib", Sub.EwIb) { Flags = OpcodeFlags.Lockable, Immediate = ImmSize.Byte };
+    public static Opcode SubEwIw { get; } = new("sub", "Ew Iw", Sub.EwIw) { Flags = OpcodeFlags.Lockable, Immediate = ImmSize.Word };
 
-    public static Opcode TestALIb { get; } = new("test", "AL Ib", Test.ALIb);
-    public static Opcode TestAXIw { get; } = new("test", "AX Iw", Test.AXIw);
+    public static Opcode TestALIb { get; } = new("test", "AL Ib", Test.ALIb) { Immediate = ImmSize.Byte };
+    public static Opcode TestAXIw { get; } = new("test", "AX Iw", Test.AXIw) { Immediate = ImmSize.Word };
     public static Opcode TestEbGb { get; } = new("test", "Eb Gb", Test.EbGb);
-    public static Opcode TestEbIb { get; } = new("test", "Eb Ib", Test.EbIb);
+    public static Opcode TestEbIb { get; } = new("test", "Eb Ib", Test.EbIb) { Immediate = ImmSize.Byte };
     public static Opcode TestEwGw { get; } = new("test", "Ew Gw", Test.EwGw);
-    public static Opcode TestEwIw { get; } = new("test", "Ew Iw", Test.EwIw);
+    public static Opcode TestEwIw { get; } = new("test", "Ew Iw", Test.EwIw) { Immediate = ImmSize.Word };
 
     public static Opcode Wait { get; } = new("wait", Execution.Wait._);
 
@@ -326,9 +326,9 @@ public partial class Opcode
     public static Opcode XorEwGw { get; } = new("xor", "Ew Gw", Xor.EwGw) { Flags = OpcodeFlags.Lockable };
     public static Opcode XorGbEb { get; } = new("xor", "Gb Eb", Xor.GbEb);
     public static Opcode XorGwEw { get; } = new("xor", "Gw Ew", Xor.GwEw);
-    public static Opcode XorALIb { get; } = new("xor", "AL Ib", Xor.ALIb);
-    public static Opcode XorAXIw { get; } = new("xor", "AX Iw", Xor.AXIw);
-    public static Opcode XorEbIb { get; } = new("xor", "Eb Ib", Xor.EbIb) { Flags = OpcodeFlags.Lockable };
-    public static Opcode XorEwIb { get; } = new("xor", "Ew Ib", Xor.EwIb) { Flags = OpcodeFlags.Lockable };
-    public static Opcode XorEwIw { get; } = new("xor", "Ew Iw", Xor.EwIw) { Flags = OpcodeFlags.Lockable };
+    public static Opcode XorALIb { get; } = new("xor", "AL Ib", Xor.ALIb) { Immediate = ImmSize.Byte };
+    public static Opcode XorAXIw { get; } = new("xor", "AX Iw", Xor.AXIw) { Immediate = ImmSize.Word };
+    public static Opcode XorEbIb { get; } = new("xor", "Eb Ib", Xor.EbIb) { Flags = OpcodeFlags.Lockable, Immediate = ImmSize.Byte };
+    public static Opcode XorEwIb { get; } = new("xor", "Ew Ib", Xor.EwIb) { Flags = OpcodeFlags.Lockable, Immediate = ImmSize.Byte };
+    public static Opcode XorEwIw { get; } = new("xor", "Ew Iw", Xor.EwIw) { Flags = OpcodeFlags.Lockable, Immediate = ImmSize.Word };
 }

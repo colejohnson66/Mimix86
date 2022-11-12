@@ -106,7 +106,4 @@ public class OpcodeMapEntry
 
     /// <summary>The required flags to decode to this opcode entry.</summary>
     public DecodeFlags Flags { get; init; }
-
-    /// <summary>The size of the immediate for this opcode entry.</summary>
-    public ImmSize Immediate { get; init; } = ImmSize.None;
 }

@@ -69,13 +69,13 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] Opcode04 =
     {
         // ADD AL, Ib
-        new(AddALIb, ..) { Immediate = ImmSize.Byte },
+        new(AddALIb, ..),
     };
 
     public static readonly OpcodeMapEntry[] Opcode05 =
     {
         // ADD rAX, Iz
-        new(AddAXIw, ..) { Immediate = ImmSize.Word },
+        new(AddAXIw, ..),
     };
 
     public static readonly OpcodeMapEntry[] Opcode06 =
@@ -117,13 +117,13 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] Opcode0C =
     {
         // OR AL, Ib
-        new(OrALIb, ..)  { Immediate = ImmSize.Byte },
+        new(OrALIb, ..) ,
     };
 
     public static readonly OpcodeMapEntry[] Opcode0D =
     {
         // OR, rAX, Iz
-        new(OrAXIw, ..) { Immediate = ImmSize.Word },
+        new(OrAXIw, ..),
     };
 
     public static readonly OpcodeMapEntry[] Opcode0E =
@@ -165,13 +165,13 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] Opcode14 =
     {
         // ADC AL, Ib
-        new(AdcALIb, ..) { Immediate = ImmSize.Byte },
+        new(AdcALIb, ..),
     };
 
     public static readonly OpcodeMapEntry[] Opcode15 =
     {
         // ADC rAX, Iz
-        new(AdcAXIw, ..) { Immediate = ImmSize.Word },
+        new(AdcAXIw, ..),
     };
 
     public static readonly OpcodeMapEntry[] Opcode16 =
@@ -213,13 +213,13 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] Opcode1C =
     {
         // SBB AL, Ib
-        new(SbbALIb, ..) { Immediate = ImmSize.Byte },
+        new(SbbALIb, ..),
     };
 
     public static readonly OpcodeMapEntry[] Opcode1D =
     {
         // SBB rAX, Iz
-        new(SbbAXIw, ..) { Immediate = ImmSize.Word },
+        new(SbbAXIw, ..),
     };
 
     public static readonly OpcodeMapEntry[] Opcode1E =
@@ -261,13 +261,13 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] Opcode24 =
     {
         // AND AL, Ib
-        new(AndALIb, ..) { Immediate = ImmSize.Byte },
+        new(AndALIb, ..),
     };
 
     public static readonly OpcodeMapEntry[] Opcode25 =
     {
         // AND rAX, Iz
-        new(AndAXIw, ..) { Immediate = ImmSize.Word },
+        new(AndAXIw, ..),
     };
 
     // [26] is ES: prefix; handled in decoders
@@ -305,13 +305,13 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] Opcode2C =
     {
         // SUB AL, Ib
-        new(SubALIb, ..) { Immediate = ImmSize.Byte },
+        new(SubALIb, ..),
     };
 
     public static readonly OpcodeMapEntry[] Opcode2D =
     {
         // SUB rAX, Iz
-        new(SubAXIw, ..) { Immediate = ImmSize.Word },
+        new(SubAXIw, ..),
     };
 
     // [2E] is CS: prefix; handled in decoder
@@ -349,13 +349,13 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] Opcode34 =
     {
         // XOR AL, Ib
-        new(XorALIb, ..) { Immediate = ImmSize.Byte },
+        new(XorALIb, ..),
     };
 
     public static readonly OpcodeMapEntry[] Opcode35 =
     {
         // XOR rAX, Iz
-        new(XorAXIw, ..) { Immediate = ImmSize.Word },
+        new(XorAXIw, ..),
     };
 
     // [36] is SS: prefix; handled in decoder
@@ -393,13 +393,13 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] Opcode3C =
     {
         // CMP AL, Ib
-        new(CmpALIb, ..) { Immediate = ImmSize.Byte },
+        new(CmpALIb, ..),
     };
 
     public static readonly OpcodeMapEntry[] Opcode3D =
     {
         // CMP rAX, Iz
-        new(CmpAXIw, ..) { Immediate = ImmSize.Word },
+        new(CmpAXIw, ..),
     };
 
     // [3E] is DS: prefix; handled in decoder
@@ -437,129 +437,129 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] Opcode60 =
     {
         // [8086] Jcc Jb <-- duplicate of [70]
-        new(JccJb, ..0) { Immediate = ImmSize.Byte },
+        new(JccJb, ..0),
     };
 
     public static readonly OpcodeMapEntry[] Opcode61 =
     {
         // [8086] Jcc Jb <-- undefined duplicate of [71]
-        new(JccJb, ..0) { Immediate = ImmSize.Byte },
+        new(JccJb, ..0),
     };
 
     public static readonly OpcodeMapEntry[] Opcode62 =
     {
         // [8086] Jcc Jb <-- undefined duplicate of [72]
-        new(JccJb, ..0) { Immediate = ImmSize.Byte },
+        new(JccJb, ..0),
     };
 
     public static readonly OpcodeMapEntry[] Opcode63 =
     {
         // [8086] Jcc Jb <-- undefined duplicate of [73]
-        new(JccJb, ..0) { Immediate = ImmSize.Byte },
+        new(JccJb, ..0),
     };
 
     public static readonly OpcodeMapEntry[] Opcode64 =
     {
         // [8086] Jcc Jb <-- undefined duplicate of [74]
-        new(JccJb, ..0) { Immediate = ImmSize.Byte },
+        new(JccJb, ..0),
     };
 
     public static readonly OpcodeMapEntry[] Opcode65 =
     {
         // [8086] Jcc Jb <-- undefined duplicate of [75]
-        new(JccJb, ..0) { Immediate = ImmSize.Byte },
+        new(JccJb, ..0),
     };
 
     public static readonly OpcodeMapEntry[] Opcode66 =
     {
         // [8086] Jcc Jb <-- undefined duplicate of [76]
-        new(JccJb, ..0) { Immediate = ImmSize.Byte },
+        new(JccJb, ..0),
     };
 
     public static readonly OpcodeMapEntry[] Opcode67 =
     {
         // [8086] Jcc Jb <-- undefined duplicate of [77]
-        new(JccJb, ..0) { Immediate = ImmSize.Byte },
+        new(JccJb, ..0),
     };
 
     public static readonly OpcodeMapEntry[] Opcode68 =
     {
         // [8086] Jcc Jb <-- undefined duplicate of [78]
-        new(JccJb, ..0) { Immediate = ImmSize.Byte },
+        new(JccJb, ..0),
     };
 
     public static readonly OpcodeMapEntry[] Opcode69 =
     {
         // [8086] Jcc Jb <-- undefined duplicate of [79]
-        new(JccJb, ..0) { Immediate = ImmSize.Byte },
+        new(JccJb, ..0),
     };
 
     public static readonly OpcodeMapEntry[] Opcode6A =
     {
         // [8086] Jcc Jb <-- undefined duplicate of [7A]
-        new(JccJb, ..0) { Immediate = ImmSize.Byte },
+        new(JccJb, ..0),
     };
 
     public static readonly OpcodeMapEntry[] Opcode6B =
     {
         // [8086] Jcc Jb <-- undefined duplicate of [7B]
-        new(JccJb, ..0) { Immediate = ImmSize.Byte },
+        new(JccJb, ..0),
     };
 
     public static readonly OpcodeMapEntry[] Opcode6C =
     {
         // [8086] Jcc Jb <-- undefined duplicate of [7C]
-        new(JccJb, ..0) { Immediate = ImmSize.Byte },
+        new(JccJb, ..0),
     };
 
     public static readonly OpcodeMapEntry[] Opcode6D =
     {
         // [8086] Jcc Jb <-- undefined duplicate of [7D]
-        new(JccJb, ..0) { Immediate = ImmSize.Byte },
+        new(JccJb, ..0),
     };
 
     public static readonly OpcodeMapEntry[] Opcode6E =
     {
         // [8086] Jcc Jb <-- undefined duplicate of [7E]
-        new(JccJb, ..0) { Immediate = ImmSize.Byte },
+        new(JccJb, ..0),
     };
 
     public static readonly OpcodeMapEntry[] Opcode6F =
     {
         // [8086] Jcc Jb <-- undefined duplicate of [7F]
-        new(JccJb, ..0) { Immediate = ImmSize.Byte },
+        new(JccJb, ..0),
     };
 
     public static readonly OpcodeMapEntry[] Opcode70x7F =
     {
         // Jcc Jb
-        new(JccJb, ..0) { Immediate = ImmSize.Byte },
+        new(JccJb, ..0),
     };
 
     public static readonly OpcodeMapEntry[] Opcode80 =
     {
         // "group 1" Eb, Ib
-        new(AddEbIb, .., REG0) { Immediate = ImmSize.Byte },
-        new(OrEbIb, .., REG1) { Immediate = ImmSize.Byte },
-        new(AdcEbIb, .., REG2) { Immediate = ImmSize.Byte },
-        new(SbbEbIb, .., REG3) { Immediate = ImmSize.Byte },
-        new(AndEbIb, .., REG4) { Immediate = ImmSize.Byte },
-        new(SubEbIb, .., REG5) { Immediate = ImmSize.Byte },
-        new(XorEbIb, .., REG6) { Immediate = ImmSize.Byte },
-        new(CmpEbIb, .., REG7) { Immediate = ImmSize.Byte },
+        new(AddEbIb, .., REG0),
+        new(OrEbIb, .., REG1),
+        new(AdcEbIb, .., REG2),
+        new(SbbEbIb, .., REG3),
+        new(AndEbIb, .., REG4),
+        new(SubEbIb, .., REG5),
+        new(XorEbIb, .., REG6),
+        new(CmpEbIb, .., REG7),
     };
 
     public static readonly OpcodeMapEntry[] Opcode81 =
     {
         // "group 1" Ev, Iz
-        new(AddEwIw, .., REG0) { Immediate = ImmSize.Word },
-        new(OrEwIw, .., REG1) { Immediate = ImmSize.Word },
-        new(AdcEwIw, .., REG2) { Immediate = ImmSize.Word },
-        new(SbbEwIw, .., REG3) { Immediate = ImmSize.Word },
-        new(AndEwIw, .., REG4) { Immediate = ImmSize.Word },
-        new(SubEwIw, .., REG5) { Immediate = ImmSize.Word },
-        new(XorEwIw, .., REG6) { Immediate = ImmSize.Word },
-        new(CmpEwIw, .., REG7) { Immediate = ImmSize.Word },
+        new(AddEwIw, .., REG0),
+        new(OrEwIw, .., REG1),
+        new(AdcEwIw, .., REG2),
+        new(SbbEwIw, .., REG3),
+        new(AndEwIw, .., REG4),
+        new(SubEwIw, .., REG5),
+        new(XorEwIw, .., REG6),
+        new(CmpEwIw, .., REG7),
     };
 
     // TODO: 8086 manual/datasheet suggests OR/AND/XOR not allowed in [82]
@@ -569,14 +569,14 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] Opcode83 =
     {
         // "group 1" Ev, Ib
-        new(AddEwIb, .., REG0) { Immediate = ImmSize.Byte },
-        new(OrEwIb, .., REG1) { Immediate = ImmSize.Byte },
-        new(AdcEwIb, .., REG2) { Immediate = ImmSize.Byte },
-        new(SbbEwIb, .., REG3) { Immediate = ImmSize.Byte },
-        new(AndEwIb, .., REG4) { Immediate = ImmSize.Byte },
-        new(SubEwIb, .., REG5) { Immediate = ImmSize.Byte },
-        new(XorEwIb, .., REG6) { Immediate = ImmSize.Byte },
-        new(CmpEwIb, .., REG7) { Immediate = ImmSize.Byte },
+        new(AddEwIb, .., REG0),
+        new(OrEwIb, .., REG1),
+        new(AdcEwIb, .., REG2),
+        new(SbbEwIb, .., REG3),
+        new(AndEwIb, .., REG4),
+        new(SubEwIb, .., REG5),
+        new(XorEwIb, .., REG6),
+        new(CmpEwIb, .., REG7),
     };
 
     public static readonly OpcodeMapEntry[] Opcode84 =
@@ -678,7 +678,7 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] Opcode9A =
     {
         // CALL Ap
-        new(CallApww, ..) { Immediate = ImmSize.PointerWordWord },
+        new(CallApww, ..),
     };
 
     public static readonly OpcodeMapEntry[] Opcode9B =
@@ -714,25 +714,25 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] OpcodeA0 =
     {
         // MOV AL, Ob
-        new(MovALOb, ..) { Immediate = ImmSize.Byte },
+        new(MovALOb, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeA1 =
     {
         // MOV rAX, Ov
-        new(MovAXOw, ..) { Immediate = ImmSize.Word },
+        new(MovAXOw, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeA2 =
     {
         // MOV Ob, AL
-        new(MovObAL, ..) { Immediate = ImmSize.Byte },
+        new(MovObAL, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeA3 =
     {
         // MOV Ov, rAX
-        new(MovOwAX, ..) { Immediate = ImmSize.Word },
+        new(MovOwAX, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeA4 =
@@ -762,13 +762,13 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] OpcodeA8 =
     {
         // TEST AL, Ib
-        new(TestALIb, ..) { Immediate = ImmSize.Byte },
+        new(TestALIb, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeA9 =
     {
         // TEST rAX, Iz
-        new(TestAXIw, ..) { Immediate = ImmSize.Word },
+        new(TestAXIw, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeAA =
@@ -810,19 +810,19 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] OpcodeB0xB7 =
     {
         // MOV Zb, Ib
-        new(MovZbIb, ..) { Immediate = ImmSize.Byte },
+        new(MovZbIb, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeB8xBF =
     {
         // MOV Zv, Iv
-        new(MovZwIw, ..) { Immediate = ImmSize.Word },
+        new(MovZwIw, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeC0 =
     {
         // [8086] RET Iw
-        new(RetIw, ..0) { Immediate = ImmSize.Word },
+        new(RetIw, ..0),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeC1 =
@@ -834,7 +834,7 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] OpcodeC2 =
     {
         // RET Iw
-        new(RetIw, ..) { Immediate = ImmSize.Word },
+        new(RetIw, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeC3 =
@@ -858,19 +858,19 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] OpcodeC6 =
     {
         // "group 11" Eb, Ib
-        new(MovEbIb, ..0) { Immediate = ImmSize.Byte }, // [8086] matches all?; TODO: verify
+        new(MovEbIb, ..0), // [8086] matches all?; TODO: verify
     };
 
     public static readonly OpcodeMapEntry[] OpcodeC7 =
     {
         // "group 11" Ev, Iz
-        new(MovEwIw, ..0) { Immediate = ImmSize.Word }, // [8086] matches all?; TODO: verify
+        new(MovEwIw, ..0), // [8086] matches all?; TODO: verify
     };
 
     public static readonly OpcodeMapEntry[] OpcodeC8 =
     {
         // [8086] RETF Iw
-        new(RetfIw, ..0) { Immediate = ImmSize.Word },
+        new(RetfIw, ..0),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeC9 =
@@ -882,7 +882,7 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] OpcodeCA =
     {
         // RETF Iw
-        new(RetfIw, ..) { Immediate = ImmSize.Word },
+        new(RetfIw, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeCB =
@@ -900,7 +900,7 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] OpcodeCD =
     {
         // INT Ib
-        new(IntIb, ..) { Immediate = ImmSize.Byte },
+        new(IntIb, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeCE =
@@ -970,13 +970,13 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] OpcodeD4 =
     {
         // AAM Ib
-        new(AamIb, ..) { Immediate = ImmSize.Byte },
+        new(AamIb, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeD5 =
     {
         // AAD Ib
-        new(AadIb, ..) { Immediate = ImmSize.Byte },
+        new(AadIb, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeD6 =
@@ -1013,37 +1013,37 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] OpcodeE0 =
     {
         // LOOPNE Jb
-        new(LoopneJb, ..) { Immediate = ImmSize.Byte },
+        new(LoopneJb, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeE1 =
     {
         // LOOPE Jb
-        new(LoopeJb, ..) { Immediate = ImmSize.Byte },
+        new(LoopeJb, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeE2 =
     {
         // LOOP Jb
-        new(LoopJb, ..) { Immediate = ImmSize.Byte },
+        new(LoopJb, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeE3 =
     {
         // JrCXZ Jb
-        new(JcxzJb, ..) { Immediate = ImmSize.Byte },
+        new(JcxzJb, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeE4 =
     {
         // IN AL, Ib
-        new(InALIb, ..) { Immediate = ImmSize.Byte },
+        new(InALIb, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeE5 =
     {
         // IN eAX, Ib
-        new(InAXIb, ..) { Immediate = ImmSize.Byte },
+        new(InAXIb, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeE6 =
@@ -1061,25 +1061,25 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] OpcodeE8 =
     {
         // CALL Jz
-        new(CallJw, ..) { Immediate = ImmSize.Word },
+        new(CallJw, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeE9 =
     {
         // JMP Jz
-        new(JmpJw, ..) { Immediate = ImmSize.Word },
+        new(JmpJw, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeEA =
     {
         // JMP Ap
-        new(JmpApww, ..) { Immediate = ImmSize.PointerWordWord },
+        new(JmpApww, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeEB =
     {
         // JMP Jb
-        new(JmpJb) { Immediate = ImmSize.Byte },
+        new(JmpJb),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeEC =
@@ -1130,8 +1130,8 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] OpcodeF6 =
     {
         // "group 3" Eb
-        new(TestEbIb, .., REG0) { Immediate = ImmSize.Byte },
-        new(TestEbIb, .., REG1) { Immediate = ImmSize.Byte }, // undocumented; copy of /0
+        new(TestEbIb, .., REG0),
+        new(TestEbIb, .., REG1), // undocumented; copy of /0
         new(NotEb, .., REG2),
         new(NegEb, .., REG3),
         new(MulEb, .., REG4),
@@ -1143,8 +1143,8 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] OpcodeF7 =
     {
         // "group 3" Ev
-        new(TestEwIw, .., REG0) { Immediate = ImmSize.Byte },
-        new(TestEwIw, .., REG1) { Immediate = ImmSize.Byte }, // undocumented; copy of /0
+        new(TestEwIw, .., REG0),
+        new(TestEwIw, .., REG1), // undocumented; copy of /0
         new(NotEw, .., REG2),
         new(NegEw, .., REG3),
         new(MulEw, .., REG4),

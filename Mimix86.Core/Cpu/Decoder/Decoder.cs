@@ -121,10 +121,11 @@ public static class Decoder
         DecodeFlagsBuilder builder = new(); // no decode flags... yet
 
         OpcodeMapEntry entry = FindOpcode(core, builder, opmapEntries);
-        Debug.Assert(entry.Immediate is ImmSize.None);
+        Opcode opcode = entry.Opcode;
+        Debug.Assert(opcode.Immediate is ImmSize.None);
 
         bytesConsumed = 0; // nothing consumed; op byte consumed in `Decode`
-        return entry.Opcode;
+        return opcode;
     }
 
 
@@ -155,10 +156,11 @@ public static class Decoder
         DecodeFlagsBuilder builder = new(); // no decode flags... yet
 
         OpcodeMapEntry entry = FindOpcode(core, builder, opmapEntries);
+        Opcode opcode = entry.Opcode;
 
         // ReSharper disable once ConvertIfStatementToReturnStatement
-        if (ReadImmediate(byteStream, entry, instr, out bytesConsumed))
-            return entry.Opcode;
+        if (ReadImmediate(byteStream, opcode, instr, out bytesConsumed))
+            return opcode;
 
         return Opcode.Error;
     }
@@ -199,21 +201,22 @@ public static class Decoder
         builder.ModRM(b);
 
         OpcodeMapEntry entry = FindOpcode(core, builder, opmapEntries);
+        Opcode opcode = entry.Opcode;
 
-        if (entry.Immediate is not ImmSize.None)
+        if (opcode.Immediate is ImmSize.None)
         {
-            if (ReadImmediate(byteStream[1..], entry, instr, out int immBytes))
-            {
-                bytesConsumed = immBytes + 1;
-                return entry.Opcode;
-            }
-
             bytesConsumed = 1;
-            return Opcode.Error;
+            return opcode;
+        }
+
+        if (ReadImmediate(byteStream[1..], opcode, instr, out int immBytes))
+        {
+            bytesConsumed = immBytes + 1;
+            return opcode;
         }
 
         bytesConsumed = 1;
-        return entry.Opcode;
+        return Opcode.Error;
     }
 
 
@@ -271,11 +274,11 @@ public static class Decoder
         return OpcodeMap.OpcodeError[0];
     }
 
-    private static bool ReadImmediate(Span<byte> byteStream, OpcodeMapEntry entry, Instruction instr, out int bytesRead)
+    private static bool ReadImmediate(Span<byte> byteStream, Opcode opcode, Instruction instr, out int bytesRead)
     {
         bytesRead = 0;
 
-        ImmSize size = entry.Immediate;
+        ImmSize size = opcode.Immediate;
         if (size is ImmSize.None)
             return true;
 
