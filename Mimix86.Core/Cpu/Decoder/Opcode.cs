@@ -89,6 +89,11 @@ public partial class Opcode : IEquatable<Opcode>
     /// </summary>
     public ExecutionHandler Handler { get; }
 
+    /// <summary>
+    /// Get the flags to direct usage of this opcode post-decoding.
+    /// </summary>
+    public OpcodeFlags Flags { get; init; }
+
 
     /// <inheritdoc />
     public bool Equals(Opcode? other)

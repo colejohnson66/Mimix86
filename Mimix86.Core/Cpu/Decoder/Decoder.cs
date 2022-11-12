@@ -129,7 +129,7 @@ public static class Decoder
 
 
     /// <summary>
-    /// Decode an instruction with an immediate, and not ModR/M byte.
+    /// Decode an instruction with an immediate, and no ModR/M byte.
     /// </summary>
     /// <param name="core">The CPU core that is decoding this instruction.</param>
     /// <param name="byteStream">The input byte stream beginning after <paramref name="opByte" />.</param>

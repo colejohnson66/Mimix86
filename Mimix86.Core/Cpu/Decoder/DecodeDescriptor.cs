@@ -39,7 +39,7 @@ namespace Mimix86.Core.Cpu.Decoder;
 public class DecodeDescriptor
 {
     /// <summary>
-    /// Contains the actual mappings.
+    /// Get the actual mappings.
     /// </summary>
     // ReSharper disable once RedundantExplicitArraySize - ensure it's accurate
     public Entry[] Entries { get; } = new Entry[256]
@@ -303,7 +303,7 @@ public class DecodeDescriptor
     };
 
     /// <summary>
-    /// Construct a new <see cref="DecodeDescriptor" /> object with a given CPU level.
+    /// Construct a new <see cref="Mimix86.Core.Cpu.Decoder.Decoder" /> object with a given CPU level.
     /// </summary>
     /// <param name="cpuLevel">The CPU level for this set of descriptors.</param>
     public DecodeDescriptor(int cpuLevel)
@@ -315,7 +315,7 @@ public class DecodeDescriptor
 
     private void InitDecodeCalls(int cpuLevel)
     {
-        // ReSharper disable once RedundantExplicitArraySize
+        // ReSharper disable once RedundantExplicitArraySize - ensure it's accurate
         OpcodeMapEntry[][] _6xBlock = new OpcodeMapEntry[16][]
         {
             Opcode60, Opcode61, Opcode62, Opcode63,
