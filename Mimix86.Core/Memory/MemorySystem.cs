@@ -29,6 +29,7 @@
 using Mimix86.Core.Cpu;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 #pragma warning disable CS1591
@@ -41,42 +42,10 @@ namespace Mimix86.Core.Memory;
 [PublicAPI]
 public static class MemorySystem
 {
-    #region Delegates
-
-    /// <summary>
-    /// A delegate to invoke when reading from a memory chunk.
-    /// </summary>
-    /// <param name="address">The address marking the beginning of the memory being read from.</param>
-    /// <param name="buffer">The buffer to place the read bytes.</param>
-    /// <returns><c>true</c> if the data was read successfully; <c>false</c> otherwise.</returns>
-    public delegate bool ReadDelegate(PhysicalAddress address, Span<byte> buffer);
-
-    /// <summary>
-    /// A delegate to invoke when writing to a memory chunk.
-    /// </summary>
-    /// <param name="address">The address marking the beginning of the memory being written to.</param>
-    /// <param name="data">The bytes to write.</param>
-    /// <returns><c>true</c> if the data was written successfully; <c>false</c> otherwise.</returns>
-    public delegate bool WriteDelegate(PhysicalAddress address, ReadOnlySpan<byte> data);
-
-    /// <summary>
-    /// A delegate to invoke when performing DMA access to a memory chunk.
-    /// </summary>
-    /// <param name="address">The address marking the beginning of the memory being read/written to.</param>
-    /// <param name="span">
-    /// If the DMA request was successful, a <see cref="Span{T}">Span&lt;byte&gt;</see> to the backing memory array,
-    ///   beginning at <paramref name="address" />.
-    /// </param>
-    /// <returns><c>true</c> if the DMA request was successful; <c>false</c> otherwise.</returns>
-    public delegate bool DmaDelegate(PhysicalAddress address, out Span<byte> span);
-
-    #endregion
-
-
     private const int BITS_PER_CHUNK_INDEX = 20; // 1M
     // each array element is a list of chunk handlers for the whole 1M
-    private static readonly List<ChunkHandler>?[] Handlers =
-        new List<ChunkHandler>?[Config.PHYSICAL_ADDRESS_BITS - BITS_PER_CHUNK_INDEX + 1];
+    private static readonly List<MemoryChunk>?[] Handlers =
+        new List<MemoryChunk>?[Config.PHYSICAL_ADDRESS_BITS - BITS_PER_CHUNK_INDEX + 1];
 
 
     // future: 80386+
@@ -85,63 +54,40 @@ public static class MemorySystem
     // private static bool _smRamRestricted;
 
 
-    private static PhysicalAddress _biosRomAddress;
-
-
     #region Handlers
 
     /// <summary>
     /// Register a memory chunk handler for a specified range of addresses with specified read and optional write and
     ///   DMA delegates.
     /// </summary>
-    /// <param name="start">The starting address this chunk will handle.</param>
-    /// <param name="end">The (inclusive) ending address this chunk will handle.</param>
-    /// <param name="read">The delegate to invoke when reading from this chunk.</param>
-    /// <param name="write">
-    /// The delegate to invoke when writing to this chunk, or <c>null</c> if this chunk is read-only.
-    /// </param>
-    /// <param name="dma">
-    /// The delegate to invoke for DMA access to this chunk, or <c>null</c> if this chunk does not support DMA.
-    /// </param>
-    /// <exception cref="ArgumentException">
-    /// If <paramref name="end" /> is less than <paramref name="start" />.
-    /// </exception>
-    /// <exception cref="ArgumentException">
-    /// If <paramref name="end" /> is greater than the maximum supported physical address.
-    /// </exception>
+    /// <param name="handler">The handler object to register.</param>
     /// <exception cref="InvalidOperationException">
     /// If an existing handler already claimed ownership over the start/end rage.
     /// </exception>
-    public static void RegisterMemoryHandler(PhysicalAddress start, PhysicalAddress end, ReadDelegate read, WriteDelegate? write, DmaDelegate? dma)
+    public static void RegisterMemoryHandler(MemoryChunk handler)
     {
-        if (start > end)
-            throw new ArgumentException("Starting address of a handler must be less than or equal to the ending address.");
-        if (end > Config.MAXIMUM_PHYSICAL_ADDRESS)
-            throw new ArgumentException("End address must be lower than the maximum supported memory.");
-
-        ulong firstIndex = start >> BITS_PER_CHUNK_INDEX;
-        ulong lastIndex = end >> BITS_PER_CHUNK_INDEX;
+        ulong firstIndex = handler.StartAddress.Value >> BITS_PER_CHUNK_INDEX;
+        ulong lastIndex = handler.EndAddress.Value >> BITS_PER_CHUNK_INDEX;
 
         // check for overlapping ranges
         for (ulong i = firstIndex; i <= lastIndex; i++)
         {
-            List<ChunkHandler>? handlers = Handlers[i];
+            List<MemoryChunk>? handlers = Handlers[i];
             if (handlers is null)
                 continue;
 
-            if (handlers.Any(chunk => start <= chunk.End && end >= chunk.Start))
-                throw new InvalidOperationException("Overlapping chunk.");
+            if (handlers.Any(chunk => handler.StartAddress <= chunk.EndAddress && handler.EndAddress >= chunk.StartAddress))
+                throw new InvalidOperationException("Cannot register a chunk at this address; Another has already claimed it.");
         }
 
         // register it
-        ChunkHandler newHandler = new(start, end, read, write, dma);
         for (ulong i = firstIndex; i <= lastIndex; i++)
-            GetOrCreateChunk(i).Add(newHandler);
+            GetOrCreateChunk(i).Add(handler);
     }
 
-    private static List<ChunkHandler> GetOrCreateChunk(ulong index)
+    private static List<MemoryChunk> GetOrCreateChunk(ulong index)
     {
-        List<ChunkHandler>? list = Handlers[index];
+        List<MemoryChunk>? list = Handlers[index];
 
         if (list is not null)
             return list;
@@ -161,13 +107,13 @@ public static class MemorySystem
         if (address >> BITS_PER_CHUNK_INDEX != (address + (ulong)data.Length - 1) >> BITS_PER_CHUNK_INDEX)
             throw new ArgumentException("Crossing page.");
 
-        PhysicalAddress a20Address = new(address & 0xF_FFFFul); // TODO: this is prob incorrect
-        // bool isBios = a20Address >= _biosRomAddress;
+        PhysicalAddress a20Address = new(address.Value & 0xF_FFFFul);                    // TODO: this is prob incorrect
+        PhysicalAddress a20AddressPlusData = new(a20Address.Value + (ulong)data.Length); // TODO: and this
 
         // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
-        foreach (ChunkHandler handler in GetOrCreateChunk(address))
+        foreach (MemoryChunk handler in GetOrCreateChunk(address))
         {
-            if (a20Address < handler.Start || a20Address + (ulong)data.Length > handler.End)
+            if (a20Address < handler.StartAddress || a20AddressPlusData > handler.EndAddress)
                 continue;
             if (handler.Read(address, data))
                 return;
@@ -180,18 +126,18 @@ public static class MemorySystem
     public static void Write(CpuCore core, PhysicalAddress address, ReadOnlySpan<byte> data)
     {
         if (address >> BITS_PER_CHUNK_INDEX != (address + (ulong)data.Length - 1) >> BITS_PER_CHUNK_INDEX)
-            throw new ArgumentException("Crossing page.");
+            throw new ArgumentException("Cannot write; Data would cross a page boundary.");
 
-        PhysicalAddress a20Address = new(address & 0xF_FFFFul); // TODO: this is prob incorrect
-        // bool isBios = a20Address >= _biosRomAddress;
+        PhysicalAddress a20Address = new(address.Value & 0xF_FFFFul);                    // TODO: this is prob incorrect
+        PhysicalAddress a20AddressPlusData = new(a20Address.Value + (ulong)data.Length); // TODO: and this
 
-        // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
-        foreach (ChunkHandler handler in GetOrCreateChunk(address))
+        // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
+        foreach (MemoryChunk handler in GetOrCreateChunk(address))
         {
-            if (a20Address < handler.Start || a20Address + (ulong)data.Length > handler.End)
+            if (a20Address < handler.StartAddress || a20AddressPlusData > handler.EndAddress)
                 continue;
-            if (handler.Write is null)
-                break;
+            if (!handler.CanWrite)
+                throw new NotSupportedException("Cannot write; Writing to this memory chunk is unsupported.");
             if (handler.Write(address, data))
                 return;
         }
@@ -202,10 +148,19 @@ public static class MemorySystem
 
     #endregion
 
-    private record ChunkHandler(
-        PhysicalAddress Start,
-        PhysicalAddress End,
-        ReadDelegate Read,
-        WriteDelegate? Write,
-        DmaDelegate? Dma);
+
+    public static void LoadRom(RomType type, Stream input, PhysicalAddress address)
+    {
+        ArgumentNullException.ThrowIfNull(input);
+        if (type is not RomType.Bios)
+            throw new ArgumentOutOfRangeException(nameof(type), type, "ROM type must be BIOS.");
+        if (!input.CanRead)
+            throw new ArgumentException("Must be able to read the BIOS ROM stream.", nameof(input));
+        if (!input.CanSeek)
+            throw new ArgumentException("Must be able to seek the BIOS ROM stream.", nameof(input));
+        if ((ulong)input.Length + address.Value != 0x10_0000)
+            throw new ArgumentException("BIOS ROM must end at 0xF'FFFF.", nameof(input));
+
+        RegisterMemoryHandler(new RomChunk(address, input));
+    }
 }

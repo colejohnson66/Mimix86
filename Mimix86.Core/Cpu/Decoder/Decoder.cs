@@ -30,7 +30,7 @@ public static class Decoder
             i++;
             if (i == byteStream.Length)
             {
-                core.RaiseException(new(CpuExceptionCode.PF, 0)); // TODO: fault code
+                core.RaiseException(new(CpuExceptionCode.PF, 0)); // TODO: fault code; how does 8086 handle it?
                 return null;
             }
             if (i is 16)
@@ -87,7 +87,8 @@ public static class Decoder
 
         instr.Opcode = entry.Handler(core, rest, opByte, instr, Optional<byte>.None, entry.OpcodeMapEntries, out int bytesRead);
 
-        // TODO: handle LOCK prefix; only allowed on select opcodes and destination must be memory
+        if (!instr.Opcode.Flags.HasFlag(OpcodeFlags.Lockable) && instr.LockPrefix)
+            throw new NotImplementedException(); // #UD on 80186+, but what about 8086?
 
         instr.RawInstruction = byteStream[..(i + bytesRead)].ToArray();
         return instr;
