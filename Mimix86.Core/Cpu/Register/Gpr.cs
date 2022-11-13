@@ -31,7 +31,6 @@ namespace Mimix86.Core.Cpu.Register;
 /// Represents a general purpose register.
 /// </summary>
 [PublicAPI]
-[SuppressMessage("ReSharper", "InheritdocConsiderUsage")]
 public class Gpr : Register16
 {
     /* ┌─────┬─────┬─────┬─────┬─────┬─────┐

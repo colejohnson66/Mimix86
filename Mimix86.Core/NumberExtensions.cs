@@ -28,6 +28,7 @@
  */
 
 using System;
+using System.Numerics;
 
 namespace Mimix86.Core;
 

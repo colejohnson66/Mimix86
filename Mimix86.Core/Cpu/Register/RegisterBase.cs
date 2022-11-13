@@ -28,6 +28,7 @@
  */
 
 using System;
+using System.Numerics;
 using System.Runtime.InteropServices;
 
 namespace Mimix86.Core.Cpu.Register;
@@ -112,7 +113,6 @@ public abstract class RegisterBase<T>
 /// Represents an arbitrary 8-bit register's base features.
 /// </summary>
 [PublicAPI]
-[SuppressMessage("ReSharper", "InheritdocConsiderUsage")]
 public class Register8 : RegisterBase<byte>
 { }
 
@@ -121,6 +121,5 @@ public class Register8 : RegisterBase<byte>
 /// Represents an arbitrary 16-bit register's base features.
 /// </summary>
 [PublicAPI]
-[SuppressMessage("ReSharper", "InheritdocConsiderUsage")]
 public class Register16 : RegisterBase<ushort>
 { }

@@ -34,7 +34,6 @@ namespace Mimix86.Core;
 /// Represents an error that occurs when a block of code that should have been unreachable was, in fact, reached.
 /// </summary>
 [Serializable]
-[SuppressMessage("ReSharper", "InheritdocConsiderUsage")]
 public sealed class UnreachableException : Exception
 {
     /// <summary>

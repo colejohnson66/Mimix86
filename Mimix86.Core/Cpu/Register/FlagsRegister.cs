@@ -32,7 +32,6 @@ namespace Mimix86.Core.Cpu.Register;
 /// </summary>
 [PublicAPI]
 [SuppressMessage("ReSharper", "InconsistentNaming")]
-[SuppressMessage("ReSharper", "InheritdocConsiderUsage")]
 public class FlagsRegister : Register16
 {
     /* ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┐
