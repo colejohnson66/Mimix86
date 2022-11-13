@@ -4,6 +4,6 @@ public static class Program
 {
     public static void Main()
     {
-        AllOpcodesGenerator.Run();
+        OpcodesGenerator.Run();
     }
 }

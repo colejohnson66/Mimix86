@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="AllOpcodes\*.m86" CopyToOutputDirectory="Always" />
+        <None Update="Opcodes\*.m86" CopyToOutputDirectory="Always" />
     </ItemGroup>
 
 </Project>
