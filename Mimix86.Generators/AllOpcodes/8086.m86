@@ -30,31 +30,51 @@
 #     - `111110` for [F7]
 #     - `011111` for [FE]
 #     - `111111` for [FF]
+#     - all other [F?] opcodes are probably handled by random logic
 #   - `bbb` is the ModR/M's "reg" field
 #   - `pp` is the microcode "phase" (the "PC")
 #
 #  - POP CS
-#    - `0000??111.00`, so all four segment registers match
+#    - `0000??111`, so all four segment registers match
 #  - Jcc Jb
-#    - `0011?????.00`, so [60-7F] match
+#    - `0011?????`, so [60-7F] match
 #  - RET
-#    - `01100?0?0.00`, so [C0] and [C2] match
+#    - `01100?0?0`, so [C0] and [C2] match
 #  - RET
-#    - `0110000?1.00`, so [C1] and [C3] match
+#    - `0110000?1`, so [C1] and [C3] match
 #  - RETF
-#    - `01100?0?0.00`, so [C8] and [CA] match
+#    - `01100?0?0`, so [C8] and [CA] match
 #  - RETF
-#    - `0110010?1.00`, so [C9] and [CB] match
+#    - `0110010?1`, so [C9] and [CB] match
 #  - TEST Eb Ib and TEST Ew Iw
-#    - `?1111000?.00`, so [F6 /0], [F6 /1], [F7 /0], and [F7 /1] match
+#    - `?1111000?`, so [F6 /0], [F6 /1], [F7 /0], and [F7 /1] match
+#  - CALL Ew
+#    - `?11111010`, so [FE /2] and [FF /2] match
+#  - CALL Mpww
+#    - `?11111011`, so [FE /3] and [FF /3] match
+#  - JMP Ew
+#    - `?11111100`, so [FE /4] and [FF /4] match
+#  - JMP Mpww
+#    - `?11111101`, so [FE /5] and [FF /5] match
 #  - PUSH Ew
-#    - `?1111111?.00`, so [FF /6] and [FF /7] match
-# TODO: need microcode proof
-#  - [8F /0] POP Ew
-#    - matches `010001111.00` with no apparent match on ModR/M's "reg" field??
+#    - `?1111111?`, so [FE /6], [FE /7], [FF /6], and [FF /7] match
+#
+#  - TODO: [8F /0] POP Ew
+#    - matches `010001111` with no match on "reg" field? (i.e. what if /r is not /0?)
+#  - TODO: [C4 /r] LES
+#    - matches `011000100` with no match on "mod" field? (i.e. what if mod is 3?)
+#  - TODO: [C5 /r] LDS
+#    - matches `011000101` with no match on "mod" field? (i.e. what if mod is 3?)
+#  - TODO: [C6 /0] MOV Eb Ib
+#  - TODO: [C7 /0] MOV Ew Iw
+#    - matches `01100011?` with no match on "reg" field? (i.e. what if /r is not /0?)
+#  - TODO: [FF /3] CALL Mpww
+#    - matches ?? with no match on "mod" field? (i.e. what if mod is 3?)
+#  - TODO: [FF /5] JMP Mpww
+#    - matches ?? with no match on "mod" field? (i.e. what if mod is 3?)
 
 
-# These bytes are missing opcodes as they are prefixes:
+# Prefixes:
 #   [26] is ES:
 #   [2E] is CS:
 #   [36] is SS:
@@ -63,21 +83,6 @@
 #   [F1] is LOCK: (on 8086)
 #   [F2] is REPNE:
 #   [F3] is REPE:
-
-
-# TODO: it is unknown what these byte sequences will decode to on the 8086:
-#   [C4 r/r] (LES)
-#   [C5 r/r] (LDS)
-#   [C6 /r] when /r is not /0 (from "group 11")
-#   [C7 /r] when /r is not /0 (from "group 11")
-#   [FE /r] when /r is not /0 or /1 (from "group 4")
-#   [FF r/3] (from "group 5") (`IND -> tmpc`; what is `IND`?)
-#   [FF r/5] (from "group 5") (`IND -> tmpc`; what is `IND`?)
-
-# TODO: 8086 manual/datasheet suggests the following (need to verify):
-#   [82 /1] and [83 /1] (OR)  are not allowed (only [80] and [81])  \   the 3
-#   [82 /4] and [83 /4] (AND) are not allowed (ditto)                |- bitwise
-#   [82 /6] and [83 /6] (XOR) are not allowed (ditto)               /   ALU ops
 
 
 # ALU instructions of [00-bbb-xxx] (the [00-3F] block)
@@ -179,6 +184,8 @@ POP    [Zw]  [58+r]   ..
 POP    [Ew]  [8F /r]  ..0  # see top of file
 PUSHF  []    [9C]     ..
 POPF   []    [9D]     ..
+PUSH   [Ew]  [FE /6]  ..0  # see top of file
+PUSH   [Ew]  [FE /7]  ..0  # see top of file
 PUSH   [Ew]  [FF /6]  ..
 PUSH   [Ew]  [FF /7]  ..0  # see top of file
 
@@ -278,6 +285,10 @@ JMP     [Jw]    [E9 iw]     ..
 JMP     [Apww]  [EA ipw]    ..
 JMP     [Jb]    [EB ib]     ..
 HLT     []      [F4]        ..
+CALL    [Ew]    [FE /2]     ..0  # see top of file
+CALL    [Mpww]  [FE m/3]    ..0  # see top of file
+JMP     [Ew]    [FE /4]     ..0  # see top of file
+JMP     [Mpww]  [FE m/5]    ..0  # see top of file
 CALL    [Ew]    [FF /2]     ..
 CALL    [Mpww]  [FF m/3]    ..
 JMP     [Ew]    [FF /4]     ..
@@ -323,7 +334,7 @@ TEST  [AX Iw]  [A9 iw]     ..
 SALC  []       [D6]        ..
 CMC   []       [F5]        ..
 TEST  [Eb Ib]  [F6 /0 ib]  ..
-TEST  [Eb Ib]  [F6 /1 ib]  .. # NOTE: undocumented copy of /0
+TEST  [Eb Ib]  [F6 /1 ib]  ..  # see top of file
 NOT   [Eb]     [F6 /2]     ..
 NEG   [Eb]     [F6 /3]     ..
 MUL   [Eb]     [F6 /4]     ..
@@ -331,7 +342,7 @@ IMUL  [Eb]     [F6 /5]     ..
 DIV   [Eb]     [F6 /6]     ..
 IDIV  [Eb]     [F6 /7]     ..
 TEST  [Ew Iw]  [F7 /0 iw]  ..
-TEST  [Ew Iw]  [F7 /1 iw]  .. # NOTE: undocumented copy of /0
+TEST  [Ew Iw]  [F7 /1 iw]  ..  # see top of file
 NOT   [Ew]     [F7 /2]     ..
 NEG   [Ew]     [F7 /3]     ..
 MUL   [Ew]     [F7 /4]     ..
