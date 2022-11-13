@@ -36,7 +36,7 @@ namespace Mimix86.Core.Cpu.Decoder;
 [SuppressMessage("ReSharper", "StringLiteralTypo")]
 public partial class Opcode
 {
-    public static Opcode Error { get; } = new("aaa", Execution.Error._);
+    public static Opcode Error { get; } = new("<error>", Execution.Error._);
 
 
     public static Opcode Aaa { get; } = new("aaa", Execution.Aaa._);
@@ -179,7 +179,7 @@ public partial class Opcode
     public static Opcode MovGwEw { get; } = new("mov", "Gw Ew", Mov.GwEw);
     public static Opcode MovObAL { get; } = new("mov", "Ob AL", Mov.ObAL) { Immediate = ImmSize.Byte };
     public static Opcode MovOwAX { get; } = new("mov", "Ow AX", Mov.OwAX) { Immediate = ImmSize.Word };
-    public static Opcode MovSwGw { get; } = new("mov", "Sw Gw", Mov.SwGw);
+    public static Opcode MovSwEw { get; } = new("mov", "Sw Ew", Mov.SwEw);
     public static Opcode MovZbIb { get; } = new("mov", "Zb Ib", Mov.ZbIb) { Immediate = ImmSize.Byte };
     public static Opcode MovZwIw { get; } = new("mov", "Zw Iw", Mov.ZwIw) { Immediate = ImmSize.Word };
 

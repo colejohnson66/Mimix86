@@ -16,12 +16,12 @@ public static class Decoder
     /// Decode a single instruction.
     /// </summary>
     /// <param name="core">The CPU core that is decoding this instruction.</param>
+    /// <param name="descriptors">The decode descriptors to use when decoding.</param>
     /// <param name="byteStream">The bytes from memory beginning at the current instruction.</param>
     /// <returns>The decoded instruction object.</returns>
-    public static Instruction? Decode(CpuCore core, Span<byte> byteStream)
+    public static Instruction? Decode(CpuCore core, DecodeDescriptor descriptors, Span<byte> byteStream)
     {
         Instruction instr = new(core.DefaultOperandSize);
-        DecodeDescriptor descriptor = new(core.CpuLevel);
 
         int i = -1;
         uint opByte;
@@ -81,7 +81,7 @@ public static class Decoder
     done:
         i++;
         Span<byte> rest = i < byteStream.Length ? byteStream[i..] : Span<byte>.Empty;
-        DecodeDescriptor.Entry entry = descriptor.Entries[opByte];
+        DecodeDescriptor.Entry entry = descriptors.Entries[opByte];
 
         Debug.Assert(entry.OpcodeMapEntries is not null); // all prefixes must be handled above
 

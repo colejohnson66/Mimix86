@@ -68,7 +68,7 @@ public static class Mov
     public static void OwAX(CpuCore cpu, Instruction instr) =>
         throw new NotImplementedException();
 
-    public static void SwGw(CpuCore cpu, Instruction instr) =>
+    public static void SwEw(CpuCore cpu, Instruction instr) =>
         throw new NotImplementedException();
 
     public static void ZbIb(CpuCore cpu, Instruction instr) =>

@@ -642,7 +642,7 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] Opcode8E =
     {
         // MOV Sw, Ew
-        new(MovSwGw, ..), // TODO: what happens on 8086 if Sw is >=4?
+        new(MovSwEw, ..), // TODO: what happens on 8086 if Sw is >=4?
     };
 
     public static readonly OpcodeMapEntry[] Opcode8F =
@@ -943,7 +943,7 @@ public static class OpcodeMap
 
     public static readonly OpcodeMapEntry[] OpcodeD2 =
     {
-        // "group 2" Ev, 1
+        // "group 2" Eb, CL
         new(RolEbCL, .., REG0),
         new(RorEbCL, .., REG1),
         new(RclEbCL, .., REG2),
@@ -982,7 +982,7 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] OpcodeD6 =
     {
         // SALC
-        new(Salc, ..), // TODO: not documented on 8086; was it present?
+        new(Salc, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeD7 =
