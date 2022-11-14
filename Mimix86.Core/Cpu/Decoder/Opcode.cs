@@ -26,6 +26,7 @@
  */
 
 using System;
+using System.Linq;
 
 namespace Mimix86.Core.Cpu.Decoder;
 
@@ -47,7 +48,7 @@ public partial class Opcode : IEquatable<Opcode>
         ArgumentNullException.ThrowIfNull(handler);
 
         Mnemonic = mnemonic;
-        Operands = null;
+        Operands = Array.Empty<string>();
         Handler = handler;
     }
 
@@ -62,12 +63,10 @@ public partial class Opcode : IEquatable<Opcode>
     /// <exception cref="ArgumentException">If <paramref name="operands" /> consists of only whitespace.</exception>
     /// <exception cref="ArgumentNullException">If <paramref name="mnemonic" /> is <c>null</c>.</exception>
     /// <exception cref="ArgumentNullException">If <paramref name="handler" /> is <c>null</c>.</exception>
-    public Opcode(string mnemonic, string? operands, ExecutionHandler handler)
+    public Opcode(string mnemonic, string[] operands, ExecutionHandler handler)
     {
         ArgumentNullException.ThrowIfNull(mnemonic);
         ArgumentNullException.ThrowIfNull(handler);
-        if (operands is not null && string.IsNullOrWhiteSpace(operands))
-            throw new ArgumentException("Operands list must not be nothing or whitespace.", nameof(operands));
 
         Mnemonic = mnemonic;
         Operands = operands;
@@ -80,9 +79,9 @@ public partial class Opcode : IEquatable<Opcode>
     public string Mnemonic { get; }
 
     /// <summary>
-    /// Get a space-separated list of the operands for this opcode, or <c>null</c> if there aren't any.
+    /// Get the operands for this opcode.
     /// </summary>
-    public string? Operands { get; }
+    public string[] Operands { get; }
 
     /// <summary>
     /// Get the handler used to execute this opcode.
@@ -121,5 +120,5 @@ public partial class Opcode : IEquatable<Opcode>
 
     /// <inheritdoc />
     public override string ToString() =>
-        Operands is null ? Mnemonic : $"{Mnemonic} {Operands}";
+        Operands.Any() ? $"{Mnemonic} {Operands}" : Mnemonic;
 }

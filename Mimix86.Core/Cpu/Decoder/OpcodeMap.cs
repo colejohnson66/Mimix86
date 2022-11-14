@@ -37,9 +37,9 @@ namespace Mimix86.Core.Cpu.Decoder;
 #pragma warning disable CS1591 // TODO: remove (XML doc)
 public static class OpcodeMap
 {
-    public static readonly OpcodeMapEntry[] OpcodeError =
+    public static readonly OpcodeMapEntry[] OpcodeUndefined =
     {
-        new(Error, ..),
+        new(Undefined, ..),
     };
 
     public static readonly OpcodeMapEntry[] Opcode00 =

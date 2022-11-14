@@ -163,7 +163,7 @@ public static class Decoder
         if (ReadImmediate(byteStream, opcode, instr, out bytesConsumed))
             return opcode;
 
-        return Opcode.Error;
+        return Opcode.Undefined;
     }
 
 
@@ -193,7 +193,7 @@ public static class Decoder
     {
         bytesConsumed = 0;
         if (byteStream.Length is 0)
-            return Opcode.Error;
+            return Opcode.Undefined;
 
         byte b = byteStream[0];
         instr.ModRM = new(b);
@@ -217,7 +217,7 @@ public static class Decoder
         }
 
         bytesConsumed = 1;
-        return Opcode.Error;
+        return Opcode.Undefined;
     }
 
 
@@ -247,7 +247,7 @@ public static class Decoder
         out int bytesConsumed)
     {
         bytesConsumed = 0;
-        return Opcode.Error;
+        return Opcode.Undefined;
     }
 
     // future: MOV control
@@ -272,7 +272,7 @@ public static class Decoder
                 return entry;
         }
 
-        return OpcodeMap.OpcodeError[0];
+        return OpcodeMap.OpcodeUndefined[0];
     }
 
     private static bool ReadImmediate(Span<byte> byteStream, Opcode opcode, Instruction instr, out int bytesRead)
