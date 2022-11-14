@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   Program.cs
+ * File:   ModRMMod.cs
  * Author: Cole Tobin
  * =============================================================================
  * Purpose:
@@ -25,14 +25,10 @@
  * =============================================================================
  */
 
-using Mimix86.Generators.Opcodes;
+namespace Mimix86.Generators.Opcodes.OpEncoding;
 
-namespace Mimix86.Generators;
-
-public static class Program
+public enum ModRMMod
 {
-    public static void Main()
-    {
-        OpcodesGenerator.Run();
-    }
+    Memory,
+    Register,
 }

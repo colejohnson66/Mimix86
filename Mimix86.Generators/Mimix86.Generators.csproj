@@ -8,11 +8,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DslLib\DslLib.csproj" />
+        <ProjectReference Include="..\DslLib\DslLib.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="Opcodes\*.m86" CopyToOutputDirectory="Always" />
+        <None Update="Data\Opcodes\*.*" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Data" />
     </ItemGroup>
 
 </Project>

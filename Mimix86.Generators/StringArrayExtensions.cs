@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   Program.cs
+ * File:   StringArrayExtensions.cs
  * Author: Cole Tobin
  * =============================================================================
  * Purpose:
@@ -25,14 +25,25 @@
  * =============================================================================
  */
 
-using Mimix86.Generators.Opcodes;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Mimix86.Generators;
 
-public static class Program
+public static class StringArrayExtensions
 {
-    public static void Main()
+    public static string Join(this IList<string> array, string joiner)
     {
-        OpcodesGenerator.Run();
+        if (array.Count is 0)
+            return "";
+
+        StringBuilder builder = new();
+        for (int i = 0; i < array.Count; i++)
+        {
+            builder.Append(array[i]);
+            if (i != array.Count - 1)
+                builder.Append(joiner);
+        }
+        return builder.ToString();
     }
 }

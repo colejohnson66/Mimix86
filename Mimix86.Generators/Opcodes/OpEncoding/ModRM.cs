@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   Program.cs
+ * File:   ModRM.cs
  * Author: Cole Tobin
  * =============================================================================
  * Purpose:
@@ -25,14 +25,15 @@
  * =============================================================================
  */
 
-using Mimix86.Generators.Opcodes;
+using DotNext;
 
-namespace Mimix86.Generators;
+namespace Mimix86.Generators.Opcodes.OpEncoding;
 
-public static class Program
+public record ModRM(
+    Optional<ModRMMod> Mod,
+    Optional<byte> Reg,
+    Optional<byte> RM)
 {
-    public static void Main()
-    {
-        OpcodesGenerator.Run();
-    }
+    public bool HasRequiredFields =>
+        Mod.HasValue || Reg.HasValue || RM.HasValue;
 }
