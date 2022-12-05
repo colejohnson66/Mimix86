@@ -52,7 +52,7 @@ public class Gpr : Register16
      *   writing to the extended ('Erx') portion of a GPR clears the upper 32 bits.
      * Basically, all 32-bit register writes are zero extended into 64-bit writes.
      *
-     * For an unknown reason, AMD decided that 16- and 8-bit writes, however, don't clear the upper 32 bits.
+     * For compatibility, AMD decided that 16- and 8-bit writes, however, don't clear the upper 32 bits.
      */
 
     /// <summary>

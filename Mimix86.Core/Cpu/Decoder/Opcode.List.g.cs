@@ -338,6 +338,9 @@ public partial class Opcode
     /// <summary>The <c>SHR Eb, 1</c> opcode.</summary>
     public static Opcode ShrEb1 { get; } = new("shr", new[] { "Eb", "1" }, Execution.Shr.Eb1);
 
+    /// <summary>The <c>SETMO Eb, 1</c> opcode.</summary>
+    public static Opcode SetmoEb1 { get; } = new("setmo", new[] { "Eb", "1" }, Execution.Setmo.Eb1);
+
     /// <summary>The <c>SAR Eb, 1</c> opcode.</summary>
     public static Opcode SarEb1 { get; } = new("sar", new[] { "Eb", "1" }, Execution.Sar.Eb1);
 
@@ -358,6 +361,9 @@ public partial class Opcode
 
     /// <summary>The <c>SHR Ew, 1</c> opcode.</summary>
     public static Opcode ShrEw1 { get; } = new("shr", new[] { "Ew", "1" }, Execution.Shr.Ew1);
+
+    /// <summary>The <c>SETMO Ew, 1</c> opcode.</summary>
+    public static Opcode SetmoEw1 { get; } = new("setmo", new[] { "Ew", "1" }, Execution.Setmo.Ew1);
 
     /// <summary>The <c>SAR Ew, 1</c> opcode.</summary>
     public static Opcode SarEw1 { get; } = new("sar", new[] { "Ew", "1" }, Execution.Sar.Ew1);
@@ -380,6 +386,9 @@ public partial class Opcode
     /// <summary>The <c>SHR Eb, CL</c> opcode.</summary>
     public static Opcode ShrEbCL { get; } = new("shr", new[] { "Eb", "CL" }, Execution.Shr.EbCL);
 
+    /// <summary>The <c>SETMO Eb, CL</c> opcode.</summary>
+    public static Opcode SetmoEbCL { get; } = new("setmo", new[] { "Eb", "CL" }, Execution.Setmo.EbCL);
+
     /// <summary>The <c>SAR Eb, CL</c> opcode.</summary>
     public static Opcode SarEbCL { get; } = new("sar", new[] { "Eb", "CL" }, Execution.Sar.EbCL);
 
@@ -400,6 +409,9 @@ public partial class Opcode
 
     /// <summary>The <c>SHR Ew, CL</c> opcode.</summary>
     public static Opcode ShrEwCL { get; } = new("shr", new[] { "Ew", "CL" }, Execution.Shr.EwCL);
+
+    /// <summary>The <c>SETMO Ew, CL</c> opcode.</summary>
+    public static Opcode SetmoEwCL { get; } = new("setmo", new[] { "Ew", "CL" }, Execution.Setmo.EwCL);
 
     /// <summary>The <c>SAR Ew, CL</c> opcode.</summary>
     public static Opcode SarEwCL { get; } = new("sar", new[] { "Ew", "CL" }, Execution.Sar.EwCL);
