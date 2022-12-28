@@ -25,6 +25,8 @@
  * =============================================================================
  */
 
+using System.Diagnostics;
+
 namespace Mimix86.Core.Cpu.Decoder;
 
 /// <summary>
