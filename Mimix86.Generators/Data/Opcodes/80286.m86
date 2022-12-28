@@ -1,0 +1,51 @@
+﻿# =============================================================================
+# File:   80286.m86
+# Author: Cole Tobin
+# =============================================================================
+# Purpose:
+#
+# Contains the opcodes known to the 80286 or newer (i.e. ones existing when the
+#   CPU level is equal to two).
+# =============================================================================
+# Copyright (c) 2022 Cole Tobin
+#
+# This file is part of Mimix86.
+#
+# Mimix86 is free software: you can redistribute it and/or modify it under the
+#   terms of the GNU General Public License as published by the Free Software
+#   Foundation, either version 3 of the License, or (at your option) any later
+#   version.
+#
+# Mimix86 is distributed in the hope that it will be useful, but WITHOUT ANY
+#   WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+#   FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+#   details.
+#
+# You should have received a copy of the GNU General Public License along with
+#   Mimix86. If not, see <http://www.gnu.org/licenses/>.
+# =============================================================================
+
+
+# The major nodes are in this order:
+#  - mnemonic (used with operands to name the opcode)
+#  - operands
+#  - encoding
+#  - required CPU level
+#  - flags (if any)
+
+# Known flags:
+#  -  lock: This opcode is lockable if, and only if, the destination operand is
+#            memory (i.e., the ModR/M's "mod" bits indicate memory form)
+
+
+# Misc instructions
+# TODO: validate that this is it
+ARPL  [Ew Gw]  [63 /r]     2..
+UD2   []       [0F 0B]     2..
+UD1   []       [0F B9 /r]  2..
+UD0   []       [0F FF /r]  2..  # TODO: does this have a ModR/M on 286? Intel manual says some processors don't use a ModR/M
+
+
+# Debug instructions
+SAVEALL286  []  [0F 04]  2..2
+LOADALL286  []  [0F 05]  2..2

@@ -4,8 +4,8 @@
 # =============================================================================
 # Purpose:
 #
-# Contains the opcodes known the the 8086 (i.e. ones existing when the CPU level
-#   is equal to zero).
+# Contains the opcodes known to the 8086 or newer (i.e. ones existing when the
+#   CPU level is equal to zero).
 # =============================================================================
 # Copyright (c) 2022 Cole Tobin
 #
