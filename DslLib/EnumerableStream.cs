@@ -25,7 +25,6 @@
  * =============================================================================
  */
 
-using DotNext;
 using System.Collections.Generic;
 using System.IO;
 
@@ -34,32 +33,32 @@ namespace DslLib;
 internal class EnumerableStream<T>
 {
     private readonly IEnumerator<T> _input;
-    private Optional<T> _peek = Optional<T>.None;
+    private T? _peek = default;
 
     public EnumerableStream(IEnumerable<T> enumerable)
     {
         _input = enumerable.GetEnumerator();
     }
 
-    public Optional<T> Peek()
+    public T? Peek()
     {
-        if (_peek.HasValue)
+        if (_peek is not null)
             return _peek;
 
         if (!_input.MoveNext())
-            return Optional<T>.None;
+            return default;
 
         T value = _input.Current;
-        _peek = new(value);
+        _peek = value;
         return _peek;
     }
 
     public T Next()
     {
-        if (_peek.HasValue)
+        if (_peek is not null)
         {
-            T value = _peek.Value;
-            _peek = Optional<T>.None;
+            T value = _peek;
+            _peek = default;
             return value;
         }
 
