@@ -1,4 +1,5 @@
 ﻿using DotNext;
+using Mimix86.Core.Cpu.Execution;
 using System;
 using System.Buffers.Binary;
 using System.Diagnostics;
@@ -109,7 +110,7 @@ public static class Decoder
     /// The opcode map entries for <paramref name="opByte" />, or <c>null</c> if there aren't any.
     /// </param>
     /// <param name="bytesConsumed">The number of bytes consumed by this function (always one).</param>
-    /// <returns>The decoded opcode, or <see cref="Opcode.Error" /> if one doesn't exist.</returns>
+    /// <returns>The decoded opcode, or <see cref="Error" /> if one doesn't exist.</returns>
     public static Opcode DecodeSimple(
         CpuCore core,
         Span<byte> byteStream,
@@ -144,7 +145,7 @@ public static class Decoder
     /// The opcode map entries for <paramref name="opByte" />, or <c>null</c> if there aren't any.
     /// </param>
     /// <param name="bytesConsumed">The number of bytes consumed by this function.</param>
-    /// <returns>The decoded opcode, or <see cref="Opcode.Error" /> if one doesn't exist.</returns>
+    /// <returns>The decoded opcode, or <see cref="Error" /> if one doesn't exist.</returns>
     public static Opcode DecodeImmediate(
         CpuCore core,
         Span<byte> byteStream,
@@ -181,7 +182,7 @@ public static class Decoder
     /// The opcode map entries for <paramref name="opByte" />, or <c>null</c> if there aren't any.
     /// </param>
     /// <param name="bytesConsumed">The number of bytes consumed by this function.</param>
-    /// <returns>The decoded opcode, or <see cref="Opcode.Error" /> if one doesn't exist.</returns>
+    /// <returns>The decoded opcode, or <see cref=".Error /> if one doesn't exist.</returns>
     public static Opcode DecodeModRM(
         CpuCore core,
         Span<byte> byteStream,
@@ -236,7 +237,7 @@ public static class Decoder
     /// The opcode map entries for <paramref name="opByte" />, or <c>null</c> if there aren't any.
     /// </param>
     /// <param name="bytesConsumed">The number of bytes consumed by this function (always zero).</param>
-    /// <returns><see cref="Opcode.Error" />, regardless of the parameters.</returns>
+    /// <returns><see cref="Error" />, regardless of the parameters.</returns>
     public static Opcode DecodeUD(
         CpuCore core,
         Span<byte> byteStream,
