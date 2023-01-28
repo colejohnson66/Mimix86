@@ -7,7 +7,7 @@
 # Contains the opcodes known to the 80186 or newer (i.e. ones existing when the
 #   CPU level is equal to one).
 # =============================================================================
-# Copyright (c) 2022 Cole Tobin
+# Copyright (c) 2022-2023 Cole Tobin
 #
 # This file is part of Mimix86.
 #

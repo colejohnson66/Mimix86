@@ -6,7 +6,7 @@
  *
  * <TODO>
  * =============================================================================
- * Copyright (c) 2022 Cole Tobin
+ * Copyright (c) 2022-2023 Cole Tobin
  *
  * This file is part of Mimix86.
  *
@@ -33,8 +33,8 @@ internal static class StreamExtensions
 {
     public static byte[] ReadFully(this Stream s)
     {
-        using MemoryStream output = new();
-        s.CopyTo(output);
-        return output.ToArray();
+        byte[] output = new byte[s.Length];
+        s.ReadExactly(output);
+        return output;
     }
 }

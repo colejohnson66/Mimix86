@@ -6,7 +6,7 @@
  *
  * Contains the various CPU operating modes.
  * =============================================================================
- * Copyright (c) 2022 Cole Tobin
+ * Copyright (c) 2022-2023 Cole Tobin
  *
  * This file is part of Mimix86.
  *

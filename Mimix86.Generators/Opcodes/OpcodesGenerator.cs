@@ -8,7 +8,7 @@
  *   - `Opcode.List.g.cs` - all opcodes known to Mimix86
  *   - `OpcodeMap.cs`     - the map of bytes into opcodes (TODO)
  * =============================================================================
- * Copyright (c) 2022 Cole Tobin
+ * Copyright (c) 2022-2023 Cole Tobin
  *
  * This file is part of Mimix86.
  *
