@@ -74,13 +74,15 @@ public sealed class OpcodeEncoding
                     break;
 
                 case EncodingPart.Immediate imm:
-                    if (ImmediateB is not null)
-                        throw new InvalidDataException("Only two immediates are allowed.");
+                    if (Immediate is not null)
+                    {
+                        if (Opcode is not 0xC8 || Immediate is not ImmSize.Word || imm.Size is not ImmSize.Byte)
+                            throw new InvalidDataException("Multiple immediates are only allowed for ENTER.");
+                        Immediate = ImmSize.WordByte;
+                        break;
+                    }
 
-                    if (ImmediateA is null)
-                        ImmediateA = imm.Size;
-                    else
-                        ImmediateB = imm.Size;
+                    Immediate = imm.Size;
                     break;
 
                 default:
@@ -97,9 +99,7 @@ public sealed class OpcodeEncoding
 
     public EncodingPart.ModRM? ModRM { get; }
 
-    public ImmSize? ImmediateA { get; }
-
-    public ImmSize? ImmediateB { get; }
+    public ImmSize? Immediate { get; }
 
 
     // Sample output:

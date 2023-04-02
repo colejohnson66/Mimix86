@@ -32,5 +32,6 @@ public enum ImmSize
 {
     Byte,
     Word,
+    WordByte,
     PointerWordWord,
 }

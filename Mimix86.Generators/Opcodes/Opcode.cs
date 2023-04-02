@@ -135,9 +135,8 @@ public class Opcode : IEquatable<Opcode>
         List<string> extra = new();
         if (_lockable)
             extra.Add("Flags = OpcodeFlags.Lockable");
-        if (_encoding.ImmediateA is not null)
-            extra.Add($"Immediate = ImmSize.{_encoding.ImmediateA}");
-        // TODO: handle multiple immediates
+        if (_encoding.Immediate is not null)
+            extra.Add($"Immediate = ImmSize.{_encoding.Immediate}");
         if (extra.Any())
         {
             builder.Append(" { ");
