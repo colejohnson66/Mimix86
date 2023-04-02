@@ -6,7 +6,7 @@
  *
  * <TODO>
  * =============================================================================
- * Copyright (c) 2022-2023 Cole Tobin
+ * Copyright (c) 2023 Cole Tobin
  *
  * This file is part of Mimix86.
  *
@@ -25,7 +25,7 @@
  * =============================================================================
  */
 
-namespace Mimix86.Generators.Opcodes.OpEncoding;
+namespace Mimix86.Generators.Opcodes.Encoding;
 
 public enum ModRMMod
 {

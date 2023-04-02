@@ -26,7 +26,7 @@
  */
 
 using DslLib;
-using Mimix86.Generators.Opcodes.OpEncoding;
+using Mimix86.Generators.Opcodes.Encoding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,10 +61,10 @@ public class Opcode : IEquatable<Opcode>
         _operandsStr = _operands.Join("");
 
         _opmapFlags = null;
-        if (_encoding.ModRM?.HasRequiredFields is true)
+        if (_encoding.ModRM?.HasAnyRequiredFields is true)
         {
             List<string> flags = new();
-            ModRM modRM = _encoding.ModRM;
+            EncodingPart.ModRM modRM = _encoding.ModRM;
             if (modRM.Mod is not null)
                 flags.Add(modRM.Mod.Value is ModRMMod.Memory ? "MOD_MEM" : "MOD_REG");
             if (modRM.Reg is not null)
@@ -135,8 +135,9 @@ public class Opcode : IEquatable<Opcode>
         List<string> extra = new();
         if (_lockable)
             extra.Add("Flags = OpcodeFlags.Lockable");
-        if (_encoding.Immediate is not null)
-            extra.Add($"Immediate = {_encoding.Immediate}");
+        if (_encoding.ImmediateA is not null)
+            extra.Add($"Immediate = ImmSize.{_encoding.ImmediateA}");
+        // TODO: handle multiple immediates
         if (extra.Any())
         {
             builder.Append(" { ");

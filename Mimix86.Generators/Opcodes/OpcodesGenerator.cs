@@ -98,7 +98,7 @@ public static class OpcodesGenerator
             KnownOpcodes.Add(new(node));
 
         string outputPath = Path.Combine(FindMimix86Core(), "Cpu", "Decoder", "Opcode.List.g.cs");
-        using FileStream handle = File.OpenWrite(outputPath);
+        using FileStream handle = File.Open(outputPath, FileMode.Create, FileAccess.Write);
         using StreamWriter writer = new(handle);
 
         writer.Write(FILE_TEMPLATE_HEADER);

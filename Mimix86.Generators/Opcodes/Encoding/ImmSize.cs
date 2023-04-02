@@ -1,12 +1,12 @@
 ﻿/* =============================================================================
- * File:   ModRM.cs
+ * File:   ImmSize.cs
  * Author: Cole Tobin
  * =============================================================================
  * Purpose:
  *
  * <TODO>
  * =============================================================================
- * Copyright (c) 2022 Cole Tobin
+ * Copyright (c) 2023 Cole Tobin
  *
  * This file is part of Mimix86.
  *
@@ -25,13 +25,12 @@
  * =============================================================================
  */
 
-namespace Mimix86.Generators.Opcodes.OpEncoding;
+namespace Mimix86.Generators.Opcodes.Encoding;
 
-public record ModRM(
-    ModRMMod? Mod,
-    byte? Reg,
-    byte? RM)
+// these MUST be kept in sync with Mimix86.Core
+public enum ImmSize
 {
-    public bool HasRequiredFields =>
-        Mod.HasValue || Reg.HasValue || RM.HasValue;
+    Byte,
+    Word,
+    PointerWordWord,
 }
