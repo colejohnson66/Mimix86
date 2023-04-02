@@ -27,7 +27,6 @@
  * =============================================================================
  */
 
-using DotNext;
 using System;
 
 namespace Mimix86.Core.Cpu;
@@ -58,7 +57,7 @@ public class CpuException
             throw new ArgumentException($"Exception code, {code.ToString()}, requires a fault code.");
 
         Code = code;
-        FaultCode = code is CpuExceptionCode.DF or CpuExceptionCode.AC ? new(0) : Optional<ushort>.None;
+        FaultCode = code is CpuExceptionCode.DF or CpuExceptionCode.AC ? 0 : null;
     }
 
     /// <summary>
@@ -88,7 +87,7 @@ public class CpuException
             throw new ArgumentOutOfRangeException(nameof(faultCode), faultCode, "Alignment check exceptions must have a fault code of 0.");
 
         Code = code;
-        FaultCode = new(faultCode);
+        FaultCode = faultCode;
     }
 
 
@@ -99,8 +98,7 @@ public class CpuException
     public int Vector => (int)Code;
 
     /// <summary>
-    /// The fault code provided for user-code to debug the exception, or <see cref="Optional{T}.None" /> if there isn't
-    ///   one.
+    /// The fault code provided for user-code to debug the exception, or <c>null</c> if there isn't one.
     /// </summary>
-    public Optional<ushort> FaultCode { get; }
+    public ushort? FaultCode { get; }
 }

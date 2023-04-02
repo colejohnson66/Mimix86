@@ -25,7 +25,6 @@
  * =============================================================================
  */
 
-using DotNext;
 using System;
 
 namespace Mimix86.Core.Cpu.Decoder;
@@ -39,7 +38,7 @@ namespace Mimix86.Core.Cpu.Decoder;
 /// The byte that triggered the call to the handler (with normalized prefixes; see remarks).
 /// </param>
 /// <param name="instr">The decoded instruction object currently being built.</param>
-/// <param name="ssePrefix">The first legacy SSE prefix, or <see cref="Optional{T}.None" /> if there wasn't any.</param>
+/// <param name="ssePrefix">The first legacy SSE prefix, or <c>null</c> if there wasn't any.</param>
 /// <param name="opmapEntries">
 /// The opcode map entries for <paramref name="opByte" />, or <c>null</c> if there aren't any.
 /// </param>
@@ -63,6 +62,6 @@ public delegate Opcode DecodeHandler(
     Span<byte> byteStream,
     uint opByte,
     Instruction instr,
-    Optional<byte> ssePrefix,
+    byte? ssePrefix,
     OpcodeMapEntry[]? opmapEntries,
     out int bytesConsumed);

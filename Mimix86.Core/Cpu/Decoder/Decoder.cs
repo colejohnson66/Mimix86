@@ -1,4 +1,30 @@
-﻿using DotNext;
+﻿/* =============================================================================
+ * File:   Decoder.cs
+ * Author: Cole Tobin
+ * =============================================================================
+ * Purpose:
+ *
+ * <TODO>
+ * =============================================================================
+ * Copyright (c) 2022 Cole Tobin
+ *
+ * This file is part of Mimix86.
+ *
+ * Mimix86 is free software: you can redistribute it and/or modify it under the
+ *   terms of the GNU General Public License as published by the Free Software
+ *   Foundation, either version 3 of the License, or (at your option) any later
+ *   version.
+ *
+ * Mimix86 is distributed in the hope that it will be useful, but WITHOUT ANY
+ *   WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ *   FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ *   details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ *   Mimix86. If not, see <http://www.gnu.org/licenses/>.
+ * =============================================================================
+ */
+
 using System;
 using System.Buffers.Binary;
 using System.Diagnostics;
@@ -46,13 +72,13 @@ public static class Decoder
                     instr.LockPrefix = true;
                     break;
                 case 0xF2 or 0xF3:
-                    instr.RepPrefix = new(b);
+                    instr.RepPrefix = b;
                     break;
 
                 // "group 2" segment overrides
                 // historically, on the P4, CS, DS, and FS were also branch hints for Jcc
                 case 0x26 or 0x2E or 0x36 or 0x3E:
-                    instr.SegmentOverride = new((SegmentNames)b);
+                    instr.SegmentOverride = (SegmentNames)b;
                     break;
                 // case 0x64 or 0x65 when core.CpuLevel >= 3:
                 //     instr.SegmentOverride = new((SegmentNames)b);
@@ -85,7 +111,7 @@ public static class Decoder
 
         Debug.Assert(entry.OpcodeMapEntries is not null); // all prefixes must be handled above
 
-        instr.Opcode = entry.Handler(core, rest, opByte, instr, Optional<byte>.None, entry.OpcodeMapEntries, out int bytesRead);
+        instr.Opcode = entry.Handler(core, rest, opByte, instr, null, entry.OpcodeMapEntries, out int bytesRead);
 
         if (!instr.Opcode.Flags.HasFlag(OpcodeFlags.Lockable) && instr.LockPrefix)
             throw new NotImplementedException(); // #UD on 80186+, but what about 8086?
@@ -102,9 +128,7 @@ public static class Decoder
     /// <param name="byteStream">The input byte stream beginning after <paramref name="opByte" />.</param>
     /// <param name="opByte">The byte that triggered the call to the handler (with normalized prefixes).</param>
     /// <param name="instr">The decoded instruction object currently being built.</param>
-    /// <param name="ssePrefix">
-    /// The first legacy SSE prefix, or <see cref="Optional{T}.None" /> if there wasn't any.
-    /// </param>
+    /// <param name="ssePrefix">The first legacy SSE prefix, or <c>null</c> if there wasn't any.</param>
     /// <param name="opmapEntries">
     /// The opcode map entries for <paramref name="opByte" />, or <c>null</c> if there aren't any.
     /// </param>
@@ -115,7 +139,7 @@ public static class Decoder
         Span<byte> byteStream,
         uint opByte,
         Instruction instr,
-        Optional<byte> ssePrefix,
+        byte? ssePrefix,
         OpcodeMapEntry[]? opmapEntries,
         out int bytesConsumed)
     {
@@ -137,9 +161,7 @@ public static class Decoder
     /// <param name="byteStream">The input byte stream beginning after <paramref name="opByte" />.</param>
     /// <param name="opByte">The byte that triggered the call to the handler (with normalized prefixes).</param>
     /// <param name="instr">The decoded instruction object currently being built.</param>
-    /// <param name="ssePrefix">
-    /// The first legacy SSE prefix, or <see cref="Optional{T}.None" /> if there wasn't any.
-    /// </param>
+    /// <param name="ssePrefix">The first legacy SSE prefix, or <c>null</c> if there wasn't any.</param>
     /// <param name="opmapEntries">
     /// The opcode map entries for <paramref name="opByte" />, or <c>null</c> if there aren't any.
     /// </param>
@@ -150,7 +172,7 @@ public static class Decoder
         Span<byte> byteStream,
         uint opByte,
         Instruction instr,
-        Optional<byte> ssePrefix,
+        byte? ssePrefix,
         OpcodeMapEntry[]? opmapEntries,
         out int bytesConsumed)
     {
@@ -174,9 +196,7 @@ public static class Decoder
     /// <param name="byteStream">The input byte stream beginning after <paramref name="opByte" />.</param>
     /// <param name="opByte">The byte that triggered the call to the handler (with normalized prefixes).</param>
     /// <param name="instr">The decoded instruction object currently being built.</param>
-    /// <param name="ssePrefix">
-    /// The first legacy SSE prefix, or <see cref="Optional{T}.None" /> if there wasn't any.
-    /// </param>
+    /// <param name="ssePrefix">The first legacy SSE prefix, or <c>null</c> if there wasn't any.</param>
     /// <param name="opmapEntries">
     /// The opcode map entries for <paramref name="opByte" />, or <c>null</c> if there aren't any.
     /// </param>
@@ -187,7 +207,7 @@ public static class Decoder
         Span<byte> byteStream,
         uint opByte,
         Instruction instr,
-        Optional<byte> ssePrefix,
+        byte? ssePrefix,
         OpcodeMapEntry[]? opmapEntries,
         out int bytesConsumed)
     {
@@ -196,7 +216,7 @@ public static class Decoder
             return Opcode.Undefined;
 
         byte b = byteStream[0];
-        instr.ModRM = new(b);
+        instr.ModRM = b;
 
         DecodeFlagsBuilder builder = new();
         builder.ModRM(b);
@@ -229,9 +249,7 @@ public static class Decoder
     /// <param name="byteStream">The input byte stream beginning after <paramref name="opByte" />.</param>
     /// <param name="opByte">The byte that triggered the call to the handler (with normalized prefixes).</param>
     /// <param name="instr">The decoded instruction object currently being built.</param>
-    /// <param name="ssePrefix">
-    /// The first legacy SSE prefix, or <see cref="Optional{T}.None" /> if there wasn't any.
-    /// </param>
+    /// <param name="ssePrefix">The first legacy SSE prefix, or <c>null</c> if there wasn't any.</param>
     /// <param name="opmapEntries">
     /// The opcode map entries for <paramref name="opByte" />, or <c>null</c> if there aren't any.
     /// </param>
@@ -242,7 +260,7 @@ public static class Decoder
         Span<byte> byteStream,
         uint opByte,
         Instruction instr,
-        Optional<byte> ssePrefix,
+        byte? ssePrefix,
         OpcodeMapEntry[]? opmapEntries,
         out int bytesConsumed)
     {

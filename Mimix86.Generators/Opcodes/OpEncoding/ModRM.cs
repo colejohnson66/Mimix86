@@ -25,14 +25,12 @@
  * =============================================================================
  */
 
-using DotNext;
-
 namespace Mimix86.Generators.Opcodes.OpEncoding;
 
 public record ModRM(
-    Optional<ModRMMod> Mod,
-    Optional<byte> Reg,
-    Optional<byte> RM)
+    ModRMMod? Mod,
+    byte? Reg,
+    byte? RM)
 {
     public bool HasRequiredFields =>
         Mod.HasValue || Reg.HasValue || RM.HasValue;

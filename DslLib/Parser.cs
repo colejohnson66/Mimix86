@@ -25,6 +25,7 @@
  * =============================================================================
  */
 
+using DslLib.IO;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
@@ -54,8 +55,9 @@ public class Parser
 
     private bool Match(TokenType type, [NotNullWhen(true)] out Token? tok)
     {
-        if (_tokens.Peek().TryGet(out tok) && tok.Type == type)
+        if (_tokens.Peek() is Token peek && peek.Type == type)
         {
+            tok = peek;
             _tokens.Next();
             return true;
         }
@@ -73,15 +75,16 @@ public class Parser
     /// </returns>
     public IEnumerable<Node> Parse()
     {
-        while (_tokens.Peek().HasValue)
+        while (_tokens.Peek() is not null)
         {
             List<Node> nodes = new();
             while (true)
             {
-                if (!_tokens.Peek().HasValue)
+                Token? peek = _tokens.Peek();
+                if (peek is null)
                     break; // EOF
 
-                if (_tokens.Peek().Value.Type is TokenType.NewLine)
+                if (peek.Type is TokenType.NewLine)
                 {
                     _tokens.Next();
                     break;
@@ -126,10 +129,11 @@ public class Parser
         List<Node> nodes = new();
         while (true)
         {
-            if (!_tokens.Peek().HasValue)
+            Token? peek = _tokens.Peek();
+            if (peek is null)
                 throw new EndOfStreamException();
 
-            if (_tokens.Peek().Value.Type is TokenType.RightBracket)
+            if (peek.Type is TokenType.RightBracket)
             {
                 _tokens.Next();
                 break;

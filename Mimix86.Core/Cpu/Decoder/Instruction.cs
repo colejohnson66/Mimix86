@@ -25,7 +25,6 @@
  * =============================================================================
  */
 
-using DotNext;
 using System;
 
 namespace Mimix86.Core.Cpu.Decoder;
@@ -54,7 +53,7 @@ public class Instruction
     /// The segment override prefix.
     /// </summary>
     /// <remarks>If multiple segment overrides exist in the instruction stream, the last one takes priority.</remarks>
-    public Optional<SegmentNames> SegmentOverride { get; set; } = Optional<SegmentNames>.None;
+    public SegmentNames? SegmentOverride { get; set; } = null;
 
     // future: CET segment
 
@@ -81,12 +80,12 @@ public class Instruction
     /// <summary>
     /// Get or set the <c>REP</c> prefix that was first encountered, if any exist.
     /// </summary>
-    public Optional<byte> RepPrefix { get; set; } = Optional<byte>.None;
+    public byte? RepPrefix { get; set; } = null;
 
     /// <summary>
     /// Get or set the ModR/M byte, if it exists.
     /// </summary>
-    public Optional<byte> ModRM { get; set; } = Optional<byte>.None;
+    public byte? ModRM { get; set; } = null;
 
     // /// <summary>
     // /// Get or set the SIB byte, if it exists.

@@ -25,7 +25,6 @@
  * =============================================================================
  */
 
-using DotNext;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -65,33 +64,33 @@ public class OpcodeEncoding
         string[] parts = possibleModRM.Split('/');
         Debug.Assert(parts.Length >= 2);
 
-        Optional<ModRMMod> mod = parts[0] switch
+        ModRMMod? mod = parts[0] switch
         {
-            "m" => new(ModRMMod.Memory),
-            "r" => new(ModRMMod.Register),
-            "" => Optional<ModRMMod>.None,
+            "m" => ModRMMod.Memory,
+            "r" => ModRMMod.Register,
+            "" => null,
             _ => throw new InvalidDataException($"Unknown ModR/M mod part: {parts[0]}."),
         };
 
         // the reg field is the second part
         // because `Contains('/')` was `true`, this won't be out of range
-        Optional<byte> reg = parts[1] switch
+        byte? reg = parts[1] switch
         {
-            "r" => Optional<byte>.None,
-            "0" => new(0),
-            "1" => new(1),
-            "2" => new(2),
-            "3" => new(3),
-            "4" => new(4),
-            "5" => new(5),
-            "6" => new(6),
-            "7" => new(7),
+            "r" => null,
+            "0" => 0,
+            "1" => 1,
+            "2" => 2,
+            "3" => 3,
+            "4" => 4,
+            "5" => 5,
+            "6" => 6,
+            "7" => 7,
             _ => throw new InvalidDataException($"Unknown ModR/M reg part: {parts[1]}."),
         };
 
-        Optional<byte> rm = parts.Length is 3
-            ? new(byte.Parse(parts[2]))
-            : Optional<byte>.None;
+        byte? rm = parts.Length is 3
+            ? byte.Parse(parts[2])
+            : null;
 
         return new(mod, reg, rm);
     }

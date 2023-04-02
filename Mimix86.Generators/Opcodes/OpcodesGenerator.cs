@@ -31,7 +31,6 @@ using DslLib;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Mimix86.Generators.Opcodes;
 
@@ -98,15 +97,16 @@ public static class OpcodesGenerator
         foreach (Node node in parser.Parse())
             KnownOpcodes.Add(new(node));
 
-        StringBuilder output = new(FILE_TEMPLATE_HEADER);
+        string outputPath = Path.Combine(FindMimix86Core(), "Cpu", "Decoder", "Opcode.List.g.cs");
+        using FileStream handle = File.OpenWrite(outputPath);
+        using StreamWriter writer = new(handle);
+
+        writer.Write(FILE_TEMPLATE_HEADER);
         foreach (Opcode op in KnownOpcodes.Distinct())
         {
-            output.AppendLine();
-            output.AppendLine(op.GenerateOpcodeMember("    "));
+            writer.WriteLine();
+            writer.WriteLine(op.GenerateOpcodeMember("    "));
         }
-        output.AppendLine("}");
-
-        string outputPath = Path.Combine(FindMimix86Core(), "Cpu", "Decoder", "Opcode.List.g.cs");
-        File.WriteAllText(outputPath, output.ToString(), Encoding.UTF8);
+        writer.WriteLine("}");
     }
 }

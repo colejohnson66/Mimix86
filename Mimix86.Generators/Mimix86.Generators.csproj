@@ -15,8 +15,4 @@
         <None Update="Data\Opcodes\*.*" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="Data" />
-    </ItemGroup>
-
 </Project>
