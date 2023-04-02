@@ -7,7 +7,7 @@
  * Information for the decoder to indicate if a specific opcode in a group is
  *   valid.
  * =============================================================================
- * Copyright (c) 2022 Cole Tobin
+ * Copyright (c) 2022-2023 Cole Tobin
  *
  * This file is part of Mimix86.
  *

@@ -6,7 +6,7 @@
  *
  * Enumerates all the opcode map entries for single byte opcodes.
  * =============================================================================
- * Copyright (c) 2022 Cole Tobin
+ * Copyright (c) 2022-2023 Cole Tobin
  *
  * This file is part of Mimix86.
  *

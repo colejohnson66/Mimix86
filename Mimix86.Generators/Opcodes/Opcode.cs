@@ -6,7 +6,7 @@
  *
  * <TODO>
  * =============================================================================
- * Copyright (c) 2022 Cole Tobin
+ * Copyright (c) 2022-2023 Cole Tobin
  *
  * This file is part of Mimix86.
  *
@@ -65,11 +65,11 @@ public class Opcode : IEquatable<Opcode>
         {
             List<string> flags = new();
             ModRM modRM = _encoding.ModRM;
-            if (modRM.Mod.HasValue)
+            if (modRM.Mod is not null)
                 flags.Add(modRM.Mod.Value is ModRMMod.Memory ? "MOD_MEM" : "MOD_REG");
-            if (modRM.Reg.HasValue)
+            if (modRM.Reg is not null)
                 flags.Add($"REG_{modRM.Reg.Value}");
-            if (modRM.RM.HasValue)
+            if (modRM.RM is not null)
                 flags.Add($"RM_{modRM.RM.Value}");
             _opmapFlags = flags.Join(" | ");
         }

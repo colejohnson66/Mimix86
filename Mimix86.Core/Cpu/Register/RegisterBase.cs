@@ -8,7 +8,7 @@
  *   and the ability to get or set any bit.
  * Also contains specializations for 8- and 16-bit registers.
  * =============================================================================
- * Copyright (c) 2022 Cole Tobin
+ * Copyright (c) 2022-2023 Cole Tobin
  *
  * This file is part of Mimix86.
  *

@@ -7,7 +7,7 @@
 # Contains the opcodes known to the 8086 or newer (i.e. ones existing when the
 #   CPU level is equal to zero).
 # =============================================================================
-# Copyright (c) 2022 Cole Tobin
+# Copyright (c) 2022-2023 Cole Tobin
 #
 # This file is part of Mimix86.
 #
@@ -54,7 +54,7 @@
 #     - `111110` for [F7]
 #     - `011111` for [FE]
 #     - `111111` for [FF]
-#     - all other [F?] opcodes are probably handled by random logic
+#     - all other [F?] opcodes are handled by random logic
 #   - `bbb` is the ModR/M's "reg" field
 #   - `pp` is the microcode "phase" (the "PC")
 #
