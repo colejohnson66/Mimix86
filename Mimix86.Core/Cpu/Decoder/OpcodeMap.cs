@@ -1079,7 +1079,7 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] OpcodeEB =
     {
         // JMP Jb
-        new(JmpJb),
+        new(JmpJb, ..),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeEC =

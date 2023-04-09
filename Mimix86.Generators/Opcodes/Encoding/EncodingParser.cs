@@ -82,9 +82,9 @@ public class EncodingParser
                 return new EncodingPart.Byte(value);
 
             // handle `+r` or `+cc`
-            if (part.AsSpan(2).SequenceEqual("+r"))
+            if (part.AsSpan(2) is "+r")
                 return new EncodingPart.BytePlusRegister(value);
-            if (part.AsSpan(2).SequenceEqual("+cc"))
+            if (part.AsSpan(2) is "+cc")
                 return new EncodingPart.BytePlusCondition(value);
 
             throw new InvalidDataException($"Unknown byte suffix for part: \"{part}\".");

@@ -72,32 +72,26 @@ public static class OpcodesGenerator
             OutputMap.Add(i, new());
     }
 
-    private static string FindMimix86Core()
-    {
-        // find the folder containing the sln file
-        DirectoryInfo current = new(Directory.GetCurrentDirectory());
-        while (current.GetFiles().All(file => !file.Name.EndsWith(".sln")))
-            current = current.Parent!;
-
-        return Path.Combine(current.FullName, "Mimix86.Core");
-    }
-
     public static void Run()
     {
         InitOutputMap();
         foreach (string path in Directory.GetFiles("./Data/Opcodes", "*.m86"))
-            HandleInput(path);
+            ReadInput(path);
+        WriteOpcodeList();
     }
 
-    private static void HandleInput(string path)
+    private static void ReadInput(string path)
     {
         string contents = File.ReadAllText(path);
         Parser parser = new(contents);
 
         foreach (Node node in parser.Parse())
             KnownOpcodes.Add(new(node));
+    }
 
-        string outputPath = Path.Combine(FindMimix86Core(), "Cpu", "Decoder", "Opcode.StaticFields.g.cs");
+    private static void WriteOpcodeList()
+    {
+        string outputPath = Path.Combine(Helpers.Mimix86CorePath, "Cpu", "Decoder", "Opcode.StaticFields.g.cs");
         using FileStream handle = File.Open(outputPath, FileMode.Create, FileAccess.Write);
         using StreamWriter writer = new(handle);
 
@@ -105,7 +99,7 @@ public static class OpcodesGenerator
         foreach (Opcode op in KnownOpcodes.Distinct().Order())
         {
             writer.WriteLine();
-            writer.WriteLine(op.GenerateOpcodeMember("    "));
+            writer.WriteLine(op.GenerateOpcodeMember());
         }
         writer.WriteLine("}");
     }

@@ -36,36 +36,6 @@ namespace Mimix86.Core.Cpu.Decoder;
 public class OpcodeMapEntry
 {
     /// <summary>
-    /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with a supported CPU range of <c>5..</c> and no
-    ///   decode flags.
-    /// </summary>
-    /// <param name="opcode">The ID of the actual opcode.</param>
-    public OpcodeMapEntry(Opcode opcode)
-        : this(opcode, 5.., DecodeFlags.None)
-    { }
-    /// <summary>
-    /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with a specified supported CPU range and no decode
-    ///   flags.
-    /// </summary>
-    /// <param name="opcode">The ID of the actual opcode.</param>
-    /// <param name="supportedCpuLevels">
-    /// The (inclusive) allowed range of CPU levels for this opcode to be supported.
-    /// </param>
-    public OpcodeMapEntry(Opcode opcode, Range supportedCpuLevels)
-        : this(opcode, supportedCpuLevels, DecodeFlags.None)
-    { }
-
-    /// <summary>
-    /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with a supported CPU range of <c>5..</c> and
-    ///   specified decode flags.
-    /// </summary>
-    /// <param name="opcode">The ID of the actual opcode.</param>
-    /// <param name="flags">The required flags to decode to this opcode entry.</param>
-    public OpcodeMapEntry(Opcode opcode, DecodeFlags flags)
-        : this(opcode, 5.., flags)
-    { }
-
-    /// <summary>
     /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with a specified supported CPU range and specified
     ///   decode flags.
     /// </summary>
@@ -73,8 +43,10 @@ public class OpcodeMapEntry
     /// <param name="supportedCpuLevels">
     /// The (inclusive) allowed range of CPU levels for this opcode to be supported.
     /// </param>
-    /// <param name="flags">The required flags to decode to this opcode entry.</param>
-    public OpcodeMapEntry(Opcode opcode, Range supportedCpuLevels, DecodeFlags flags)
+    /// <param name="flags">
+    /// The required flags to decode to this opcode entry, or <c>null</c> for <see cref="DecodeFlags.None" />.
+    /// </param>
+    public OpcodeMapEntry(Opcode opcode, Range supportedCpuLevels, DecodeFlags? flags = null)
     {
         if (supportedCpuLevels.Start.Value > 5 || supportedCpuLevels.End.Value > 5)
         {
@@ -88,7 +60,7 @@ public class OpcodeMapEntry
 
         Opcode = opcode;
         SupportedCpuLevels = supportedCpuLevels;
-        Flags = flags;
+        Flags = flags ?? DecodeFlags.None;
     }
 
 
