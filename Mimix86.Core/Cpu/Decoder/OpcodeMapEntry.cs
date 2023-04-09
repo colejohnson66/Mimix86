@@ -68,6 +68,10 @@ public class OpcodeMapEntry
     public Opcode Opcode { get; init; }
 
     /// <summary>The (inclusive) allowed range of CPU levels for this opcode to be supported.</summary>
+    /// <remarks>
+    /// This is an <em>inclusive</em> range.
+    /// In other words, the <see cref="Range.End" /> value is <em>also</em> a supported CPU level.
+    /// </remarks>
     public Range SupportedCpuLevels { get; init; }
 
     /// <summary>The required flags to decode to this opcode entry.</summary>

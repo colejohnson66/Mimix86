@@ -30,11 +30,13 @@ using static Mimix86.Core.Cpu.Decoder.Opcode;
 
 namespace Mimix86.Core.Cpu.Decoder;
 
+// CS1591 is XML doc comments
+#pragma warning disable CS1591
+// ReSharper disable InconsistentNaming
+
 /// <summary>
 /// Enumerates all the supported opcodes by their location in the various opmaps.
 /// </summary>
-[SuppressMessage("ReSharper", "InconsistentNaming")]
-#pragma warning disable CS1591 // TODO: remove (XML doc)
 public static class OpcodeMap
 {
     public static readonly OpcodeMapEntry[] OpcodeUndefined =

@@ -40,12 +40,12 @@ public class Opcode :
 {
     private readonly string _mnemonic;
     private readonly string[] _operands;
-    private readonly OpcodeEncoding _encoding;
-    private readonly string _reqCpu;
+    public OpcodeEncoding Encoding { get; }
+    public string RequiredCpu { get; }
     private readonly bool _lockable;
 
-    private readonly string _titleCaseMnemonic;
-    private readonly string _operandsStr;
+    public string TitleCaseMnemonic { get; }
+    public string OperandsString { get; }
 
     private readonly string? _opmapFlags;
 
@@ -55,18 +55,18 @@ public class Opcode :
 
         _mnemonic = children[0].Text!;
         _operands = children[1].Children!.Select(operand => operand.Text!).ToArray();
-        _encoding = new(children[2].Children!.Select(operand => operand.Text!).ToArray());
-        _reqCpu = children[3].Text!;
+        Encoding = new(children[2].Children!.Select(operand => operand.Text!).ToArray());
+        RequiredCpu = children[3].Text!;
         _lockable = children.Length > 4 && children[4].Children![0].Text! is "lock";
 
-        _titleCaseMnemonic = _mnemonic[0] + _mnemonic[1..].ToLowerInvariant();
-        _operandsStr = _operands.Join("");
+        TitleCaseMnemonic = _mnemonic[0] + _mnemonic[1..].ToLowerInvariant();
+        OperandsString = _operands.Join("");
 
         _opmapFlags = null;
-        if (_encoding.ModRM?.HasAnyRequiredFields is true)
+        if (Encoding.ModRM?.HasAnyRequiredFields is true)
         {
             List<string> flags = new();
-            EncodingPart.ModRM modRM = _encoding.ModRM;
+            EncodingPart.ModRM modRM = Encoding.ModRM;
             if (modRM.Mod is not null)
                 flags.Add(modRM.Mod.Value is ModRMMod.Memory ? "MOD_MEM" : "MOD_REG");
             if (modRM.Reg is not null)
@@ -77,21 +77,21 @@ public class Opcode :
         }
     }
 
-    public string GenerateOpcodeMember(string indent)
+    public string GenerateOpcodeMember()
     {
         string operands = _operands.Join("");
 
         StringBuilder builder = new();
 
         // doc comment
-        builder.Append($"{indent}/// <summary>The <c>{_mnemonic}");
+        builder.Append($"    /// <summary>The <c>{_mnemonic}");
         if (_operands.Any())
             builder.Append($" {_operands.Join(", ")}");
         builder.AppendLine("</c> opcode.</summary>");
 
         // start of entry
         builder.Append(
-            $"{indent}public static Opcode {_titleCaseMnemonic}{_operandsStr} {{ get; }} = new(");
+            $"    public static Opcode {TitleCaseMnemonic}{OperandsString} {{ get; }} = new(");
 
         // mnemonic
         builder.Append(
@@ -99,7 +99,7 @@ public class Opcode :
 
         // execution function
         builder.Append(
-            $"Execution.{_titleCaseMnemonic}."); // always prefix namespace; opcodes with no operands name clash with _opcodeName
+            $"Execution.{TitleCaseMnemonic}."); // always prefix namespace; opcodes with no operands name clash with _opcodeName
         if (_operands.Any())
         {
             // identifiers in C# can't begin with digits; prefix with an underscore if needed
@@ -117,8 +117,8 @@ public class Opcode :
         builder.Append(_lockable ? "OpcodeFlags.Lockable, " : "0, ");
 
         // immediate
-        builder.Append(_encoding.Immediate is not null
-            ? $"ImmSize.{_encoding.Immediate}"
+        builder.Append(Encoding.Immediate is not null
+            ? $"ImmSize.{Encoding.Immediate}"
             : "0");
 
         builder.Append(");");
@@ -128,7 +128,7 @@ public class Opcode :
 
     public string GenerateOpcodeMapMember(string indent)
     {
-        string str = $"{indent}new({_titleCaseMnemonic}{_operandsStr}, {_reqCpu}";
+        string str = $"{indent}new({TitleCaseMnemonic}{OperandsString}, {RequiredCpu}";
         if (_opmapFlags is null)
             return str + "),";
 
@@ -148,7 +148,7 @@ public class Opcode :
         if (mnemonic != 0)
             return mnemonic;
 
-        return string.Compare(_operandsStr, other._operandsStr, StringComparison.Ordinal);
+        return string.Compare(OperandsString, other.OperandsString, StringComparison.Ordinal);
     }
 
     public override bool Equals(object? obj) =>
