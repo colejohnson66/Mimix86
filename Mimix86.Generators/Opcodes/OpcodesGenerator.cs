@@ -46,20 +46,20 @@ public static class OpcodesGenerator
 
         namespace Mimix86.Core.Cpu.Decoder;
 
-        public partial class Opcode
+        public sealed partial class Opcode
         {
             /// <summary>
             /// The "undefined" opcode.
             /// Used to signify that the instruction stream decodes to an undefined opcode.
             /// </summary>
-            public static Opcode Undefined { get; } = new("<error>", Execution.Error._);
+            public static Opcode Undefined { get; } = new("<error>", Execution.Error._, 0, 0);
 
         """;
 
     /* ADD [Eb Gb] [00 /r] .. [lock]
      *      |
      *      v
-     * public static Opcode AddEbGb { get; } = new("add", new[] { "Eb", "Gb" }, Add.EbGb) { Flags = OpcodeFlags.Lockable }
+     * public static Opcode AddEbGb { get; } = new("add", Add.EbGb, OpcodeFlags.Lockable, 0);
      */
 
     private static readonly List<Opcode> KnownOpcodes = new();
@@ -102,7 +102,7 @@ public static class OpcodesGenerator
         using StreamWriter writer = new(handle);
 
         writer.Write(FILE_TEMPLATE_HEADER);
-        foreach (Opcode op in KnownOpcodes.Distinct())
+        foreach (Opcode op in KnownOpcodes.Distinct().Order())
         {
             writer.WriteLine();
             writer.WriteLine(op.GenerateOpcodeMember("    "));

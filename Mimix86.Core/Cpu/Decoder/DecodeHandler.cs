@@ -25,24 +25,20 @@
  * =============================================================================
  */
 
-using System;
-
 namespace Mimix86.Core.Cpu.Decoder;
 
 /// <summary>
 /// The type of a function decode handler.
 /// </summary>
 /// <param name="core">The CPU core that is decoding this instruction.</param>
-/// <param name="byteStream">The input byte stream beginning after <paramref name="opByte" />.</param>
+/// <param name="stream">The input byte stream.</param>
 /// <param name="opByte">
-/// The byte that triggered the call to the handler (with normalized prefixes; see remarks).
+/// The byte that triggered the call to this handler (with normalized prefixes; see remarks).
 /// </param>
 /// <param name="instr">The decoded instruction object currently being built.</param>
-/// <param name="ssePrefix">The first legacy SSE prefix, or <c>null</c> if there wasn't any.</param>
 /// <param name="opmapEntries">
 /// The opcode map entries for <paramref name="opByte" />, or <c>null</c> if there aren't any.
 /// </param>
-/// <param name="bytesConsumed">The number of bytes consumed by the called function.</param>
 /// <returns>The name of the opcode.</returns>
 /// <remarks>
 /// The "normalized" form of the opcode byte (<paramref name="opByte" />) is one where the lower eight bits are the
@@ -59,9 +55,7 @@ namespace Mimix86.Core.Cpu.Decoder;
 /// </remarks>
 public delegate Opcode DecodeHandler(
     CpuCore core,
-    Span<byte> byteStream,
+    DecodeByteStream stream,
     uint opByte,
     Instruction instr,
-    byte? ssePrefix,
-    OpcodeMapEntry[]? opmapEntries,
-    out int bytesConsumed);
+    OpcodeMapEntry[]? opmapEntries);

@@ -1,10 +1,10 @@
 ﻿/* =============================================================================
- * File:   Opcode.cs
+ * File:   DecodeDescriptorEntry.cs
  * Author: Cole Tobin
  * =============================================================================
  * Purpose:
  *
- * <TODO>
+ * An entry for the decode descriptor.
  * =============================================================================
  * Copyright (c) 2023 Cole Tobin
  *
@@ -30,58 +30,33 @@ using System;
 namespace Mimix86.Core.Cpu.Decoder;
 
 /// <summary>
-/// Represents a single opcode.
+/// Represents an entry for the <see cref="DecodeDescriptor" /> tables.
 /// </summary>
-public sealed partial class Opcode :
-    IEquatable<Opcode>
+public sealed class DecodeDescriptorEntry
 {
-    private Opcode(string mnemonic, ExecutionHandler handler, OpcodeFlags flags, ImmSize imm)
+    /// <summary>
+    /// An array of <see cref="OpcodeMapEntry" /> objects that will be passed along to <see cref="Handler" />.
+    /// </summary>
+    public OpcodeMapEntry[]? OpcodeMapEntries { get; }
+
+    /// <summary>
+    /// The handler for this entry.
+    /// </summary>
+    public DecodeHandler Handler { get; }
+
+
+    /// <summary>
+    /// Construct a new <see cref="DecodeDescriptorEntry" /> with specified <see cref="OpcodeMapEntry" /> objects and a
+    ///   decode handler.
+    /// </summary>
+    /// <param name="entries">The <see cref="OpcodeMapEntry" /> objects to pass along to the handler.</param>
+    /// <param name="handler">The handler for this entry.</param>
+    /// <exception cref="ArgumentNullException">If <paramref name="handler" /> is <c>null</c>.</exception>
+    public DecodeDescriptorEntry(OpcodeMapEntry[]? entries, DecodeHandler handler)
     {
-        Mnemonic = mnemonic;
+        ArgumentNullException.ThrowIfNull(handler);
+
+        OpcodeMapEntries = entries;
         Handler = handler;
-        Flags = flags;
-        Immediate = imm;
     }
-
-
-    /// <summary>
-    /// The mnemonic of this opcode.
-    /// </summary>
-    public string Mnemonic { get; }
-
-    /// <summary>
-    /// The handler of this opcode.
-    /// </summary>
-    public ExecutionHandler Handler { get; }
-
-    /// <summary>
-    /// Any flags used to direct post-decoding.
-    /// </summary>
-    public OpcodeFlags Flags { get; }
-
-    /// <summary>
-    /// The size of the immediate for this opcode.
-    /// </summary>
-    public ImmSize Immediate { get; }
-
-
-    /// <inheritdoc />
-    public bool Equals(Opcode? other)
-    {
-        if (ReferenceEquals(this, other))
-            return true;
-        if (ReferenceEquals(other, null))
-            return false;
-
-        // the handlers are unique to their opcodes
-        return Mnemonic == other.Mnemonic && Handler == other.Handler;
-    }
-
-    /// <inheritdoc />
-    public override bool Equals(object? obj) =>
-        obj is Opcode other && Equals(other);
-
-    /// <inheritdoc />
-    public override int GetHashCode() =>
-        HashCode.Combine(Mnemonic, Handler); // the handlers are unique
 }

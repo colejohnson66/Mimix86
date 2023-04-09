@@ -34,7 +34,9 @@ using System.Text;
 
 namespace Mimix86.Generators.Opcodes;
 
-public class Opcode : IEquatable<Opcode>
+public class Opcode :
+    IComparable<Opcode>,
+    IEquatable<Opcode>
 {
     private readonly string _mnemonic;
     private readonly string[] _operands;
@@ -92,35 +94,15 @@ public class Opcode : IEquatable<Opcode>
             $"{indent}public static Opcode {_titleCaseMnemonic}{_operandsStr} {{ get; }} = new(");
 
         // mnemonic
-        builder.Append('"');
-        builder.Append(_mnemonic.ToLowerInvariant());
-        builder.Append("\", ");
-
-        // operands
-        if (_operands.Any())
-        {
-            builder.Append("new[] { ");
-            for (int i = 0; i < _operands.Length; i++)
-            {
-                builder.Append('"');
-                builder.Append(_operands[i]);
-                builder.Append('"');
-                if (i != _operands.Length - 1)
-                    builder.Append(", ");
-            }
-            builder.Append(" }, ");
-        }
-        else
-        {
-            builder.Append("Array.Empty<string>(), ");
-        }
+        builder.Append(
+            $"\"{_mnemonic.ToLowerInvariant()}\", ");
 
         // execution function
-        builder.Append("Execution."); // always prefix; opcodes with no operands name clash with _opcodeName
-        builder.Append(_titleCaseMnemonic);
-        builder.Append('.');
+        builder.Append(
+            $"Execution.{_titleCaseMnemonic}."); // always prefix namespace; opcodes with no operands name clash with _opcodeName
         if (_operands.Any())
         {
+            // identifiers in C# can't begin with digits; prefix with an underscore if needed
             if (char.IsAsciiDigit(operands[0]))
                 builder.Append('_');
             builder.Append(operands);
@@ -129,22 +111,17 @@ public class Opcode : IEquatable<Opcode>
         {
             builder.Append('_');
         }
-        builder.Append(')');
+        builder.Append(", ");
 
-        // extras
-        List<string> extra = new();
-        if (_lockable)
-            extra.Add("Flags = OpcodeFlags.Lockable");
-        if (_encoding.Immediate is not null)
-            extra.Add($"Immediate = ImmSize.{_encoding.Immediate}");
-        if (extra.Any())
-        {
-            builder.Append(" { ");
-            builder.Append(extra.Join(", "));
-            builder.Append(" }");
-        }
+        // flags
+        builder.Append(_lockable ? "OpcodeFlags.Lockable, " : "0, ");
 
-        builder.Append(';');
+        // immediate
+        builder.Append(_encoding.Immediate is not null
+            ? $"ImmSize.{_encoding.Immediate}"
+            : "0");
+
+        builder.Append(");");
         return builder.ToString();
     }
 
@@ -159,32 +136,38 @@ public class Opcode : IEquatable<Opcode>
     }
 
 
-    public override bool Equals(object? obj)
-    {
-        if (ReferenceEquals(null, obj))
-            return false;
-        if (ReferenceEquals(this, obj))
-            return true;
 
-        return obj is Opcode other && Equals(other);
+    public int CompareTo(Opcode? other)
+    {
+        if (ReferenceEquals(this, other))
+            return 0;
+        if (ReferenceEquals(other, null))
+            return 1;
+
+        int mnemonic = string.Compare(_mnemonic, other._mnemonic, StringComparison.Ordinal);
+        if (mnemonic != 0)
+            return mnemonic;
+
+        return string.Compare(_operandsStr, other._operandsStr, StringComparison.Ordinal);
     }
+
+    public override bool Equals(object? obj) =>
+        obj is Opcode other && Equals(other);
 
     public bool Equals(Opcode? other)
     {
-        if (ReferenceEquals(null, other))
-            return false;
         if (ReferenceEquals(this, other))
             return true;
-        return _mnemonic == other._mnemonic &&
-            _operands.SequenceEqual(other._operands);
+        if (ReferenceEquals(other, null))
+            return false;
+
+        return _mnemonic == other._mnemonic && _operands.SequenceEqual(other._operands);
     }
 
-    public override int GetHashCode()
-    {
+    public override int GetHashCode() =>
         // Only consider the resulting opcode's unique name; one opcode may have multiple encodings
         // `HashCode.Combine` doesn't work with arrays (`Array.GetHashCode` uses `Object.GetHashCode`)
-        return _operands.Aggregate(
+        _operands.Aggregate(
             _mnemonic.GetHashCode(),
             (current, operand) => current * 31 + operand.GetHashCode());
-    }
 }
