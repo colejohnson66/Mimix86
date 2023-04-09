@@ -539,27 +539,27 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] Opcode80 =
     {
         // "group 1" Eb, Ib
-        new(AddEbIb, .., REG0),
-        new(OrEbIb, .., REG1),
-        new(AdcEbIb, .., REG2),
-        new(SbbEbIb, .., REG3),
-        new(AndEbIb, .., REG4),
-        new(SubEbIb, .., REG5),
-        new(XorEbIb, .., REG6),
-        new(CmpEbIb, .., REG7),
+        new(AddEbIb, .., Reg0),
+        new(OrEbIb, .., Reg1),
+        new(AdcEbIb, .., Reg2),
+        new(SbbEbIb, .., Reg3),
+        new(AndEbIb, .., Reg4),
+        new(SubEbIb, .., Reg5),
+        new(XorEbIb, .., Reg6),
+        new(CmpEbIb, .., Reg7),
     };
 
     public static readonly OpcodeMapEntry[] Opcode81 =
     {
         // "group 1" Ev, Iz
-        new(AddEwIw, .., REG0),
-        new(OrEwIw, .., REG1),
-        new(AdcEwIw, .., REG2),
-        new(SbbEwIw, .., REG3),
-        new(AndEwIw, .., REG4),
-        new(SubEwIw, .., REG5),
-        new(XorEwIw, .., REG6),
-        new(CmpEwIw, .., REG7),
+        new(AddEwIw, .., Reg0),
+        new(OrEwIw, .., Reg1),
+        new(AdcEwIw, .., Reg2),
+        new(SbbEwIw, .., Reg3),
+        new(AndEwIw, .., Reg4),
+        new(SubEwIw, .., Reg5),
+        new(XorEwIw, .., Reg6),
+        new(CmpEwIw, .., Reg7),
     };
 
     // TODO: 8086 manual/datasheet suggests OR/AND/XOR not allowed in [82]
@@ -569,14 +569,14 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] Opcode83 =
     {
         // "group 1" Ev, Ib
-        new(AddEwIb, .., REG0),
-        new(OrEwIb, .., REG1),
-        new(AdcEwIb, .., REG2),
-        new(SbbEwIb, .., REG3),
-        new(AndEwIb, .., REG4),
-        new(SubEwIb, .., REG5),
-        new(XorEwIb, .., REG6),
-        new(CmpEwIb, .., REG7),
+        new(AddEwIb, .., Reg0),
+        new(OrEwIb, .., Reg1),
+        new(AdcEwIb, .., Reg2),
+        new(SbbEwIb, .., Reg3),
+        new(AndEwIb, .., Reg4),
+        new(SubEwIb, .., Reg5),
+        new(XorEwIb, .., Reg6),
+        new(CmpEwIb, .., Reg7),
     };
 
     public static readonly OpcodeMapEntry[] Opcode84 =
@@ -918,53 +918,53 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] OpcodeD0 =
     {
         // "group 2" Eb, 1
-        new(RolEb1, .., REG0),
-        new(RorEb1, .., REG1),
-        new(RclEb1, .., REG2),
-        new(RcrEb1, .., REG3),
-        new(ShlEb1, .., REG4),
-        new(ShrEb1, .., REG5),
-        new(ShlEb1, .., REG6), // undocumented "shift arithmetic left"; i.e. copy of /4
-        new(SarEb1, .., REG7),
+        new(RolEb1, .., Reg0),
+        new(RorEb1, .., Reg1),
+        new(RclEb1, .., Reg2),
+        new(RcrEb1, .., Reg3),
+        new(ShlEb1, .., Reg4),
+        new(ShrEb1, .., Reg5),
+        new(ShlEb1, .., Reg6), // undocumented "shift arithmetic left"; i.e. copy of /4
+        new(SarEb1, .., Reg7),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeD1 =
     {
         // "group 2" Ev, 1
-        new(RolEw1, .., REG0),
-        new(RorEw1, .., REG1),
-        new(RclEw1, .., REG2),
-        new(RcrEw1, .., REG3),
-        new(ShlEw1, .., REG4),
-        new(ShrEw1, .., REG5),
-        new(ShlEw1, .., REG6), // undocumented "shift arithmetic left"; i.e. copy of /4
-        new(SarEw1, .., REG7),
+        new(RolEw1, .., Reg0),
+        new(RorEw1, .., Reg1),
+        new(RclEw1, .., Reg2),
+        new(RcrEw1, .., Reg3),
+        new(ShlEw1, .., Reg4),
+        new(ShrEw1, .., Reg5),
+        new(ShlEw1, .., Reg6), // undocumented "shift arithmetic left"; i.e. copy of /4
+        new(SarEw1, .., Reg7),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeD2 =
     {
         // "group 2" Eb, CL
-        new(RolEbCL, .., REG0),
-        new(RorEbCL, .., REG1),
-        new(RclEbCL, .., REG2),
-        new(RcrEbCL, .., REG3),
-        new(ShlEbCL, .., REG4),
-        new(ShrEbCL, .., REG5),
-        new(ShlEbCL, .., REG6), // undocumented "shift arithmetic left"; i.e. copy of /4
-        new(SarEbCL, .., REG7),
+        new(RolEbCL, .., Reg0),
+        new(RorEbCL, .., Reg1),
+        new(RclEbCL, .., Reg2),
+        new(RcrEbCL, .., Reg3),
+        new(ShlEbCL, .., Reg4),
+        new(ShrEbCL, .., Reg5),
+        new(ShlEbCL, .., Reg6), // undocumented "shift arithmetic left"; i.e. copy of /4
+        new(SarEbCL, .., Reg7),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeD3 =
     {
         // "group 2" Ev, CL
-        new(RolEwCL, .., REG0),
-        new(RorEwCL, .., REG1),
-        new(RclEwCL, .., REG2),
-        new(RcrEwCL, .., REG3),
-        new(ShlEwCL, .., REG4),
-        new(ShrEwCL, .., REG5),
-        new(ShlEwCL, .., REG6), // undocumented "shift arithmetic left"; i.e. copy of /4
-        new(SarEwCL, .., REG7),
+        new(RolEwCL, .., Reg0),
+        new(RorEwCL, .., Reg1),
+        new(RclEwCL, .., Reg2),
+        new(RcrEwCL, .., Reg3),
+        new(ShlEwCL, .., Reg4),
+        new(ShrEwCL, .., Reg5),
+        new(ShlEwCL, .., Reg6), // undocumented "shift arithmetic left"; i.e. copy of /4
+        new(SarEwCL, .., Reg7),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeD4 =
@@ -1130,27 +1130,27 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] OpcodeF6 =
     {
         // "group 3" Eb
-        new(TestEbIb, .., REG0),
-        new(TestEbIb, .., REG1), // undocumented; copy of /0
-        new(NotEb, .., REG2),
-        new(NegEb, .., REG3),
-        new(MulEb, .., REG4),
-        new(ImulEb, .., REG5),
-        new(DivEb, .., REG6),
-        new(IdivEb, .., REG7),
+        new(TestEbIb, .., Reg0),
+        new(TestEbIb, .., Reg1), // undocumented; copy of /0
+        new(NotEb, .., Reg2),
+        new(NegEb, .., Reg3),
+        new(MulEb, .., Reg4),
+        new(ImulEb, .., Reg5),
+        new(DivEb, .., Reg6),
+        new(IdivEb, .., Reg7),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeF7 =
     {
         // "group 3" Ev
-        new(TestEwIw, .., REG0),
-        new(TestEwIw, .., REG1), // undocumented; copy of /0
-        new(NotEw, .., REG2),
-        new(NegEw, .., REG3),
-        new(MulEw, .., REG4),
-        new(ImulEw, .., REG5),
-        new(DivEw, .., REG6),
-        new(IdivEw, .., REG7),
+        new(TestEwIw, .., Reg0),
+        new(TestEwIw, .., Reg1), // undocumented; copy of /0
+        new(NotEw, .., Reg2),
+        new(NegEw, .., Reg3),
+        new(MulEw, .., Reg4),
+        new(ImulEw, .., Reg5),
+        new(DivEw, .., Reg6),
+        new(IdivEw, .., Reg7),
     };
 
     public static readonly OpcodeMapEntry[] OpcodeF8 =
@@ -1192,21 +1192,21 @@ public static class OpcodeMap
     public static readonly OpcodeMapEntry[] OpcodeFE =
     {
         // "group 4"
-        new(IncEb, .., REG0),
-        new(DecEb, .., REG1),
+        new(IncEb, .., Reg0),
+        new(DecEb, .., Reg1),
         // TODO: [8086] operation for /2../7
     };
 
     public static readonly OpcodeMapEntry[] OpcodeFF =
     {
         // "group 5"
-        new(IncEw, .., REG0),
-        new(DecEw, .., REG1),
-        new(CallEw, .., REG2),
-        new(CallMpww, .., REG3),
-        new(JmpEw, .., REG4),
-        new(JmpMpww, .., REG5),
-        new(PushEw, .., REG6),
+        new(IncEw, .., Reg0),
+        new(DecEw, .., Reg1),
+        new(CallEw, .., Reg2),
+        new(CallMpww, .., Reg3),
+        new(JmpEw, .., Reg4),
+        new(JmpMpww, .., Reg5),
+        new(PushEw, .., Reg6),
         // TODO: [8086] operation for /7
     };
 }

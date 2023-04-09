@@ -26,6 +26,8 @@
  * =============================================================================
  */
 
+using System.Runtime.CompilerServices;
+
 namespace Mimix86.Core.Cpu.Decoder;
 
 /// <summary>
@@ -41,7 +43,7 @@ namespace Mimix86.Core.Cpu.Decoder;
 /// <br />
 /// So, for example, the entry for <c>SMSW</c> (store machine status word), is documented as
 ///   <c>0F&#xA0;01&#xA0;/4</c> (register form only).
-/// Therefore, its entry will contain <see cref="MOD_REG" />&#xA0;|&#xA0;<see cref="REG4" />.
+/// Therefore, its entry will contain <see cref="ModReg" />&#xA0;|&#xA0;<see cref="Reg4" />.
 /// </example>
 [SuppressMessage("ReSharper", "ShiftExpressionZeroLeftOperand")]
 public readonly struct DecodeFlags
@@ -71,6 +73,7 @@ public readonly struct DecodeFlags
 
     private const int MASKS_OFFSET = 32;
 
+
     /// <summary>
     /// The "raw" value of this <see cref="DecodeFlags" />.
     /// This contains the <see cref="Masks" /> in the upper 32 bits and the <see cref="Values" /> in the lower 32.
@@ -90,76 +93,80 @@ public readonly struct DecodeFlags
     /// </summary>
     public uint Values => (uint)(RawValue & 0xFFFF_FFFFu);
 
-    /// <summary>
-    /// Construct a new <see cref="DecodeFlags" /> with a given value.
-    /// </summary>
-    /// <param name="value">The value to assign to <see cref="RawValue" />.</param>
-    /// <remarks>
-    /// It is assumed that <paramref name="value" /> is a valid value.
-    /// Passing an invalid one can cause unpredictable behavior.
-    /// </remarks>
-    public DecodeFlags(ulong value)
+    private DecodeFlags(int offset, uint mask, uint value)
     {
-        RawValue = value;
+        ulong masks = (ulong)mask << offset;
+        ulong values = (ulong)value << offset;
+        RawValue = (masks << MASKS_OFFSET) | values;
     }
+
+    private DecodeFlags(ulong rawValue)
+    {
+        RawValue = rawValue;
+    }
+
+
+    /// <summary>No flags.</summary>
+    public static DecodeFlags None { get; } = new(0);
+
 
     #region [0..=2] ModR/M.RM
 
     private const int RM_OFFSET = 0;
-    private const ulong RM_ENABLE = 0b111ul << (RM_OFFSET + MASKS_OFFSET);
+    private const uint RM_MASK = 0b111;
 
     /// <summary>Decode requires ModRM.rm is 0</summary>
-    public const ulong RM0 = RM_ENABLE | (0ul << RM_OFFSET);
+    public static DecodeFlags RM0 { get; } = new(RM_OFFSET, RM_MASK, 0);
     /// <summary>Decode requires ModRM.rm is 1</summary>
-    public const ulong RM1 = RM_ENABLE | (1ul << RM_OFFSET);
+    public static DecodeFlags RM1 { get; } = new(RM_OFFSET, RM_MASK, 1);
     /// <summary>Decode requires ModRM.rm is 2</summary>
-    public const ulong RM2 = RM_ENABLE | (2ul << RM_OFFSET);
+    public static DecodeFlags RM2 { get; } = new(RM_OFFSET, RM_MASK, 2);
     /// <summary>Decode requires ModRM.rm is 3</summary>
-    public const ulong RM3 = RM_ENABLE | (3ul << RM_OFFSET);
+    public static DecodeFlags RM3 { get; } = new(RM_OFFSET, RM_MASK, 3);
     /// <summary>Decode requires ModRM.rm is 4</summary>
-    public const ulong RM4 = RM_ENABLE | (4ul << RM_OFFSET);
+    public static DecodeFlags RM4 { get; } = new(RM_OFFSET, RM_MASK, 4);
     /// <summary>Decode requires ModRM.rm is 5</summary>
-    public const ulong RM5 = RM_ENABLE | (5ul << RM_OFFSET);
+    public static DecodeFlags RM5 { get; } = new(RM_OFFSET, RM_MASK, 5);
     /// <summary>Decode requires ModRM.rm is 6</summary>
-    public const ulong RM6 = RM_ENABLE | (6ul << RM_OFFSET);
+    public static DecodeFlags RM6 { get; } = new(RM_OFFSET, RM_MASK, 6);
     /// <summary>Decode requires ModRM.rm is 7</summary>
-    public const ulong RM7 = RM_ENABLE | (7ul << RM_OFFSET);
+    public static DecodeFlags RM7 { get; } = new(RM_OFFSET, RM_MASK, 7);
 
     #endregion
 
     #region [3..=5] ModR/M.Reg
 
     private const int REG_OFFSET = 2;
-    private const ulong REG_ENABLE = 0b111ul << (REG_OFFSET + MASKS_OFFSET);
+    private const uint REG_MASK = 0b111;
 
     /// <summary>Decode requires ModRM.reg is 0</summary>
-    public const ulong REG0 = REG_ENABLE | (0ul << REG_OFFSET);
+    public static DecodeFlags Reg0 { get; } = new(REG_OFFSET, REG_MASK, 0);
     /// <summary>Decode requires ModRM.reg is 1</summary>
-    public const ulong REG1 = REG_ENABLE | (1ul << REG_OFFSET);
+    public static DecodeFlags Reg1 { get; } = new(REG_OFFSET, REG_MASK, 1);
     /// <summary>Decode requires ModRM.reg is 2</summary>
-    public const ulong REG2 = REG_ENABLE | (2ul << REG_OFFSET);
+    public static DecodeFlags Reg2 { get; } = new(REG_OFFSET, REG_MASK, 2);
     /// <summary>Decode requires ModRM.reg is 3</summary>
-    public const ulong REG3 = REG_ENABLE | (3ul << REG_OFFSET);
+    public static DecodeFlags Reg3 { get; } = new(REG_OFFSET, REG_MASK, 3);
     /// <summary>Decode requires ModRM.reg is 4</summary>
-    public const ulong REG4 = REG_ENABLE | (4ul << REG_OFFSET);
+    public static DecodeFlags Reg4 { get; } = new(REG_OFFSET, REG_MASK, 4);
     /// <summary>Decode requires ModRM.reg is 5</summary>
-    public const ulong REG5 = REG_ENABLE | (5ul << REG_OFFSET);
+    public static DecodeFlags Reg5 { get; } = new(REG_OFFSET, REG_MASK, 5);
     /// <summary>Decode requires ModRM.reg is 6</summary>
-    public const ulong REG6 = REG_ENABLE | (6ul << REG_OFFSET);
+    public static DecodeFlags Reg6 { get; } = new(REG_OFFSET, REG_MASK, 6);
     /// <summary>Decode requires ModRM.reg is 7</summary>
-    public const ulong REG7 = REG_ENABLE | (7ul << REG_OFFSET);
+    public static DecodeFlags Reg7 { get; } = new(REG_OFFSET, REG_MASK, 7);
 
     #endregion
 
     #region [6] ModRM.Mod
 
     private const int MOD_OFFSET = 6;
-    private const ulong MOD_ENABLE = 0b1ul << (MOD_OFFSET + MASKS_OFFSET);
+    private const uint MOD_ENABLE = 1;
 
     /// <summary>Decode requires ModRM.mod is b11 (register form)</summary>
-    public const ulong MOD_REG = MOD_ENABLE | (0ul << MOD_OFFSET);
+    public static DecodeFlags ModReg { get; } = new(MOD_OFFSET, MOD_ENABLE, 0);
     /// <summary>Decode requires ModRM.mod is not b11 (memory form)</summary>
-    public const ulong MOD_MEM = MOD_ENABLE | (1ul << MOD_OFFSET);
+    public static DecodeFlags ModMem { get; } = new(MOD_OFFSET, MOD_ENABLE, 1);
 
     #endregion
 
@@ -176,4 +183,11 @@ public readonly struct DecodeFlags
     // future: VEX.W bit
 
     // future: MOD_MEM_SIB (shorthand for MOD_MEM | RM4 | AS32)
+
+
+#pragma warning disable CS1591
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static DecodeFlags operator |(DecodeFlags lhs, DecodeFlags rhs) =>
+        new(lhs.RawValue | rhs.RawValue);
+#pragma warning restore CS1591
 }

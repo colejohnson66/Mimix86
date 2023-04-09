@@ -38,7 +38,7 @@ namespace Mimix86.Core.Cpu.Decoder;
 /// </remarks>
 public class DecodeFlagsBuilder
 {
-    private ulong _value;
+    private DecodeFlags _value;
 
     /// <summary>
     /// Construct a new, empty, <see cref="DecodeFlagsBuilder" />.
@@ -60,19 +60,19 @@ public class DecodeFlagsBuilder
          */
 
         // mod
-        _value |= (b & 0xC0) is 0xC0 ? DecodeFlags.MOD_REG : DecodeFlags.MOD_MEM;
+        _value |= (b & 0xC0) is 0xC0 ? DecodeFlags.ModReg : DecodeFlags.ModMem;
 
         // reg
         _value |= ((b >> 3) & 7) switch
         {
-            0 => DecodeFlags.REG0,
-            1 => DecodeFlags.REG1,
-            2 => DecodeFlags.REG2,
-            3 => DecodeFlags.REG3,
-            4 => DecodeFlags.REG4,
-            5 => DecodeFlags.REG5,
-            6 => DecodeFlags.REG6,
-            7 => DecodeFlags.REG7,
+            0 => DecodeFlags.Reg0,
+            1 => DecodeFlags.Reg1,
+            2 => DecodeFlags.Reg2,
+            3 => DecodeFlags.Reg3,
+            4 => DecodeFlags.Reg4,
+            5 => DecodeFlags.Reg5,
+            6 => DecodeFlags.Reg6,
+            7 => DecodeFlags.Reg7,
             _ => throw new UnreachableException(),
         };
 
@@ -112,9 +112,6 @@ public class DecodeFlagsBuilder
     /// <returns>
     /// A boolean indicating if the provided opcode flags are a match to the ones extracted from the instruction stream.
     /// </returns>
-    public bool Matches(DecodeFlags opcodeFlags)
-    {
-        uint extractedValues = (uint)(_value & 0xFFFF_FFFFu);
-        return (extractedValues & opcodeFlags.Masks) == opcodeFlags.Values;
-    }
+    public bool Matches(DecodeFlags opcodeFlags) =>
+        (_value.Values & opcodeFlags.Masks) == opcodeFlags.Values;
 }

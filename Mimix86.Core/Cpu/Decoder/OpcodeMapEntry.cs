@@ -41,7 +41,7 @@ public class OpcodeMapEntry
     /// </summary>
     /// <param name="opcode">The ID of the actual opcode.</param>
     public OpcodeMapEntry(Opcode opcode)
-        : this(opcode, 5.., 0)
+        : this(opcode, 5.., DecodeFlags.None)
     { }
     /// <summary>
     /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with a specified supported CPU range and no decode
@@ -52,7 +52,7 @@ public class OpcodeMapEntry
     /// The (inclusive) allowed range of CPU levels for this opcode to be supported.
     /// </param>
     public OpcodeMapEntry(Opcode opcode, Range supportedCpuLevels)
-        : this(opcode, supportedCpuLevels, 0)
+        : this(opcode, supportedCpuLevels, DecodeFlags.None)
     { }
 
     /// <summary>
@@ -60,11 +60,8 @@ public class OpcodeMapEntry
     ///   specified decode flags.
     /// </summary>
     /// <param name="opcode">The ID of the actual opcode.</param>
-    /// <param name="flags">
-    /// The required flags to decode to this opcode entry.
-    /// These will be passed verbatim to the constructor of <see cref="DecodeFlags" />.
-    /// </param>
-    public OpcodeMapEntry(Opcode opcode, ulong flags)
+    /// <param name="flags">The required flags to decode to this opcode entry.</param>
+    public OpcodeMapEntry(Opcode opcode, DecodeFlags flags)
         : this(opcode, 5.., flags)
     { }
 
@@ -76,11 +73,8 @@ public class OpcodeMapEntry
     /// <param name="supportedCpuLevels">
     /// The (inclusive) allowed range of CPU levels for this opcode to be supported.
     /// </param>
-    /// <param name="flags">
-    /// The required flags to decode to this opcode entry.
-    /// These will be passed verbatim to the constructor of <see cref="DecodeFlags" />.
-    /// </param>
-    public OpcodeMapEntry(Opcode opcode, Range supportedCpuLevels, ulong flags)
+    /// <param name="flags">The required flags to decode to this opcode entry.</param>
+    public OpcodeMapEntry(Opcode opcode, Range supportedCpuLevels, DecodeFlags flags)
     {
         if (supportedCpuLevels.Start.Value > 5 || supportedCpuLevels.End.Value > 5)
         {
@@ -94,7 +88,7 @@ public class OpcodeMapEntry
 
         Opcode = opcode;
         SupportedCpuLevels = supportedCpuLevels;
-        Flags = new(flags);
+        Flags = flags;
     }
 
 

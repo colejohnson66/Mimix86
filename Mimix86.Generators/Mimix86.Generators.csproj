@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="Data\Opcodes\*.*" CopyToOutputDirectory="PreserveNewest" />
+        <None Update="Data\*\*.*" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 
 </Project>

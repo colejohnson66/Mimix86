@@ -74,9 +74,9 @@ public static class OpcodesGenerator
 
     private static string FindMimix86Core()
     {
-        // find the folder containing the .git folder
+        // find the folder containing the sln file
         DirectoryInfo current = new(Directory.GetCurrentDirectory());
-        while (current.GetDirectories().All(dir => dir.Name is not ".git"))
+        while (current.GetFiles().All(file => !file.Name.EndsWith(".sln")))
             current = current.Parent!;
 
         return Path.Combine(current.FullName, "Mimix86.Core");
@@ -97,7 +97,7 @@ public static class OpcodesGenerator
         foreach (Node node in parser.Parse())
             KnownOpcodes.Add(new(node));
 
-        string outputPath = Path.Combine(FindMimix86Core(), "Cpu", "Decoder", "Opcode.List.g.cs");
+        string outputPath = Path.Combine(FindMimix86Core(), "Cpu", "Decoder", "Opcode.StaticFields.g.cs");
         using FileStream handle = File.Open(outputPath, FileMode.Create, FileAccess.Write);
         using StreamWriter writer = new(handle);
 
