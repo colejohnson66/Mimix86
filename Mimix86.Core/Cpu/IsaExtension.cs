@@ -1,12 +1,12 @@
 ﻿/* =============================================================================
- * File:   Program.cs
+ * File:   IsaExtension.cs
  * Author: Cole Tobin
  * =============================================================================
  * Purpose:
  *
  * <TODO>
  * =============================================================================
- * Copyright (c) 2022-2023 Cole Tobin
+ * Copyright (c) 2023 Cole Tobin
  *
  * This file is part of Mimix86.
  *
@@ -25,16 +25,22 @@
  * =============================================================================
  */
 
-using Mimix86.Generators.IsaExtension;
-using Mimix86.Generators.Opcodes;
+namespace Mimix86.Core.Cpu;
 
-namespace Mimix86.Generators;
+// CS1591 is XML documentation
+#pragma warning disable CS1591
 
-public static class Program
+/// <summary>
+/// Contains the various ISA extensions.
+/// These are used to determine if certain opcodes can be executed.
+/// </summary>
+public readonly partial struct IsaExtension
 {
-    public static void Main()
+    // index into the bitfield for fast checking of support (compared to an Array.Contains call)
+    private readonly int _bitIndex;
+
+    private IsaExtension(int bitIndex)
     {
-        IsaExtensionGenerator.Run();
-        OpcodesGenerator.Run();
+        _bitIndex = bitIndex;
     }
 }
