@@ -32,7 +32,7 @@ using System.Threading;
 
 namespace DslLib;
 
-internal class Tokenizer
+internal sealed class Tokenizer
 {
     private readonly StringReader _reader;
     private int _peeked = -1;

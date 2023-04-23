@@ -106,7 +106,7 @@ public static class OpcodesGenerator
     private static void ReadInput(string path)
     {
         string contents = File.ReadAllText(path);
-        Parser parser = new(contents);
+        using Parser parser = new(contents);
 
         foreach (Node node in parser.Parse())
             KnownOpcodes.Add(new(node));

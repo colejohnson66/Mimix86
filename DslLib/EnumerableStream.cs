@@ -25,12 +25,13 @@
  * =============================================================================
  */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace DslLib.IO;
+namespace DslLib;
 
-internal class EnumerableStream<T>
+internal sealed class EnumerableStream<T> : IDisposable
 {
     private readonly IEnumerator<T> _input;
     private T? _peek = default;
@@ -67,4 +68,8 @@ internal class EnumerableStream<T>
 
         return _input.Current;
     }
+
+    /// <inheritdoc />
+    public void Dispose() =>
+        _input.Dispose();
 }

@@ -27,4 +27,4 @@
 
 namespace DslLib;
 
-internal record Token(TokenType Type, string? Text = null);
+internal sealed record Token(TokenType Type, string? Text = null);

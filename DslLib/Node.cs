@@ -26,6 +26,7 @@
  */
 
 using JetBrains.Annotations;
+using System;
 using System.Text;
 
 namespace DslLib;
@@ -34,7 +35,7 @@ namespace DslLib;
 /// Represents a single node in the DSL.
 /// </summary>
 [PublicAPI]
-public class Node
+public sealed class Node
 {
     /// <summary>
     /// The contents of this node, if it is textual; <c>null</c> otherwise.
@@ -48,6 +49,7 @@ public class Node
     /// <remarks>If this is <c>null</c>, <see cref="Text" /> is non-<c>null</c>, and vice versa.</remarks>
     public Node[]? Children { get; }
 
+
     internal Node(string contents)
     {
         Text = contents;
@@ -59,6 +61,32 @@ public class Node
         Text = null;
         Children = children;
     }
+
+
+    /// <summary>
+    /// Get the <see cref="Text" /> value of this node.
+    /// </summary>
+    /// <returns>The value of <see cref="Text" />.</returns>
+    /// <exception cref="InvalidOperationException">If <see cref="Text" /> is <c>null</c>.</exception>
+    public string AsTest()
+    {
+        if (Text is null)
+            throw new InvalidOperationException("Cannot treat an array node as text.");
+        return Text;
+    }
+
+    /// <summary>
+    /// Get the <see cref="Children" /> value of this node.
+    /// </summary>
+    /// <returns>The value of <see cref="Children" />.</returns>
+    /// <exception cref="InvalidOperationException">If <see cref="Children" /> is <c>null</c>.</exception>
+    public Node[] AsArray()
+    {
+        if (Children is null)
+            throw new InvalidOperationException("Cannot treat a text node as an array.");
+        return Children;
+    }
+
 
     /// <inheritdoc />
     public override string ToString()

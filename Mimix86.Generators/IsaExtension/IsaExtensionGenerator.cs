@@ -53,7 +53,7 @@ public static class IsaExtensionGenerator
     public static void Run()
     {
         string contents = File.ReadAllText("./Data/IsaExtension/List.m86");
-        Parser parser = new(contents);
+        using Parser parser = new(contents);
 
         string outputPath = Path.Combine(Helpers.Mimix86CorePath, "Cpu", "IsaExtension.StaticFields.g.cs");
         using FileStream handle = File.Open(outputPath, FileMode.Create, FileAccess.Write);

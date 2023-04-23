@@ -25,7 +25,6 @@
  * =============================================================================
  */
 
-using DslLib.IO;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
@@ -37,10 +36,10 @@ namespace DslLib;
 
 /// <summary>
 /// Represents a parser for the DSL.
-/// The DSL syntax is described in <c>README</c>.
+/// The DSL syntax is described in <c>README.md</c>.
 /// </summary>
 [PublicAPI]
-public class Parser
+public sealed class Parser : IDisposable
 {
     private readonly EnumerableStream<Token> _tokens;
 
@@ -144,4 +143,8 @@ public class Parser
 
         return new(nodes.ToArray());
     }
+
+    /// <inheritdoc />
+    public void Dispose() =>
+        _tokens.Dispose();
 }

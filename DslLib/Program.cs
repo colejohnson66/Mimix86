@@ -25,6 +25,7 @@
  * =============================================================================
  */
 
+using JetBrains.Annotations;
 using System;
 
 namespace DslLib;
@@ -43,13 +44,10 @@ internal static class Program
         "# ...\r\n" +
         "DAA [] [27] ..\r\n";
 
+    [UsedImplicitly]
     public static void Main()
     {
-        // Tokenizer tokenizer = new(INPUT);
-        // foreach (Token tok in tokenizer.Tokenize())
-        //     Console.WriteLine(tok);
-
-        Parser parser = new(INPUT);
+        using Parser parser = new(INPUT);
         foreach (Node node in parser.Parse())
             Console.WriteLine(node);
     }
