@@ -287,7 +287,22 @@ OUT  [DX AX] [EF]     ..
 
 
 # Control flow instructions
-Jcc     [Jb]    [60+cc ib]  ..0  # see top of file
+Jcc     [Jb]    [60 ib]  ..0  # see top of file
+Jcc     [Jb]    [61 ib]  ..0  #      ^
+Jcc     [Jb]    [62 ib]  ..0  #      |
+Jcc     [Jb]    [63 ib]  ..0  #      |
+Jcc     [Jb]    [64 ib]  ..0  #      |
+Jcc     [Jb]    [65 ib]  ..0  #      |
+Jcc     [Jb]    [66 ib]  ..0  #      |
+Jcc     [Jb]    [67 ib]  ..0  #      |
+Jcc     [Jb]    [68 ib]  ..0  #      |
+Jcc     [Jb]    [69 ib]  ..0  #      |
+Jcc     [Jb]    [6A ib]  ..0  #      |
+Jcc     [Jb]    [6B ib]  ..0  #      |
+Jcc     [Jb]    [6C ib]  ..0  #      |
+Jcc     [Jb]    [6D ib]  ..0  #      |
+Jcc     [Jb]    [6E ib]  ..0  #      v
+Jcc     [Jb]    [6F ib]  ..0  # see top of file
 Jcc     [Jb]    [70+cc ib]  ..
 CALL    [Apww]  [9A ipw]    ..
 RET     [Iw]    [C0 iw]     ..0  # see top of file

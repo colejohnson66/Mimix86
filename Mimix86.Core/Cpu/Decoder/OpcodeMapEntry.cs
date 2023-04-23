@@ -36,17 +36,51 @@ namespace Mimix86.Core.Cpu.Decoder;
 public class OpcodeMapEntry
 {
     /// <summary>
-    /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with a specified supported CPU range and specified
+    /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with a specified opcode.
+    /// The supported CPU range will be Pentium and newer.
+    /// </summary>
+    /// <param name="opcode">The ID of the actual opcode.</param>
+    public OpcodeMapEntry(Opcode opcode)
+        : this(opcode, 5.., DecodeFlags.None)
+    {
+        // should not be used until P5 support
+        throw new NotSupportedException();
+    }
+
+    /// <summary>
+    /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with a specified opcode and decode flags.
+    /// The supported CPU range will be Pentium and newer.
+    /// </summary>
+    /// <param name="opcode">The ID of the actual opcode.</param>
+    /// <param name="flags">The required flags to decode to this opcode entry.</param>
+    public OpcodeMapEntry(Opcode opcode, DecodeFlags flags)
+        : this(opcode, 5.., flags)
+    {
+        // should not be used until P5 support
+        throw new NotSupportedException();
+    }
+
+    /// <summary>
+    /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with a specified opcode and supported CPU range.
+    /// </summary>
+    /// <param name="opcode">The ID of the actual opcode.</param>
+    /// <param name="supportedCpuLevels">
+    /// The (inclusive) allowed range of CPU levels for this opcode to be supported.
+    /// </param>
+    public OpcodeMapEntry(Opcode opcode, Range supportedCpuLevels)
+        : this(opcode, supportedCpuLevels, DecodeFlags.None)
+    { }
+
+    /// <summary>
+    /// Construct a new <see cref="OpcodeMapEntry" /> for an entry with a specified opcode, supported CPU range, and
     ///   decode flags.
     /// </summary>
     /// <param name="opcode">The ID of the actual opcode.</param>
     /// <param name="supportedCpuLevels">
     /// The (inclusive) allowed range of CPU levels for this opcode to be supported.
     /// </param>
-    /// <param name="flags">
-    /// The required flags to decode to this opcode entry, or <c>null</c> for <see cref="DecodeFlags.None" />.
-    /// </param>
-    public OpcodeMapEntry(Opcode opcode, Range supportedCpuLevels, DecodeFlags? flags = null)
+    /// <param name="flags">The required flags to decode to this opcode entry.</param>
+    public OpcodeMapEntry(Opcode opcode, Range supportedCpuLevels, DecodeFlags flags)
     {
         if (supportedCpuLevels.Start.Value > 5 || supportedCpuLevels.End.Value > 5)
         {
@@ -60,7 +94,7 @@ public class OpcodeMapEntry
 
         Opcode = opcode;
         SupportedCpuLevels = supportedCpuLevels;
-        Flags = flags ?? DecodeFlags.None;
+        Flags = flags;
     }
 
 

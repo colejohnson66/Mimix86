@@ -182,7 +182,7 @@ public readonly struct DecodeFlags
 
     // future: VEX.W bit
 
-    // future: MOD_MEM_SIB (shorthand for MOD_MEM | RM4 | AS32)
+    // future: ModMemSib (shorthand for ModMem | RM4 | AS32)
 
 
 #pragma warning disable CS1591

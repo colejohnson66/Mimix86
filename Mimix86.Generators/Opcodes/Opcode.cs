@@ -41,7 +41,7 @@ public class Opcode :
     private readonly string _mnemonic;
     private readonly string[] _operands;
     public OpcodeEncoding Encoding { get; }
-    public string RequiredCpu { get; }
+    public string RequiredCpuLevelString { get; }
     private readonly bool _lockable;
 
     public string TitleCaseMnemonic { get; }
@@ -56,7 +56,7 @@ public class Opcode :
         _mnemonic = children[0].Text!;
         _operands = children[1].Children!.Select(operand => operand.Text!).ToArray();
         Encoding = new(children[2].Children!.Select(operand => operand.Text!).ToArray());
-        RequiredCpu = children[3].Text!;
+        RequiredCpuLevelString = children[3].Text!;
         _lockable = children.Length > 4 && children[4].Children![0].Text! is "lock";
 
         TitleCaseMnemonic = _mnemonic[0] + _mnemonic[1..].ToLowerInvariant();
@@ -123,16 +123,6 @@ public class Opcode :
 
         builder.Append(");");
         return builder.ToString();
-    }
-
-
-    public string GenerateOpcodeMapMember(string indent)
-    {
-        string str = $"{indent}new({TitleCaseMnemonic}{OperandsString}, {RequiredCpu}";
-        if (_opmapFlags is null)
-            return str + "),";
-
-        return $"{str}, {_opmapFlags}),";
     }
 
 

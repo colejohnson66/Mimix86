@@ -25,14 +25,17 @@
  * =============================================================================
  */
 
+using System;
 using System.Diagnostics;
 using System.IO;
 
 namespace Mimix86.Generators.Opcodes.Encoding;
 
-public sealed class OpcodeEncoding
+public sealed class OpcodeEncoding :
+    IComparable<OpcodeEncoding>
 {
     private readonly byte? _opcode;
+    private readonly string? _opmapEntryName;
 
     public OpcodeEncoding(string[] elements)
     {
@@ -49,6 +52,7 @@ public sealed class OpcodeEncoding
                     if (_opcode is not null)
                         throw new InvalidDataException("Multiple opcode bytes are not allowed.");
                     _opcode = b.Value;
+                    _opmapEntryName = b.Value.ToString("X2");
                     break;
 
                 case EncodingPart.BytePlusRegister b:
@@ -57,6 +61,7 @@ public sealed class OpcodeEncoding
                     if ((b.BaseValue & 7) != 0)
                         throw new InvalidDataException("Opcode bytes with a register must have the three LSB cleared.");
                     _opcode = b.BaseValue;
+                    _opmapEntryName = $"{b.BaseValue:X2}x{b.BaseValue + 7:X2}"; // "40+r" -> "40x47"
                     break;
 
                 case EncodingPart.BytePlusCondition b:
@@ -65,6 +70,7 @@ public sealed class OpcodeEncoding
                     if ((b.BaseValue & 15) != 0)
                         throw new InvalidDataException("Opcode bytes with a condition must have the four LSB cleared.");
                     _opcode = b.BaseValue;
+                    _opmapEntryName = $"{b.BaseValue:X2}x{b.BaseValue + 15:X2}"; // "70+cc" -> "70x7F"
                     break;
 
                 case EncodingPart.ModRM modRM:
@@ -91,17 +97,30 @@ public sealed class OpcodeEncoding
         }
 
         if (_opcode is null)
+        {
+            Debug.Assert(_opmapEntryName is null);
             throw new InvalidDataException("Opcode byte not found.");
+        }
+        Debug.Assert(_opmapEntryName is not null);
     }
 
 
     public byte Opcode => _opcode!.Value; // SAFETY: validated at the end of the constructor
+
+    public string OpcodeMapEntryName => _opmapEntryName!; // SAFETY: validated at the end of the constructor
 
     public EncodingPart.ModRM? ModRM { get; }
 
     public ImmSize? Immediate { get; }
 
 
-    // Sample output:
-    //   public static Opcode AddEbGb { get; } = new("add", new[] { "Eb", "Gb" }, Add.EbGb) { Flags = OpcodeFlags.HasModRM | OpcodeFlags.Lockable }
+    public int CompareTo(OpcodeEncoding? other)
+    {
+        if (ReferenceEquals(this, other))
+            return 0;
+        if (ReferenceEquals(null, other))
+            return 1;
+
+        return string.Compare(OpcodeMapEntryName, other.OpcodeMapEntryName, StringComparison.Ordinal);
+    }
 }

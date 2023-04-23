@@ -190,13 +190,13 @@ public sealed partial class DecodeDescriptor
         /* [8E] */ new(Opcode8E, DecodeModRM),
         /* [8F] */ new(Opcode8F, DecodeModRM),
         /* [90] */ new(Opcode90, DecodeSimple),
-        /* [91] */ new(Opcode91x97, DecodeSimple),
-        /* [92] */ new(Opcode91x97, DecodeSimple),
-        /* [93] */ new(Opcode91x97, DecodeSimple),
-        /* [94] */ new(Opcode91x97, DecodeSimple),
-        /* [95] */ new(Opcode91x97, DecodeSimple),
-        /* [96] */ new(Opcode91x97, DecodeSimple),
-        /* [97] */ new(Opcode91x97, DecodeSimple),
+        /* [91] */ new(Opcode90x97, DecodeSimple),
+        /* [92] */ new(Opcode90x97, DecodeSimple),
+        /* [93] */ new(Opcode90x97, DecodeSimple),
+        /* [94] */ new(Opcode90x97, DecodeSimple),
+        /* [95] */ new(Opcode90x97, DecodeSimple),
+        /* [96] */ new(Opcode90x97, DecodeSimple),
+        /* [97] */ new(Opcode90x97, DecodeSimple),
         /* [98] */ new(Opcode98, DecodeSimple),
         /* [99] */ new(Opcode99, DecodeSimple),
         /* [9A] */ new(Opcode9A, DecodeModRM),
@@ -261,14 +261,14 @@ public sealed partial class DecodeDescriptor
         /* [D5] */ new(OpcodeD5, DecodeImmediate),
         /* [D6] */ new(OpcodeD6, DecodeSimple),
         /* [D7] */ new(OpcodeD7, DecodeSimple),
-        /* [D8] */ new(OpcodeD8, DecodeModRM),
-        /* [D9] */ new(OpcodeD9, DecodeModRM),
-        /* [DA] */ new(OpcodeDA, DecodeModRM),
-        /* [DB] */ new(OpcodeDB, DecodeModRM),
-        /* [DC] */ new(OpcodeDC, DecodeModRM),
-        /* [DD] */ new(OpcodeDD, DecodeModRM),
-        /* [DE] */ new(OpcodeDE, DecodeModRM),
-        /* [DF] */ new(OpcodeDF, DecodeModRM),
+        /* [D8] */ new(null, DecodeModRM), /* OpcodeD8 */
+        /* [D9] */ new(null, DecodeModRM), /* OpcodeD9 */
+        /* [DA] */ new(null, DecodeModRM), /* OpcodeDA */
+        /* [DB] */ new(null, DecodeModRM), /* OpcodeDB */
+        /* [DC] */ new(null, DecodeModRM), /* OpcodeDC */
+        /* [DD] */ new(null, DecodeModRM), /* OpcodeDD */
+        /* [DE] */ new(null, DecodeModRM), /* OpcodeDE */
+        /* [DF] */ new(null, DecodeModRM), /* OpcodeDF */
         /* [E0] */ new(OpcodeE0, DecodeImmediate),
         /* [E1] */ new(OpcodeE1, DecodeImmediate),
         /* [E2] */ new(OpcodeE2, DecodeImmediate),
@@ -286,7 +286,7 @@ public sealed partial class DecodeDescriptor
         /* [EE] */ new(OpcodeEE, DecodeSimple),
         /* [EF] */ new(OpcodeEF, DecodeSimple),
         /* [F0] */ new(null, DecodeUD),
-        /* [F1] */ new(OpcodeF1, DecodeSimple),
+        /* [F1] */ new(null, DecodeSimple), /* OpcodeF1 */
         /* [F2] */ new(null, DecodeUD),
         /* [F3] */ new(null, DecodeUD),
         /* [F4] */ new(OpcodeF4, DecodeSimple),

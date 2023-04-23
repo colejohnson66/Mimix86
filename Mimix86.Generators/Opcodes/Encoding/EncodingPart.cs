@@ -25,6 +25,9 @@
  * =============================================================================
  */
 
+using System;
+using System.Text;
+
 namespace Mimix86.Generators.Opcodes.Encoding;
 
 // simulating a sum type enum
@@ -65,6 +68,32 @@ public record EncodingPart
     {
         public bool HasAnyRequiredFields =>
             Mod is not null || Reg is not null || RM is not null;
+
+        public string BuildDecodeFlagsString()
+        {
+            if (!HasAnyRequiredFields)
+                throw new InvalidOperationException();
+            StringBuilder builder = new();
+
+            if (Mod is not null)
+                builder.Append(Mod is ModRMMod.Memory ? "ModMem" : "ModReg");
+
+            if (Reg is not null)
+            {
+                if (builder.Length is not 0)
+                    builder.Append(" | ");
+                builder.Append($"Reg{Reg}");
+            }
+
+            if (RM is not null)
+            {
+                if (builder.Length is not 0)
+                    builder.Append(" | ");
+                builder.Append($"RM{RM}");
+            }
+
+            return builder.ToString();
+        }
     }
 
     /// <summary>
