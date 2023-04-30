@@ -2,10 +2,6 @@
  * File:   DecodeFlagsBuilder.cs
  * Author: Cole Tobin
  * =============================================================================
- * Purpose:
- *
- * A "builder" helper for DecodeFlags.
- * =============================================================================
  * Copyright (c) 2022-2023 Cole Tobin
  *
  * This file is part of Mimix86.

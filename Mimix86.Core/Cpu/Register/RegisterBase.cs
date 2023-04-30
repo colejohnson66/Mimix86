@@ -2,12 +2,6 @@
  * File:   RegisterBase.cs
  * Author: Cole Tobin
  * =============================================================================
- * Purpose:
- *
- * Contains the base functionality of all registers: access to the raw value,
- *   and the ability to get or set any bit.
- * Also contains specializations for 8- and 16-bit registers.
- * =============================================================================
  * Copyright (c) 2022-2023 Cole Tobin
  *
  * This file is part of Mimix86.

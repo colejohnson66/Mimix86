@@ -2,12 +2,6 @@
  * File:   OpcodesGenerator.cs
  * Author: Cole Tobin
  * =============================================================================
- * Purpose:
- *
- * Generates the following:
- *   - `Opcode.List.g.cs` - all opcodes known to Mimix86
- *   - `OpcodeMap.cs`     - the map of bytes into opcodes (TODO)
- * =============================================================================
  * Copyright (c) 2022-2023 Cole Tobin
  *
  * This file is part of Mimix86.
@@ -114,7 +108,7 @@ public static class OpcodesGenerator
 
     private static void WriteOpcodeList()
     {
-        string outputPath = Path.Combine(Helpers.Mimix86CorePath, "Cpu", "Decoder", "Opcode.StaticFields.g.cs");
+        string outputPath = Path.Combine(Helpers.Mimix86CorePath, "Cpu", "Decoder", "Opcode.List.g.cs");
         using FileStream handle = File.Open(outputPath, FileMode.Create, FileAccess.Write);
         using StreamWriter writer = new(handle);
 

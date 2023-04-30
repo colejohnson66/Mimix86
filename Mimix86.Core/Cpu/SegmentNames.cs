@@ -2,10 +2,6 @@
  * File:   SegmentNames.cs
  * Author: Cole Tobin
  * =============================================================================
- * Purpose:
- *
- * Contains the various architectural segments as an enum.
- * =============================================================================
  * Copyright (c) 2022-2023 Cole Tobin
  *
  * This file is part of Mimix86.

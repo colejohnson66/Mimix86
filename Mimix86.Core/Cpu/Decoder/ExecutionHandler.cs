@@ -2,10 +2,6 @@
  * File:   ExecutionHandler.cs
  * Author: Cole Tobin
  * =============================================================================
- * Purpose:
- *
- * Contains the definition for the `ExecutionHandler` delegate.
- * =============================================================================
  * Copyright (c) 2022-2023 Cole Tobin
  *
  * This file is part of Mimix86.

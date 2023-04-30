@@ -2,11 +2,6 @@
  * File:   MemorySystem.cs
  * Author: Cole Tobin
  * =============================================================================
- * Purpose:
- *
- * Represents the whole memory system.
- * Provides access to read/write/DMA through registered handlers.
- * =============================================================================
  * Copyright (c) 2022-2023 Cole Tobin
  *
  * This file is part of Mimix86.

@@ -2,10 +2,6 @@
  * File:   OpcodeMapEntry.cs
  * Author: Cole Tobin
  * =============================================================================
- * Purpose:
- *
- * A single entry in the opcode maps.
- * =============================================================================
  * Copyright (c) 2022-2023 Cole Tobin
  *
  * This file is part of Mimix86.

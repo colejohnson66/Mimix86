@@ -2,12 +2,6 @@
  * File:   CpuException.cs
  * Author: Cole Tobin
  * =============================================================================
- * Purpose:
- *
- * Represents a CPU exception.
- * For example, one can be used to indicate a divide-by-zero error by passing
- *   `CpuExceptionCode.DE` to the constructor.
- * =============================================================================
  * Copyright (c) 2022-2023 Cole Tobin
  *
  * This file is part of Mimix86.

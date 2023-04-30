@@ -2,12 +2,6 @@
  * File:   PhysicalAddress.cs
  * Author: Cole Tobin
  * =============================================================================
- * Purpose:
- *
- * A thin wrapper around an unsigned integer that represents a physical memory
- *   address.
- * This is to mimic a C-style typedef.
- * =============================================================================
  * Copyright (c) 2022-2023 Cole Tobin
  *
  * This file is part of Mimix86.

@@ -2,12 +2,6 @@
  * File:   NumberExtensions.cs
  * Author: Cole Tobin
  * =============================================================================
- * Purpose:
- *
- * Contains extension methods for any (binary) numerical integer to get or set
- *   any bit.
- * Set methods return the new value.
- * =============================================================================
  * Copyright (c) 2022-2023 Cole Tobin
  *
  * This file is part of Mimix86.

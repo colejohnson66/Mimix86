@@ -2,10 +2,6 @@
  * File:   FlagsRegister.cs
  * Author: Cole Tobin
  * =============================================================================
- * Purpose:
- *
- * Represents the EFLAGS register.
- * =============================================================================
  * Copyright (c) 2022-2023 Cole Tobin
  *
  * This file is part of Mimix86.

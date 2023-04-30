@@ -2,10 +2,6 @@
  * File:   DecodeDescriptorEntry.cs
  * Author: Cole Tobin
  * =============================================================================
- * Purpose:
- *
- * An entry for the decode descriptor.
- * =============================================================================
  * Copyright (c) 2023 Cole Tobin
  *
  * This file is part of Mimix86.
