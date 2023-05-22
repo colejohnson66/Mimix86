@@ -29,7 +29,7 @@ namespace Mimix86.Core.Cpu.Decoder;
 /// <summary>
 /// Represents the byte feeder for the decoder.
 /// </summary>
-public sealed class DecodeByteStream : Stream
+public sealed class DecoderByteStream : Stream
 {
     /// <inheritdoc />
     public override bool CanRead => true;
@@ -65,11 +65,7 @@ public sealed class DecodeByteStream : Stream
         if (offset + count > buffer.Length)
             throw new ArgumentException("Offset plus count must not exceed the bounds of the buffer.");
 
-        // early exit
-        if (count is 0)
-            return 0;
-
-        throw new NotImplementedException();
+        return Read(buffer.AsSpan(offset, count));
     }
 
     /// <inheritdoc />

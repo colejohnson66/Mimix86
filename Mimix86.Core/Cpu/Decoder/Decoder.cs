@@ -43,7 +43,7 @@ public static class Decoder
     // ReSharper disable once ReturnTypeCanBeNotNullable
     public static Instruction? Decode(
         CpuCore core,
-        DecodeByteStream stream,
+        DecoderByteStream stream,
         DecodeDescriptor descriptors) =>
         throw new NotImplementedException();
 
@@ -61,7 +61,7 @@ public static class Decoder
     /// <returns>The decoded opcode, or <see cref="Opcode.Undefined" /> if one doesn't exist.</returns>
     public static Opcode DecodeSimple(
         CpuCore core,
-        DecodeByteStream stream,
+        DecoderByteStream stream,
         uint opByte,
         Instruction instr,
         OpcodeMapEntry[]? opmapEntries) =>
@@ -81,7 +81,7 @@ public static class Decoder
     /// <returns>The decoded opcode, or <see cref="Opcode.Undefined" /> if one doesn't exist.</returns>
     public static Opcode DecodeImmediate(
         CpuCore core,
-        DecodeByteStream stream,
+        DecoderByteStream stream,
         uint opByte,
         Instruction instr,
         OpcodeMapEntry[]? opmapEntries) =>
@@ -101,7 +101,7 @@ public static class Decoder
     /// <returns>The decoded opcode, or <see cref="Opcode.Undefined" /> if one doesn't exist.</returns>
     public static Opcode DecodeModRM(
         CpuCore core,
-        DecodeByteStream stream,
+        DecoderByteStream stream,
         uint opByte,
         Instruction instr,
         OpcodeMapEntry[]? opmapEntries) =>
@@ -122,7 +122,7 @@ public static class Decoder
     /// <returns><see cref="Opcode.Undefined" />, regardless of the parameters.</returns>
     public static Opcode DecodeUD(
         CpuCore core,
-        DecodeByteStream stream,
+        DecoderByteStream stream,
         uint opByte,
         Instruction instr,
         OpcodeMapEntry[]? opmapEntries) =>
