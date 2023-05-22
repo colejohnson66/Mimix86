@@ -28,9 +28,9 @@
 #  - required CPU level
 #  - flags (if any)
 
-# Known flags:
-#  -  lock: This opcode is lockable if, and only if, the destination operand is
-#            memory (i.e., the ModR/M's "mod" bits indicate memory form)
+# Flags:
+#  - lock: This opcode is lockable if, and only if, the destination operand is memory (i.e., the ModR/M's "mod" bits
+#      indicate memory form)
 
 
 # Undefined opcodes on 8086
@@ -49,7 +49,7 @@
 #     - `111110` for [F7]
 #     - `011111` for [FE]
 #     - `111111` for [FF]
-#     - all other [F?] opcodes are handled by random logic
+#     - all other [Fx] opcodes are handled by random logic
 #   - `bbb` is the ModR/M's "reg" field
 #   - `pp` is the microcode "phase" (the "PC")
 #
@@ -57,10 +57,14 @@
 #    - `0000??111`, so all four segment registers match
 #  - Jcc Jb
 #    - `0011?????`, so [60-7F] match
+#  - POP Ev
+#    - `010001111` with no match on "reg" field, so [8F /1] through [8F /7] match
 #  - RET
 #    - `01100?0?0`, so [C0] and [C2] match
 #  - RET
 #    - `0110000?1`, so [C1] and [C3] match
+#  - MOV Eb, Ib and MOV Ew, Iw
+#    - `01100011?` with no match on "reg" field, so [C6 /1] through [C6 /7] and [C7 /1] through [C7 /7] match
 #  - RETF
 #    - `01100?0?0`, so [C8] and [CA] match
 #  - RETF
@@ -78,19 +82,8 @@
 #  - PUSH Ew
 #    - `?1111111?`, so [FE /6], [FE /7], [FF /6], and [FF /7] match
 #
-#  - TODO: [8F /0] POP Ew
-#    - matches `010001111` with no match on "reg" field? (i.e. what if /r is not /0?)
-#  - TODO: [C4 /r] LES
-#    - matches `011000100` with no match on "mod" field? (i.e. what if mod is 3?)
-#  - TODO: [C5 /r] LDS
-#    - matches `011000101` with no match on "mod" field? (i.e. what if mod is 3?)
-#  - TODO: [C6 /0] MOV Eb Ib
-#  - TODO: [C7 /0] MOV Ew Iw
-#    - matches `01100011?` with no match on "reg" field? (i.e. what if /r is not /0?)
-#  - TODO: [FF /3] CALL Mpww
-#    - matches ?? with no match on "mod" field? (i.e. what if mod is 3?)
-#  - TODO: [FF /5] JMP Mpww
-#    - matches ?? with no match on "mod" field? (i.e. what if mod is 3?)
+# All memory-only opcodes (such as LEA, LDS, LES, etc.) do not match on the "reg" field, and will implicitly use
+#   whatever old values are in the internal register pair `IND:TMP`
 
 
 # Prefixes:
@@ -339,7 +332,7 @@ MOV   [Ew Gw]  [89 /r]     ..
 MOV   [Gb Eb]  [8A /r]     ..
 MOV   [Gw Ew]  [8B /r]     ..
 MOV   [Ew Sw]  [8C /r]     ..
-LEA   [Gw M]   [8D /r]     ..
+LEA   [Gw M]   [8D /r]     ..0  # see top of file
 MOV   [Sw Ew]  [8E /r]     ..
 NOP   []       [90]        ..
 XCHG  [AX Zw]  [90+r]      ..
@@ -349,10 +342,10 @@ MOV   [Ob AL]  [A2 ib]     ..
 MOV   [Ow AX]  [A3 iw]     ..
 MOV   [Zb Ib]  [B0+r]      ..
 MOV   [Zw Iw]  [B8+r]      ..
-LES   [Gw Mw]  [C4 m/r]    ..
-LDS   [Gw Mw]  [C5 m/r]    ..
-MOV   [Eb Ib]  [C6 /0 ib]  ..
-MOV   [Ew Iw]  [C7 /0 iw]  ..
+LES   [Gw Mw]  [C4 /r]     ..0  # see top of file
+LDS   [Gw Mw]  [C5 /r]     ..0  # see top of file
+MOV   [Eb Ib]  [C6 /r ib]  ..0  # see top of file
+MOV   [Ew Iw]  [C7 /r iw]  ..0  # see top of file
 XLAT  []       [D7]        ..
 
 
