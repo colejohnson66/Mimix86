@@ -39,7 +39,7 @@ public enum CpuMode
     /// <summary>
     /// This CPU thread is in "virtual-8086 mode".
     /// </summary>
-    /// <remarks><c>CR0.PE</c> (bit 0) is set, but <c>EFLAGS.VM</c> (bit 17) is set.</remarks>
+    /// <remarks><c>CR0.PE</c> (bit 0) and <c>EFLAGS.VM</c> (bit 17) are set.</remarks>
     Virtual8086,
 
     /// <summary>
@@ -52,7 +52,7 @@ public enum CpuMode
     /// This CPU thread is in "compatibility mode".
     /// </summary>
     /// <remarks>
-    /// <c>CR4.PAE</c> (bit 5) and <c>EFER.LME</c> (MSR <c>0xC000_0080</c>; bit 8) are set
+    /// <c>CR4.PAE</c> (bit 5) and <c>EFER.LME</c> (MSR <c>0xC000_0080</c>; bit 8) are set, and <c>CS.L</c> is cleared.
     /// </remarks>
     Compatibility,
 

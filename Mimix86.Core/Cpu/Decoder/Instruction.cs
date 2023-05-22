@@ -40,10 +40,10 @@ public class Instruction
     /// </summary>
     public ExecutionHandler? ExecutionHandler { get; set; } = null;
 
-    /// <summary>
-    /// The raw instruction stream bytes.
-    /// </summary>
-    public byte[] RawInstruction = Array.Empty<byte>();
+    // /// <summary>
+    // /// The raw instruction stream bytes.
+    // /// </summary>
+    // public byte[] RawInstruction = Array.Empty<byte>();
 
     /// <summary>
     /// The segment override prefix.
@@ -54,9 +54,14 @@ public class Instruction
     // future: CET segment
 
     /// <summary>
-    /// The current processor mode.
+    /// The default operand size.
     /// </summary>
-    public int ProcessorModeBitWidth { get; }
+    public int DefaultOperandSize { get; }
+
+    /// <summary>
+    /// The default address size.
+    /// </summary>
+    public int DefaultAddressSize { get; }
 
     // /// <summary>
     // /// Get or set a value indicating if the <c>ASIZE</c> (<c>[67]</c>) prefix was seen.
@@ -110,15 +115,23 @@ public class Instruction
     /// <summary>
     /// Construct a new <see cref="Instruction" /> object with a specified CPU mode bit width.
     /// </summary>
-    /// <param name="processorModeBitWidth">The current bit width of the current CPU mode.</param>
+    /// <param name="defaultOperandSize">The default operand size.</param>
+    /// <param name="defaultAddressSize">The default address size.</param>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// If <paramref name="processorModeBitWidth" /> is not 16, 32, or 64.
+    /// If any of the following are <c>true</c>:
+    /// <list type="bullet">
+    ///   <item>if <paramref name="defaultOperandSize" /> is not 16, 32, or 64</item>
+    ///   <item>if <paramref name="defaultAddressSize" /> is not 16, 32, or 64</item>
+    /// </list>
     /// </exception>
-    public Instruction(int processorModeBitWidth)
+    public Instruction(int defaultOperandSize, int defaultAddressSize)
     {
-        if (processorModeBitWidth is not (16 or 32 or 64))
-            throw new ArgumentOutOfRangeException(nameof(processorModeBitWidth), processorModeBitWidth, "Unknown processor bit width.");
+        if (defaultOperandSize is not (16 or 32 or 64))
+            throw new ArgumentOutOfRangeException(nameof(defaultOperandSize), defaultOperandSize, "Unknown operand size.");
+        if (defaultAddressSize is not (16 or 32 or 64))
+            throw new ArgumentOutOfRangeException(nameof(defaultAddressSize), defaultAddressSize, "Unknown address size.");
 
-        ProcessorModeBitWidth = processorModeBitWidth;
+        DefaultOperandSize = defaultOperandSize;
+        DefaultAddressSize = defaultAddressSize;
     }
 }
