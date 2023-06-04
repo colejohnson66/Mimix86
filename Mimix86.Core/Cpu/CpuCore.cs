@@ -32,13 +32,6 @@ namespace Mimix86.Core.Cpu;
 public class CpuCore
 {
     /// <summary>
-    /// Get the current CPU level.
-    /// This indicates what CPU is being emulated.
-    /// </summary>
-    [SuppressMessage("Performance", "CA1822:Mark members as static")]
-    public int CpuLevel => 0;
-
-    /// <summary>
     /// Get the current operating mode.
     /// </summary>
     [SuppressMessage("Performance", "CA1822:Mark members as static")]
@@ -56,12 +49,9 @@ public class CpuCore
 
 
     /// <summary>
-    /// Raise a CPU exception.
+    /// Raise a CPU trap exception after the current instruction finishes executing.
     /// </summary>
-    /// <param name="exception">The exception being raised.</param>
-    /// <remarks>
-    /// These will not be processed until after the current instruction finishes executing.
-    /// </remarks>
-    public void RaiseException(CpuException exception) =>
+    /// <param name="exception">The trap exception being raised.</param>
+    public void TrapAfterCompletion(CpuException exception) =>
         throw new NotImplementedException();
 }
