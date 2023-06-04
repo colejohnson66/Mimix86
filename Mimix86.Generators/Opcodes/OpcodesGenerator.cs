@@ -47,7 +47,7 @@ public static class OpcodesGenerator
             /// The "undefined" opcode.
             /// Used to signify that the instruction stream decodes to an undefined opcode.
             /// </summary>
-            public static Opcode Undefined { get; } = new("<error>", Execution.Error._, 0, 0);
+            public static Opcode Undefined { get; } = new("<error>", Execution.Error._, 0, null);
 
         """;
 

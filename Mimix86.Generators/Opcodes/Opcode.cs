@@ -114,8 +114,8 @@ public class Opcode :
 
         // immediate
         builder.Append(Encoding.Immediate is not null
-            ? $"ImmSize.{Encoding.Immediate}"
-            : "0");
+            ? $"ImmediateSizes.{Encoding.Immediate}"
+            : "null");
 
         builder.Append(");");
         return builder.ToString();

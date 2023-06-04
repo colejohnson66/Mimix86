@@ -2,7 +2,7 @@
  * File:   Decoder.cs
  * Author: Cole Tobin
  * =============================================================================
- * Copyright (c) 2022-2023 Cole Tobin
+ * Copyright (c) 2023 Cole Tobin
  *
  * This file is part of Mimix86.
  *
@@ -22,170 +22,126 @@
  */
 
 using System;
-using System.Buffers.Binary;
-using System.Diagnostics;
-using System.Linq;
 
 namespace Mimix86.Core.Cpu.Decoder;
 
 /// <summary>
-/// Contains the various decode methods used by <see cref="DecodeDescriptor" />.
+/// Represents an x86 instruction decoder.
 /// </summary>
-public static class Decoder
+[PublicAPI]
+public sealed partial class Decoder
 {
-    /// <summary>
-    /// Decode a single instruction.
-    /// </summary>
-    /// <param name="core">The CPU core that is decoding this instruction.</param>
-    /// <param name="stream">The byte stream beginning at the current instruction.</param>
-    /// <param name="descriptors">The decode descriptors to use when decoding.</param>
-    /// <returns>The decoded instruction object.</returns>
-    // ReSharper disable once ReturnTypeCanBeNotNullable
-    public static Instruction? Decode(
-        CpuCore core,
-        DecoderByteStream stream,
-        DecodeDescriptor descriptors) =>
-        throw new NotImplementedException();
+    private readonly OneBytePrefix?[] _oneBytePrefixes = new OneBytePrefix?[256];
+    // private readonly TwoBytePrefix?[] _twoBytePrefixes = new TwoBytePrefix?[256];
+
+    private readonly DecoderStoreByOpcodeMap<Entry?> _opcodes = new();
 
 
     /// <summary>
-    /// Decode a "simple" instruction; i.e. one that ends at the opcode byte.
+    /// Register a single one-byte prefix to a specified byte value.
     /// </summary>
-    /// <param name="core">The CPU core that is decoding this instruction.</param>
-    /// <param name="stream">The input byte stream.</param>
-    /// <param name="opByte">The byte that triggered the call to the handler (with normalized prefixes).</param>
-    /// <param name="instr">The decoded instruction object currently being built.</param>
-    /// <param name="opmapEntries">
-    /// The opcode map entries for <paramref name="opByte" />, or <c>null</c> if there aren't any.
-    /// </param>
-    /// <returns>The decoded opcode, or <see cref="Opcode.Undefined" /> if one doesn't exist.</returns>
-    public static Opcode DecodeSimple(
-        CpuCore core,
-        DecoderByteStream stream,
-        uint opByte,
-        Instruction instr,
-        OpcodeMapEntry[]? opmapEntries) =>
-        throw new NotImplementedException();
-
-
-    /// <summary>
-    /// Decode an instruction with an immediate, and no ModR/M byte.
-    /// </summary>
-    /// <param name="core">The CPU core that is decoding this instruction.</param>
-    /// <param name="stream">The input byte stream.</param>
-    /// <param name="opByte">The byte that triggered the call to the handler (with normalized prefixes).</param>
-    /// <param name="instr">The decoded instruction object currently being built.</param>
-    /// <param name="opmapEntries">
-    /// The opcode map entries for <paramref name="opByte" />, or <c>null</c> if there aren't any.
-    /// </param>
-    /// <returns>The decoded opcode, or <see cref="Opcode.Undefined" /> if one doesn't exist.</returns>
-    public static Opcode DecodeImmediate(
-        CpuCore core,
-        DecoderByteStream stream,
-        uint opByte,
-        Instruction instr,
-        OpcodeMapEntry[]? opmapEntries) =>
-        throw new NotImplementedException();
-
-
-    /// <summary>
-    /// Decode an instruction with a ModR/M byte and (optionally) an immediate.
-    /// </summary>
-    /// <param name="core">The CPU core that is decoding this instruction.</param>
-    /// <param name="stream">The input byte stream.</param>
-    /// <param name="opByte">The byte that triggered the call to the handler (with normalized prefixes).</param>
-    /// <param name="instr">The decoded instruction object currently being built.</param>
-    /// <param name="opmapEntries">
-    /// The opcode map entries for <paramref name="opByte" />, or <c>null</c> if there aren't any.
-    /// </param>
-    /// <returns>The decoded opcode, or <see cref="Opcode.Undefined" /> if one doesn't exist.</returns>
-    public static Opcode DecodeModRM(
-        CpuCore core,
-        DecoderByteStream stream,
-        uint opByte,
-        Instruction instr,
-        OpcodeMapEntry[]? opmapEntries) =>
-        throw new NotImplementedException();
-
-
-    /// <summary>
-    /// "Decode" an undefined instruction; i.e. one that doesn't exist.
-    /// All parameters are ignored.
-    /// </summary>
-    /// <param name="core">The CPU core that is decoding this instruction.</param>
-    /// <param name="stream">The input byte stream.</param>
-    /// <param name="opByte">The byte that triggered the call to the handler (with normalized prefixes).</param>
-    /// <param name="instr">The decoded instruction object currently being built.</param>
-    /// <param name="opmapEntries">
-    /// The opcode map entries for <paramref name="opByte" />, or <c>null</c> if there aren't any.
-    /// </param>
-    /// <returns><see cref="Opcode.Undefined" />, regardless of the parameters.</returns>
-    public static Opcode DecodeUD(
-        CpuCore core,
-        DecoderByteStream stream,
-        uint opByte,
-        Instruction instr,
-        OpcodeMapEntry[]? opmapEntries) =>
-        throw new NotImplementedException();
-
-    // future: MOV control/debug/test
-
-    // future: 3D Now!
-
-    // future: XOP
-
-    // future: VEX
-
-    // future: EVEX
-
-
-    private static OpcodeMapEntry FindOpcode(CpuCore core, DecodeFlagsBuilder extractedFlags, OpcodeMapEntry[]? opmapEntries)
+    /// <param name="b">The byte value to register the prefix to.</param>
+    /// <param name="prefix">The prefix to register.</param>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// If any of the following are <c>true</c>:
+    /// <list type="bullet">
+    ///   <item>if <paramref name="prefix" /> is unsupported</item>
+    /// </list>
+    /// </exception>
+    /// <exception cref="InvalidOperationException">
+    /// If the specified one-byte prefix is already registered at the specified byte value.
+    /// </exception>
+    public void RegisterOneBytePrefix(byte b, OneBytePrefix prefix)
     {
-        foreach (OpcodeMapEntry entry in opmapEntries ?? Enumerable.Empty<OpcodeMapEntry>())
-        {
-            // check CPU level
-            if (core.CpuLevel < entry.SupportedCpuLevels.Start.Value ||
-                core.CpuLevel > entry.SupportedCpuLevels.End.Value)
-                continue;
+        if (prefix is not (OneBytePrefix.SegmentES or OneBytePrefix.SegmentCS or OneBytePrefix.SegmentDS or OneBytePrefix.SegmentSS) &&
+            prefix is not (OneBytePrefix.Lock or OneBytePrefix.Repne or OneBytePrefix.RepRepe))
+            throw new ArgumentOutOfRangeException(nameof(prefix), prefix, "Prefix is not supported yet.");
 
-            if (extractedFlags.Matches(entry.Flags))
-                return entry;
-        }
+        if (_oneBytePrefixes[b] is not null)
+            throw new InvalidOperationException($"One-byte prefix at [{b:X2}] is already registered as {_oneBytePrefixes[b]}.");
 
-        return OpcodeMap.OpcodeUndefined[0];
+        _oneBytePrefixes[b] = prefix;
     }
 
-    private static bool ReadImmediate(Span<byte> byteStream, Opcode opcode, Instruction instr, out int bytesRead)
+
+    /// <summary>
+    /// Register an opcode map/byte combination.
+    /// </summary>
+    /// <param name="map">The opcode map to register into.</param>
+    /// <param name="b">The byte to register.</param>
+    /// <param name="hasModRM"><c>true</c> if this map/byte combination has a ModR/M byte.</param>
+    /// <param name="immediateSize">
+    /// The size of the immediate for this opcode map/byte combination, or <c>null</c> if there isn't one.
+    /// </param>
+    /// <exception cref="InvalidOperationException">
+    /// If the opcode map/byte combination is already registered.
+    /// </exception>
+    public void RegisterOpcodeMapByte(DecoderMap map, byte b, bool hasModRM, ImmediateSizes? immediateSize)
     {
-        bytesRead = 0;
+        if (_opcodes[map, b] is not null)
+            throw new InvalidOperationException("Opcode map/byte combination is already registered.");
 
-        ImmSize size = opcode.Immediate;
-        if (size is ImmSize.None)
-            return true;
-
-        int bytesToRead = size switch
+        _opcodes[map, b] = new()
         {
-            ImmSize.Byte => 1,
-            ImmSize.Word => 2,
-            ImmSize.PointerWordWord => 4,
-            _ => throw new UnreachableException(),
+            HasModRM = hasModRM,
+            ImmediateSize = immediateSize,
         };
-        if (bytesToRead > byteStream.Length)
-            return false;
+    }
 
-        bytesRead = bytesToRead;
+    /// <summary>
+    /// Register multiple opcode map/byte combinations.
+    /// </summary>
+    /// <param name="map">The map to register into.</param>
+    /// <param name="bytes">The bytes to register.</param>
+    /// <param name="hasModRM"><c>true</c> if these map/byte combinations all have a ModR/M byte.</param>
+    /// <param name="immediateSize">
+    /// The size of the immediate for these opcode map/byte combinations, or <c>null</c> if there isn't one.
+    /// </param>
+    /// <exception cref="ArgumentNullException">If <paramref name="bytes" /> is <c>null</c>.</exception>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <exception cref="InvalidOperationException">
+    /// If any opcode map/bytes combination are already registered.
+    /// </exception>
+    public void RegisterOpcodeMapBytes(DecoderMap map, byte[] bytes, bool hasModRM, ImmediateSizes? immediateSize)
+    {
+        ArgumentNullException.ThrowIfNull(bytes);
+        if (immediateSize.HasValue && !Enum.IsDefined(immediateSize.GetValueOrDefault()))
+            throw new ArgumentOutOfRangeException(nameof(immediateSize), immediateSize, "Unknown immediate size.");
 
-        int read = 0;
-        if (size is ImmSize.PointerWordWord)
+        Span<Entry?> span = _opcodes[map];
+        // ReSharper disable once LoopCanBeConvertedToQuery - can't because Span<T>
+        foreach (byte b in bytes)
         {
-            instr.ImmediateSegment = BinaryPrimitives.ReadUInt16LittleEndian(byteStream);
-            read += 2;
-            bytesToRead -= 2;
+            Entry? entry = span[b];
+            if (entry is not null)
+                throw new InvalidOperationException("Opcode map/byte combination is already registered.");
         }
 
-        Span<byte> immediate = stackalloc byte[2]; // future: up to 8
-        byteStream[read..(read + bytesToRead)].CopyTo(immediate);
-        instr.Immediate = BinaryPrimitives.ReadUInt16LittleEndian(immediate); // future: up to UInt64
-        return true;
+        foreach (byte b in bytes)
+        {
+            span[b] = new()
+            {
+                HasModRM = hasModRM,
+                ImmediateSize = immediateSize,
+            };
+        }
+    }
+
+
+    /// <summary>
+    /// Register a single opcode entry in a specified opcode map/byte combination.
+    /// </summary>
+    /// <param name="map">The map to register into.</param>
+    /// <param name="b">The byte to register into.</param>
+    /// <param name="entry">The entry to register</param>
+    /// <exception cref="ArgumentOutOfRangeException">If <paramref name="map" /> is unsupported.</exception>
+    /// <exception cref="InvalidOperationException">If the opcode map/byte combination is not registered.</exception>
+    public void RegisterOpcodes(DecoderMap map, byte b, DecoderOpcodeEntry entry)
+    {
+        Entry? mapEntry = _opcodes[map, b];
+        if (mapEntry is null)
+            throw new InvalidOperationException("Opcode map/byte combination is not registered.");
+
+        mapEntry.Opcodes.Add(entry);
     }
 }

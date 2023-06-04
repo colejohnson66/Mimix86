@@ -31,12 +31,12 @@ namespace Mimix86.Core.Cpu.Decoder;
 public sealed partial class Opcode :
     IEquatable<Opcode>
 {
-    private Opcode(string mnemonic, ExecutionHandler handler, OpcodeFlags flags, ImmSize imm)
+    private Opcode(string mnemonic, ExecutionHandler handler, OpcodeFlags flags, ImmediateSizes? immediateSize)
     {
         Mnemonic = mnemonic;
         Handler = handler;
         Flags = flags;
-        Immediate = imm;
+        Immediate = immediateSize;
     }
 
 
@@ -58,7 +58,7 @@ public sealed partial class Opcode :
     /// <summary>
     /// The size of the immediate for this opcode.
     /// </summary>
-    public ImmSize Immediate { get; }
+    public ImmediateSizes? Immediate { get; }
 
 
     /// <inheritdoc />

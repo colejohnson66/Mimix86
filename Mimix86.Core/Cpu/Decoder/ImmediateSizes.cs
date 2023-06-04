@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   ImmSize.cs
+ * File:   ImmediateSizes.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2022-2023 Cole Tobin
@@ -24,15 +24,10 @@
 namespace Mimix86.Core.Cpu.Decoder;
 
 /// <summary>
-/// Represents the various immediate sizes for use by <see cref="OpcodeMapEntry" /> objects.
+/// Contains the various immediate sizes for use by the decoder.
 /// </summary>
-public enum ImmSize
+public enum ImmediateSizes
 {
-    /// <summary>
-    /// Indicates a lack of an immediate.
-    /// </summary>
-    None,
-
     /// <summary>
     /// Indicates an immediate that is a single byte.
     /// </summary>
