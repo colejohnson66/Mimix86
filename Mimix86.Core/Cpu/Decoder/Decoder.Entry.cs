@@ -31,6 +31,6 @@ public sealed partial class Decoder
     {
         public bool HasModRM { get; set; }
         public ImmediateSizes? ImmediateSize { get; set; }
-        public List<DecoderOpcodeEntry> Opcodes { get; } = new(16);
+        public List<DecoderInstructionEntry> Instructions { get; } = new(16);
     }
 }

@@ -34,7 +34,7 @@ public sealed partial class Decoder
     private readonly OneBytePrefix?[] _oneBytePrefixes = new OneBytePrefix?[256];
     // private readonly TwoBytePrefix?[] _twoBytePrefixes = new TwoBytePrefix?[256];
 
-    private readonly DecoderStoreByOpcodeMap<Entry?> _opcodes = new();
+    private readonly DecoderStoreByInstructionMap<Entry?> _instructions = new();
 
 
     /// <summary>
@@ -65,23 +65,26 @@ public sealed partial class Decoder
 
 
     /// <summary>
-    /// Register an opcode map/byte combination.
+    /// Register an instruction map/byte combination.
     /// </summary>
-    /// <param name="map">The opcode map to register into.</param>
+    /// <param name="map">The instruction map to register into.</param>
     /// <param name="b">The byte to register.</param>
-    /// <param name="hasModRM"><c>true</c> if this map/byte combination has a ModR/M byte.</param>
+    /// <param name="hasModRM"><c>true</c> if this instruction map/byte combination has a ModR/M byte.</param>
     /// <param name="immediateSize">
-    /// The size of the immediate for this opcode map/byte combination, or <c>null</c> if there isn't one.
+    /// The size of the immediate for this instruction map/byte combination, or <c>null</c> if there isn't one.
     /// </param>
-    /// <exception cref="InvalidOperationException">
-    /// If the opcode map/byte combination is already registered.
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// If <paramref name="immediateSize" /> is non-<c>null</c> but an unknown value.
     /// </exception>
-    public void RegisterOpcodeMapByte(DecoderMap map, byte b, bool hasModRM, ImmediateSizes? immediateSize)
+    /// <exception cref="InvalidOperationException">
+    /// If the instruction map/byte combination is already registered.
+    /// </exception>
+    public void RegisterInstructionMapByte(InstructionMap map, byte b, bool hasModRM, ImmediateSizes? immediateSize)
     {
-        if (_opcodes[map, b] is not null)
-            throw new InvalidOperationException("Opcode map/byte combination is already registered.");
+        if (_instructions[map, b] is not null)
+            throw new InvalidOperationException("Instruction map/byte combination is already registered.");
 
-        _opcodes[map, b] = new()
+        _instructions[map, b] = new()
         {
             HasModRM = hasModRM,
             ImmediateSize = immediateSize,
@@ -89,32 +92,34 @@ public sealed partial class Decoder
     }
 
     /// <summary>
-    /// Register multiple opcode map/byte combinations.
+    /// Register multiple instruction map/byte combinations.
     /// </summary>
-    /// <param name="map">The map to register into.</param>
+    /// <param name="map">The instruction map to register into.</param>
     /// <param name="bytes">The bytes to register.</param>
-    /// <param name="hasModRM"><c>true</c> if these map/byte combinations all have a ModR/M byte.</param>
+    /// <param name="hasModRM"><c>true</c> if these instruction map/byte combinations all have a ModR/M byte.</param>
     /// <param name="immediateSize">
-    /// The size of the immediate for these opcode map/byte combinations, or <c>null</c> if there isn't one.
+    /// The size of the immediate for these instruction map/byte combinations, or <c>null</c> if there isn't one.
     /// </param>
     /// <exception cref="ArgumentNullException">If <paramref name="bytes" /> is <c>null</c>.</exception>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
-    /// <exception cref="InvalidOperationException">
-    /// If any opcode map/bytes combination are already registered.
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// If <paramref name="immediateSize" /> is non-<c>null</c> but an unknown value.
     /// </exception>
-    public void RegisterOpcodeMapBytes(DecoderMap map, byte[] bytes, bool hasModRM, ImmediateSizes? immediateSize)
+    /// <exception cref="InvalidOperationException">
+    /// If any instruction map/bytes combination are already registered.
+    /// </exception>
+    public void RegisterInstructionMapBytes(InstructionMap map, byte[] bytes, bool hasModRM, ImmediateSizes? immediateSize)
     {
         ArgumentNullException.ThrowIfNull(bytes);
         if (immediateSize.HasValue && !Enum.IsDefined(immediateSize.GetValueOrDefault()))
             throw new ArgumentOutOfRangeException(nameof(immediateSize), immediateSize, "Unknown immediate size.");
 
-        Span<Entry?> span = _opcodes[map];
+        Span<Entry?> span = _instructions[map];
         // ReSharper disable once LoopCanBeConvertedToQuery - can't because Span<T>
         foreach (byte b in bytes)
         {
             Entry? entry = span[b];
             if (entry is not null)
-                throw new InvalidOperationException("Opcode map/byte combination is already registered.");
+                throw new InvalidOperationException("Instruction map/byte combination is already registered.");
         }
 
         foreach (byte b in bytes)
@@ -129,19 +134,21 @@ public sealed partial class Decoder
 
 
     /// <summary>
-    /// Register a single opcode entry in a specified opcode map/byte combination.
+    /// Register a single instruction entry in a specified opcode map/byte combination.
     /// </summary>
-    /// <param name="map">The map to register into.</param>
+    /// <param name="map">The instruction map to register into.</param>
     /// <param name="b">The byte to register into.</param>
     /// <param name="entry">The entry to register</param>
     /// <exception cref="ArgumentOutOfRangeException">If <paramref name="map" /> is unsupported.</exception>
-    /// <exception cref="InvalidOperationException">If the opcode map/byte combination is not registered.</exception>
-    public void RegisterOpcodes(DecoderMap map, byte b, DecoderOpcodeEntry entry)
+    /// <exception cref="InvalidOperationException">
+    /// If the instruction map/byte combination is not registered.
+    /// </exception>
+    public void RegisterInstructions(InstructionMap map, byte b, DecoderInstructionEntry entry)
     {
-        Entry? mapEntry = _opcodes[map, b];
+        Entry? mapEntry = _instructions[map, b];
         if (mapEntry is null)
-            throw new InvalidOperationException("Opcode map/byte combination is not registered.");
+            throw new InvalidOperationException("Instruction map/byte combination is not registered.");
 
-        mapEntry.Opcodes.Add(entry);
+        mapEntry.Instructions.Add(entry);
     }
 }

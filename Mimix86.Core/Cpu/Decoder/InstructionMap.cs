@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   DecoderMap.cs
+ * File:   InstructionMap.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2023 Cole Tobin
@@ -24,9 +24,9 @@
 namespace Mimix86.Core.Cpu.Decoder;
 
 /// <summary>
-/// Contains the various maps that opcodes may be in.
+/// Contains the various maps that instructions may be in.
 /// </summary>
-public enum DecoderMap
+public enum InstructionMap
 {
     /// <summary>
     /// Indicates that the relevant opcode is in the (original) one-byte opcode space.
