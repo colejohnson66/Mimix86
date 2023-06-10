@@ -2,7 +2,7 @@
  * File:   Program.cs
  * Author: Cole Tobin
  * =============================================================================
- * Copyright (c) 2022-2023 Cole Tobin
+ * Copyright (c) 2023 Cole Tobin
  *
  * This file is part of Mimix86.
  *
@@ -24,27 +24,43 @@
 using JetBrains.Annotations;
 using System;
 
-namespace DslLib;
+namespace SExpressionReader;
 
 internal static class Program
 {
+    // excerpts from the 8086 definition file
     private const string INPUT =
-        "# 8086+\r\n" +
-        "ADD [Eb Gb] [00 /r] ..\r\n" +
-        "ADD [Ew Gw] [01 /r] .. [OS16]\r\n" +
-        "ADD [Gb Eb] [02 /r] ..\r\n" +
-        "ADD [Gw Ew] [03 /r] .. [OS16]\r\n" +
-        "ADD [AL Ib] [04 ib] ..\r\n" +
-        "ADD [AX Iw] [05 iw] .. [OS16]\r\n" +
-        "PUSH [ES] [06] ..\r\n" +
-        "# ...\r\n" +
-        "DAA [] [27] ..\r\n";
+        """
+        (file
+            (type  cpu-base-set)
+            (name  8086)
+        )
+
+        (one-b-prefixes
+            (26 ES)
+            (2E CS)
+            ; ...
+        )
+
+        (instructions
+            ; ALU instructions of [00-bbb-xxx] (the [00-3F] block)
+            ;   where `bbb` is the operation and `xxx` (0 through 5) is the form
+            (ADD  (Eb Gb)  (00 /r)  (lockable))
+            (ADD  (Ew Gw)  (01 /r)  (lockable))
+            (ADD  (Gb Eb)  (02 /r)  ())
+            (ADD  (Gw Ew)  (03 /r)  ())
+            ; ...
+        )
+        """;
 
     [UsedImplicitly]
     public static void Main()
     {
         using Parser parser = new(INPUT);
-        foreach (Node node in parser.Parse())
+        foreach (AtomOrExpression node in parser.Parse())
             Console.WriteLine(node);
+        // using Tokenizer tokenizer = new(INPUT);
+        // foreach (Token tok in tokenizer.Tokenize())
+        //     Console.WriteLine(tok);
     }
 }

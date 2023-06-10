@@ -2,7 +2,7 @@
  * File:   EnumerableStream.cs
  * Author: Cole Tobin
  * =============================================================================
- * Copyright (c) 2022-2023 Cole Tobin
+ * Copyright (c) 2023 Cole Tobin
  *
  * This file is part of Mimix86.
  *
@@ -25,7 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace DslLib;
+namespace SExpressionReader;
 
 internal sealed class EnumerableStream<T> : IDisposable
 {

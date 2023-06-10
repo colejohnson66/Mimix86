@@ -3,7 +3,7 @@
  * Author: Cole Tobin
  * =============================================================================
 
- * Copyright (c) 2022-2023 Cole Tobin
+ * Copyright (c) 2023 Cole Tobin
  *
  * This file is part of Mimix86.
  *
@@ -25,11 +25,10 @@
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
-namespace DslLib;
+namespace SExpressionReader;
 
 /// <summary>
 /// Represents a parser for the DSL.
@@ -38,6 +37,7 @@ namespace DslLib;
 [PublicAPI]
 public sealed class Parser : IDisposable
 {
+    private readonly Tokenizer _tokenizer;
     private readonly EnumerableStream<Token> _tokens;
 
     /// <summary>
@@ -46,7 +46,8 @@ public sealed class Parser : IDisposable
     /// <param name="input">The string of text to parse.</param>
     public Parser(string input)
     {
-        _tokens = new(new Tokenizer(input).Tokenize());
+        _tokenizer = new(input);
+        _tokens = new(_tokenizer.Tokenize());
     }
 
     private bool Match(TokenType type, [NotNullWhen(true)] out Token? tok)
@@ -66,82 +67,75 @@ public sealed class Parser : IDisposable
     /// Parse out the input string into a series of nodes, one for each line of the input.
     /// </summary>
     /// <returns>
-    /// An <see cref="IEnumerable{T}" /> of <see cref="Node" /> objects, one for each line of the input that contained
-    ///   content.
+    /// An <see cref="IEnumerable{T}" /> of <see cref="Expression" /> objects.
     /// </returns>
-    public IEnumerable<Node> Parse()
+    public IEnumerable<Expression> Parse()
     {
         while (_tokens.Peek() is not null)
         {
-            List<Node> nodes = new();
             while (true)
             {
                 Token? peek = _tokens.Peek();
                 if (peek is null)
                     break; // EOF
 
-                if (peek.Type is TokenType.NewLine)
-                {
-                    _tokens.Next();
-                    break;
-                }
-
-                nodes.Add(GetNextNode());
+                AtomOrExpression aoe = GetNextAtomOrExpression();
+                if (aoe.IsAtom)
+                    throw new InvalidDataException("All top-level parts must be expressions, not atoms.");
+                yield return aoe.AsExpression();
             }
-
-            yield return new(nodes.ToArray());
         }
     }
 
-    private Node GetNextNode()
+    private AtomOrExpression GetNextAtomOrExpression()
     {
-        if (Match(TokenType.NewLine, out _))
-            throw new InvalidOperationException(); // handled above
+        if (Match(TokenType.LeftParenthesis, out _))
+            return GetExpression();
 
-        if (Match(TokenType.LeftBracket, out _))
-            return HandleArray();
-
-        // `HandleArray` ensured this token isn't next
-        if (Match(TokenType.RightBracket, out _))
+        // `GetExpression` ensured this token isn't next
+        if (Match(TokenType.RightParenthesis, out _))
             throw new InvalidDataException();
 
+        if (Match(TokenType.Null, out Token? _))
+            return new Atom(null);
+
         if (Match(TokenType.String, out Token? tok))
-            return HandleString(tok);
+            return GetString(tok);
 
         throw new InvalidDataException();
     }
 
-    private static Node HandleString(Token tok)
-    {
-        Debug.Assert(tok.Text is not null); // all string tokens should have text
-        return new(tok.Text!);
-    }
+    private static Atom GetString(Token tok) =>
+        new(tok.Text);
 
-    private Node HandleArray()
+    private Expression GetExpression()
     {
-        // at this point, the left bracket has been consumed
-        // consume nodes until we see a right bracket
+        // at this point, the open/left parenthesis has been consumed
+        // consume nodes until we see a closing/right parenthesis
 
-        List<Node> nodes = new();
+        List<AtomOrExpression> nodes = new();
         while (true)
         {
             Token? peek = _tokens.Peek();
             if (peek is null)
                 throw new EndOfStreamException();
 
-            if (peek.Type is TokenType.RightBracket)
+            if (peek.Type is TokenType.RightParenthesis)
             {
-                _tokens.Next();
+                _tokens.Next(); // eat the closing parenthesis
                 break;
             }
 
-            nodes.Add(GetNextNode());
+            nodes.Add(GetNextAtomOrExpression());
         }
 
-        return new(nodes.ToArray());
+        return new(nodes);
     }
 
     /// <inheritdoc />
-    public void Dispose() =>
+    public void Dispose()
+    {
         _tokens.Dispose();
+        _tokenizer.Dispose();
+    }
 }

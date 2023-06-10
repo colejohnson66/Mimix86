@@ -1,8 +1,8 @@
 ﻿/* =============================================================================
- * File:   TokenType.cs
+ * File:   Token.cs
  * Author: Cole Tobin
  * =============================================================================
- * Copyright (c) 2022-2023 Cole Tobin
+ * Copyright (c) 2023 Cole Tobin
  *
  * This file is part of Mimix86.
  *
@@ -21,13 +21,6 @@
  * =============================================================================
  */
 
-namespace DslLib;
+namespace SExpressionReader;
 
-internal enum TokenType
-{
-    NewLine = '\n',
-    LeftBracket = '[',
-    RightBracket = ']',
-
-    String = 256,
-}
+internal sealed record Token(TokenType Type, string Text);

@@ -2,7 +2,7 @@
  * File:   Tokenizer.cs
  * Author: Cole Tobin
  * =============================================================================
- * Copyright (c) 2022-2023 Cole Tobin
+ * Copyright (c) 2023 Cole Tobin
  *
  * This file is part of Mimix86.
  *
@@ -21,18 +21,17 @@
  * =============================================================================
  */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Threading;
 
-namespace DslLib;
+namespace SExpressionReader;
 
-internal sealed class Tokenizer
+internal sealed class Tokenizer : IDisposable
 {
     private readonly StringReader _reader;
     private int _peeked = -1;
-    private bool _lastEmittedTokenWasNewLine = true;
 
     public Tokenizer(string input)
     {
@@ -55,7 +54,11 @@ internal sealed class Tokenizer
     private int Read(bool throwOnEof = false)
     {
         if (_peeked >= 0)
-            return Interlocked.Exchange(ref _peeked, -1);
+        {
+            int peek = _peeked;
+            _peeked = -1;
+            return peek;
+        }
 
         int c = _reader.Read();
         while (c is '\r') // normalize new-lines to '\n' form
@@ -82,46 +85,27 @@ internal sealed class Tokenizer
     {
         while (Peek() is not -1)
         {
-            if (Match(' '))
+            // eat all spaces
+            if (Match(' ') || Match('\n'))
                 continue;
 
-            if (Match('\n'))
+            if (Match('('))
             {
-                // don't output consecutive newlines
-                if (_lastEmittedTokenWasNewLine)
-                    continue;
-
-                _lastEmittedTokenWasNewLine = true;
-                yield return new(TokenType.NewLine);
+                yield return new(TokenType.LeftParenthesis, "(");
                 continue;
             }
 
-            if (Match('['))
+            if (Match(')'))
             {
-                _lastEmittedTokenWasNewLine = false;
-                yield return new(TokenType.LeftBracket);
+                yield return new(TokenType.RightParenthesis, ")");
                 continue;
             }
 
-            if (Match(']'))
-            {
-                _lastEmittedTokenWasNewLine = false;
-                yield return new(TokenType.RightBracket);
-                continue;
-            }
-
-            if (Match('#'))
+            if (Match(';'))
             {
                 // comment through the rest of the line
                 while (Read() is not (-1 or '\n'))
                 { }
-
-                // don't output consecutive newlines
-                if (_lastEmittedTokenWasNewLine)
-                    continue;
-
-                _lastEmittedTokenWasNewLine = true;
-                yield return new(TokenType.NewLine);
                 continue;
             }
 
@@ -136,11 +120,10 @@ internal sealed class Tokenizer
 
                     int c = Read(true);
                     if (c is '\\')
-                        c = Read(true);
+                        c = Read(true); // any escaped characters are allowed
                     str.Append((char)c);
                 }
 
-                _lastEmittedTokenWasNewLine = false;
                 yield return new(TokenType.String, str.ToString());
             }
             else
@@ -149,15 +132,23 @@ internal sealed class Tokenizer
                 StringBuilder str = new();
                 while (true)
                 {
-                    if (Peek() is -1 or '\n' or ' ' or '[' or ']')
+                    if (Peek() is -1 or '\n' or ' ' or '(' or ')')
                         break;
 
                     str.Append((char)Read());
                 }
 
-                _lastEmittedTokenWasNewLine = false;
+                // unquoted strings can be null
+                string value = str.ToString();
+                if (value is "NULL")
+                    yield return new(TokenType.Null, "NULL");
+
                 yield return new(TokenType.String, str.ToString());
             }
         }
     }
+
+
+    public void Dispose() =>
+        _reader.Dispose();
 }
