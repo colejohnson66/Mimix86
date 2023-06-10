@@ -70,16 +70,10 @@ public sealed partial class Decoder
     /// <param name="map">The instruction map to register into.</param>
     /// <param name="b">The byte to register.</param>
     /// <param name="hasModRM"><c>true</c> if this instruction map/byte combination has a ModR/M byte.</param>
-    /// <param name="immediateSize">
-    /// The size of the immediate for this instruction map/byte combination, or <c>null</c> if there isn't one.
-    /// </param>
-    /// <exception cref="ArgumentOutOfRangeException">
-    /// If <paramref name="immediateSize" /> is non-<c>null</c> but an unknown value.
-    /// </exception>
     /// <exception cref="InvalidOperationException">
     /// If the instruction map/byte combination is already registered.
     /// </exception>
-    public void RegisterInstructionMapByte(InstructionMap map, byte b, bool hasModRM, ImmediateSizes? immediateSize)
+    public void RegisterInstructionMapByte(InstructionMap map, byte b, bool hasModRM)
     {
         if (_instructions[map, b] is not null)
             throw new InvalidOperationException("Instruction map/byte combination is already registered.");
@@ -87,7 +81,6 @@ public sealed partial class Decoder
         _instructions[map, b] = new()
         {
             HasModRM = hasModRM,
-            ImmediateSize = immediateSize,
         };
     }
 
@@ -97,29 +90,33 @@ public sealed partial class Decoder
     /// <param name="map">The instruction map to register into.</param>
     /// <param name="bytes">The bytes to register.</param>
     /// <param name="hasModRM"><c>true</c> if these instruction map/byte combinations all have a ModR/M byte.</param>
-    /// <param name="immediateSize">
-    /// The size of the immediate for these instruction map/byte combinations, or <c>null</c> if there isn't one.
-    /// </param>
     /// <exception cref="ArgumentNullException">If <paramref name="bytes" /> is <c>null</c>.</exception>
-    /// <exception cref="ArgumentOutOfRangeException">
-    /// If <paramref name="immediateSize" /> is non-<c>null</c> but an unknown value.
-    /// </exception>
     /// <exception cref="InvalidOperationException">
     /// If any instruction map/bytes combination are already registered.
     /// </exception>
-    public void RegisterInstructionMapBytes(InstructionMap map, byte[] bytes, bool hasModRM, ImmediateSizes? immediateSize)
+    public void RegisterInstructionMapBytes(InstructionMap map, byte[] bytes, bool hasModRM)
     {
         ArgumentNullException.ThrowIfNull(bytes);
-        if (immediateSize.HasValue && !Enum.IsDefined(immediateSize.GetValueOrDefault()))
-            throw new ArgumentOutOfRangeException(nameof(immediateSize), immediateSize, "Unknown immediate size.");
 
+        RegisterInstructionMapBytes(map, bytes.AsSpan(), hasModRM);
+    }
+
+    /// <summary>
+    /// Register multiple instruction map/byte combinations.
+    /// </summary>
+    /// <param name="map">The instruction map to register into.</param>
+    /// <param name="bytes">The bytes to register.</param>
+    /// <param name="hasModRM"><c>true</c> if these instruction map/byte combinations all have a ModR/M byte.</param>
+    /// <exception cref="InvalidOperationException">
+    /// If any instruction map/bytes combination are already registered.
+    /// </exception>
+    public void RegisterInstructionMapBytes(InstructionMap map, ReadOnlySpan<byte> bytes, bool hasModRM)
+    {
         Span<Entry?> span = _instructions[map];
-        // ReSharper disable once LoopCanBeConvertedToQuery - can't because Span<T>
         foreach (byte b in bytes)
         {
-            Entry? entry = span[b];
-            if (entry is not null)
-                throw new InvalidOperationException("Instruction map/byte combination is already registered.");
+            if (span[b] is not null)
+                throw new InvalidOperationException($"Instruction map/byte combination ({map}:{b:x2}) is already registered.");
         }
 
         foreach (byte b in bytes)
@@ -127,7 +124,6 @@ public sealed partial class Decoder
             span[b] = new()
             {
                 HasModRM = hasModRM,
-                ImmediateSize = immediateSize,
             };
         }
     }
