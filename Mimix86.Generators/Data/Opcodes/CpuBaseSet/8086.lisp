@@ -30,6 +30,7 @@
 ;         bits indicate memory form)
 ;       How this interacts on the 8086 (which does not feature a #UD exception) when the ModR/M's "mod" bits indicate
 ;         register form is unknown.
+;   - end-trace: This opcode ends a "trace" by altering the control-flow of the instruction stream (e.g. a JMP or CALL).
 
 
 ; Undefined opcodes on 8086
@@ -266,48 +267,48 @@
     (SAR   (Ew CL)  (D3 /7)  ())
 
     ; I/O instructions
-    (IN   (AL Ib) (E4 ib)  ())
-    (IN   (AX Ib) (E5 ib)  ())
-    (OUT  (Ib AL) (E6 ib)  ())
-    (OUT  (Ib AX) (E7 ib)  ())
-    (IN   (AL DX) (EC)  ())
-    (IN   (AX DX) (ED)  ())
-    (OUT  (DX AL) (EE)  ())
-    (OUT  (DX AX) (EF)  ())
+    (IN   (AL Ib)  (E4 ib)  ())
+    (IN   (AX Ib)  (E5 ib)  ())
+    (OUT  (Ib AL)  (E6 ib)  ())
+    (OUT  (Ib AX)  (E7 ib)  ())
+    (IN   (AL DX)  (EC)     ())
+    (IN   (AX DX)  (ED)     ())
+    (OUT  (DX AL)  (EE)     ())
+    (OUT  (DX AX)  (EF)     ())
 
     ; Control flow instructions
-    (Jcc     (Jb)    (60+cc ib)  ())  ; undocumented
-    (Jcc     (Jb)    (70+cc ib)  ())
-    (CALL    (Apww)  (9A ipw)    ())
-    (RET     (Iw)    (C0 iw)     ())  ; undocumented
-    (RET     ()      (C1)        ())  ; undocumented
-    (RET     (Iw)    (C2 iw)     ())
-    (RET     ()      (C3)        ())
-    (RETF    (Iw)    (C8 iw)     ())  ; undocumented
-    (RETF    ()      (C9)        ())  ; undocumented
-    (RETF    (Iw)    (CA iw)     ())
-    (RETF    ()      (CB)        ())
-    (INT     (3)     (CC)        ())
-    (INT     (Ib)    (CD ib)     ())
-    (INTO    ()      (CE)        ())
-    (IRET    ()      (CF)        ())
-    (LOOPNE  (Jb)    (E0 ib)     ())
-    (LOOPE   (Jb)    (E1 ib)     ())
-    (LOOP    (Jb)    (E2 ib)     ())
-    (JCXZ    (Jb)    (E3 ib)     ())
-    (CALL    (Jw)    (E8 iw)     ())
-    (JMP     (Jw)    (E9 iw)     ())
-    (JMP     (Apww)  (EA ipw)    ())
-    (JMP     (Jb)    (EB ib)     ())
-    (HLT     ()      (F4)        ())
-    (CALL    (Eb)    (FE /2)     ())  ; undocumented
-    (CALL    (Mpww)  (FE /3)     ())  ; undocumented
-    (JMP     (Eb)    (FE /4)     ())  ; undocumented
-    (JMP     (Mpww)  (FE /5)     ())  ; undocumented
-    (CALL    (Ew)    (FF /2)     ())
-    (CALL    (Mpww)  (FF /3)     ())  ; register form is undocumented
-    (JMP     (Ew)    (FF /4)     ())
-    (JMP     (Mpww)  (FF /5)     ())  ; register form is undocumented
+    (Jcc     (Jb)    (60+cc ib)  (end-trace))  ; undocumented
+    (Jcc     (Jb)    (70+cc ib)  (end-trace))
+    (CALL    (Apww)  (9A ipw)    (end-trace))
+    (RET     (Iw)    (C0 iw)     (end-trace))  ; undocumented
+    (RET     ()      (C1)        (end-trace))  ; undocumented
+    (RET     (Iw)    (C2 iw)     (end-trace))
+    (RET     ()      (C3)        (end-trace))
+    (RETF    (Iw)    (C8 iw)     (end-trace))  ; undocumented
+    (RETF    ()      (C9)        (end-trace))  ; undocumented
+    (RETF    (Iw)    (CA iw)     (end-trace))
+    (RETF    ()      (CB)        (end-trace))
+    (INT     (3)     (CC)        (end-trace))
+    (INT     (Ib)    (CD ib)     (end-trace))
+    (INTO    ()      (CE)        (end-trace))
+    (IRET    ()      (CF)        (end-trace))
+    (LOOPNE  (Jb)    (E0 ib)     (end-trace))
+    (LOOPE   (Jb)    (E1 ib)     (end-trace))
+    (LOOP    (Jb)    (E2 ib)     (end-trace))
+    (JCXZ    (Jb)    (E3 ib)     (end-trace))
+    (CALL    (Jw)    (E8 iw)     (end-trace))
+    (JMP     (Jw)    (E9 iw)     (end-trace))
+    (JMP     (Apww)  (EA ipw)    (end-trace))
+    (JMP     (Jb)    (EB ib)     (end-trace))
+    (HLT     ()      (F4)        (end-trace))
+    (CALL    (Eb)    (FE /2)     (end-trace))  ; undocumented
+    (CALL    (Mpww)  (FE /3)     (end-trace))  ; undocumented
+    (JMP     (Eb)    (FE /4)     (end-trace))  ; undocumented
+    (JMP     (Mpww)  (FE /5)     (end-trace))  ; undocumented
+    (CALL    (Ew)    (FF /2)     (end-trace))
+    (CALL    (Mpww)  (FF /3)     (end-trace))  ; register form is undocumented
+    (JMP     (Ew)    (FF /4)     (end-trace))
+    (JMP     (Mpww)  (FF /5)     (end-trace))  ; register form is undocumented
 
 
     ; MOV and related instructions
@@ -377,5 +378,5 @@
 
     ; FPU instructions
     ; TODO: [D8-DF] ESC block (in FpuBaseSet/8087.m86)
-    (WAIT   ()      (9B)  ())
+    (WAIT  ()  (9B)  ())
 )

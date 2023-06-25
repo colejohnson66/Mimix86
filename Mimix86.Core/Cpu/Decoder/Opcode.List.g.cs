@@ -108,16 +108,19 @@ public sealed partial class Opcode
     public static Opcode AndGwEw { get; } = new("and", Execution.And.GwEw, 0, null);
 
     /// <summary>The <c>CALL Apww</c> opcode.</summary>
-    public static Opcode CallApww { get; } = new("call", Execution.Call.Apww, 0, ImmediateSizes.PointerWordWord);
+    public static Opcode CallApww { get; } = new("call", Execution.Call.Apww, OpcodeFlags.EndTrace, ImmediateSizes.PointerWordWord);
+
+    /// <summary>The <c>CALL Eb</c> opcode.</summary>
+    public static Opcode CallEb { get; } = new("call", Execution.Call.Eb, OpcodeFlags.EndTrace, null);
 
     /// <summary>The <c>CALL Ew</c> opcode.</summary>
-    public static Opcode CallEw { get; } = new("call", Execution.Call.Ew, 0, null);
+    public static Opcode CallEw { get; } = new("call", Execution.Call.Ew, OpcodeFlags.EndTrace, null);
 
     /// <summary>The <c>CALL Jw</c> opcode.</summary>
-    public static Opcode CallJw { get; } = new("call", Execution.Call.Jw, 0, ImmediateSizes.Word);
+    public static Opcode CallJw { get; } = new("call", Execution.Call.Jw, OpcodeFlags.EndTrace, ImmediateSizes.Word);
 
     /// <summary>The <c>CALL Mpww</c> opcode.</summary>
-    public static Opcode CallMpww { get; } = new("call", Execution.Call.Mpww, 0, null);
+    public static Opcode CallMpww { get; } = new("call", Execution.Call.Mpww, OpcodeFlags.EndTrace, null);
 
     /// <summary>The <c>CBW</c> opcode.</summary>
     public static Opcode Cbw { get; } = new("cbw", Execution.Cbw._, 0, null);
@@ -192,7 +195,7 @@ public sealed partial class Opcode
     public static Opcode DivEw { get; } = new("div", Execution.Div.Ew, 0, null);
 
     /// <summary>The <c>HLT</c> opcode.</summary>
-    public static Opcode Hlt { get; } = new("hlt", Execution.Hlt._, 0, null);
+    public static Opcode Hlt { get; } = new("hlt", Execution.Hlt._, OpcodeFlags.EndTrace, null);
 
     /// <summary>The <c>IDIV Eb</c> opcode.</summary>
     public static Opcode IdivEb { get; } = new("idiv", Execution.Idiv.Eb, 0, null);
@@ -228,37 +231,40 @@ public sealed partial class Opcode
     public static Opcode IncZw { get; } = new("inc", Execution.Inc.Zw, 0, null);
 
     /// <summary>The <c>INT 3</c> opcode.</summary>
-    public static Opcode Int3 { get; } = new("int", Execution.Int._3, 0, null);
+    public static Opcode Int3 { get; } = new("int", Execution.Int._3, OpcodeFlags.EndTrace, null);
 
     /// <summary>The <c>INT Ib</c> opcode.</summary>
-    public static Opcode IntIb { get; } = new("int", Execution.Int.Ib, 0, ImmediateSizes.Byte);
+    public static Opcode IntIb { get; } = new("int", Execution.Int.Ib, OpcodeFlags.EndTrace, ImmediateSizes.Byte);
 
     /// <summary>The <c>INTO</c> opcode.</summary>
-    public static Opcode Into { get; } = new("into", Execution.Into._, 0, null);
+    public static Opcode Into { get; } = new("into", Execution.Into._, OpcodeFlags.EndTrace, null);
 
     /// <summary>The <c>IRET</c> opcode.</summary>
-    public static Opcode Iret { get; } = new("iret", Execution.Iret._, 0, null);
+    public static Opcode Iret { get; } = new("iret", Execution.Iret._, OpcodeFlags.EndTrace, null);
 
     /// <summary>The <c>JCXZ Jb</c> opcode.</summary>
-    public static Opcode JcxzJb { get; } = new("jcxz", Execution.Jcxz.Jb, 0, ImmediateSizes.Byte);
+    public static Opcode JcxzJb { get; } = new("jcxz", Execution.Jcxz.Jb, OpcodeFlags.EndTrace, ImmediateSizes.Byte);
 
     /// <summary>The <c>JMP Apww</c> opcode.</summary>
-    public static Opcode JmpApww { get; } = new("jmp", Execution.Jmp.Apww, 0, ImmediateSizes.PointerWordWord);
+    public static Opcode JmpApww { get; } = new("jmp", Execution.Jmp.Apww, OpcodeFlags.EndTrace, ImmediateSizes.PointerWordWord);
+
+    /// <summary>The <c>JMP Eb</c> opcode.</summary>
+    public static Opcode JmpEb { get; } = new("jmp", Execution.Jmp.Eb, OpcodeFlags.EndTrace, null);
 
     /// <summary>The <c>JMP Ew</c> opcode.</summary>
-    public static Opcode JmpEw { get; } = new("jmp", Execution.Jmp.Ew, 0, null);
+    public static Opcode JmpEw { get; } = new("jmp", Execution.Jmp.Ew, OpcodeFlags.EndTrace, null);
 
     /// <summary>The <c>JMP Jb</c> opcode.</summary>
-    public static Opcode JmpJb { get; } = new("jmp", Execution.Jmp.Jb, 0, ImmediateSizes.Byte);
+    public static Opcode JmpJb { get; } = new("jmp", Execution.Jmp.Jb, OpcodeFlags.EndTrace, ImmediateSizes.Byte);
 
     /// <summary>The <c>JMP Jw</c> opcode.</summary>
-    public static Opcode JmpJw { get; } = new("jmp", Execution.Jmp.Jw, 0, ImmediateSizes.Word);
+    public static Opcode JmpJw { get; } = new("jmp", Execution.Jmp.Jw, OpcodeFlags.EndTrace, ImmediateSizes.Word);
 
     /// <summary>The <c>JMP Mpww</c> opcode.</summary>
-    public static Opcode JmpMpww { get; } = new("jmp", Execution.Jmp.Mpww, 0, null);
+    public static Opcode JmpMpww { get; } = new("jmp", Execution.Jmp.Mpww, OpcodeFlags.EndTrace, null);
 
     /// <summary>The <c>Jcc Jb</c> opcode.</summary>
-    public static Opcode JccJb { get; } = new("jcc", Execution.Jcc.Jb, 0, ImmediateSizes.Byte);
+    public static Opcode JccJb { get; } = new("jcc", Execution.Jcc.Jb, OpcodeFlags.EndTrace, ImmediateSizes.Byte);
 
     /// <summary>The <c>LAHF</c> opcode.</summary>
     public static Opcode Lahf { get; } = new("lahf", Execution.Lahf._, 0, null);
@@ -279,13 +285,13 @@ public sealed partial class Opcode
     public static Opcode Lodsw { get; } = new("lodsw", Execution.Lodsw._, 0, null);
 
     /// <summary>The <c>LOOP Jb</c> opcode.</summary>
-    public static Opcode LoopJb { get; } = new("loop", Execution.Loop.Jb, 0, ImmediateSizes.Byte);
+    public static Opcode LoopJb { get; } = new("loop", Execution.Loop.Jb, OpcodeFlags.EndTrace, ImmediateSizes.Byte);
 
     /// <summary>The <c>LOOPE Jb</c> opcode.</summary>
-    public static Opcode LoopeJb { get; } = new("loope", Execution.Loope.Jb, 0, ImmediateSizes.Byte);
+    public static Opcode LoopeJb { get; } = new("loope", Execution.Loope.Jb, OpcodeFlags.EndTrace, ImmediateSizes.Byte);
 
     /// <summary>The <c>LOOPNE Jb</c> opcode.</summary>
-    public static Opcode LoopneJb { get; } = new("loopne", Execution.Loopne.Jb, 0, ImmediateSizes.Byte);
+    public static Opcode LoopneJb { get; } = new("loopne", Execution.Loopne.Jb, OpcodeFlags.EndTrace, ImmediateSizes.Byte);
 
     /// <summary>The <c>MOV AL, Ob</c> opcode.</summary>
     public static Opcode MovALOb { get; } = new("mov", Execution.Mov.ALOb, 0, ImmediateSizes.Byte);
@@ -425,6 +431,9 @@ public sealed partial class Opcode
     /// <summary>The <c>PUSH ES</c> opcode.</summary>
     public static Opcode PushES { get; } = new("push", Execution.Push.ES, 0, null);
 
+    /// <summary>The <c>PUSH Eb</c> opcode.</summary>
+    public static Opcode PushEb { get; } = new("push", Execution.Push.Eb, 0, null);
+
     /// <summary>The <c>PUSH Ew</c> opcode.</summary>
     public static Opcode PushEw { get; } = new("push", Execution.Push.Ew, 0, null);
 
@@ -462,16 +471,16 @@ public sealed partial class Opcode
     public static Opcode RcrEwCL { get; } = new("rcr", Execution.Rcr.EwCL, 0, null);
 
     /// <summary>The <c>RET</c> opcode.</summary>
-    public static Opcode Ret { get; } = new("ret", Execution.Ret._, 0, null);
+    public static Opcode Ret { get; } = new("ret", Execution.Ret._, OpcodeFlags.EndTrace, null);
 
     /// <summary>The <c>RET Iw</c> opcode.</summary>
-    public static Opcode RetIw { get; } = new("ret", Execution.Ret.Iw, 0, ImmediateSizes.Word);
+    public static Opcode RetIw { get; } = new("ret", Execution.Ret.Iw, OpcodeFlags.EndTrace, ImmediateSizes.Word);
 
     /// <summary>The <c>RETF</c> opcode.</summary>
-    public static Opcode Retf { get; } = new("retf", Execution.Retf._, 0, null);
+    public static Opcode Retf { get; } = new("retf", Execution.Retf._, OpcodeFlags.EndTrace, null);
 
     /// <summary>The <c>RETF Iw</c> opcode.</summary>
-    public static Opcode RetfIw { get; } = new("retf", Execution.Retf.Iw, 0, ImmediateSizes.Word);
+    public static Opcode RetfIw { get; } = new("retf", Execution.Retf.Iw, OpcodeFlags.EndTrace, ImmediateSizes.Word);
 
     /// <summary>The <c>ROL Eb, 1</c> opcode.</summary>
     public static Opcode RolEb1 { get; } = new("rol", Execution.Rol.Eb1, 0, null);

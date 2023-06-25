@@ -34,6 +34,9 @@ public static class Jmp
     public static void Apww(CpuCore cpu, Instruction instr) =>
         throw new NotImplementedException();
 
+    public static void Eb(CpuCore cpu, Instruction instr) =>
+        throw new NotImplementedException();
+
     public static void Ew(CpuCore cpu, Instruction instr) =>
         throw new NotImplementedException();
 

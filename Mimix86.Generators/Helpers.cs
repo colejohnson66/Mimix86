@@ -24,6 +24,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace Mimix86.Generators;
 
@@ -39,4 +40,28 @@ public static class Helpers
         return Path.Combine(current.FullName, "Mimix86.Core");
     });
     public static string Mimix86CorePath => Mimix86CorePathLazy.Value;
+
+
+    public static string KebabCaseToPascalCase(string input)
+    {
+        // this will throw if the input is empty or contains sequential skewer portions
+        // as conforming strings should never do such things, no validation is performed
+
+        // result will either be the same length, or equal to the input's
+        //   (unless it starts with a digit, then add one for underscore)
+        StringBuilder builder = new(input.Length + 1);
+        string[] meats = input.Split('-');
+
+        if (char.IsDigit(meats[0][0]))
+            builder.Append('_'); // variable/property names can't start with digits
+
+        foreach (string meat in meats)
+        {
+            char start = char.ToUpperInvariant(meat[0]);
+            builder.Append(start);
+            builder.Append(meat.AsSpan(1));
+        }
+
+        return builder.ToString();
+    }
 }

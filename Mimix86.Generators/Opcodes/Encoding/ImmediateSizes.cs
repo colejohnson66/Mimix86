@@ -1,8 +1,8 @@
 ﻿/* =============================================================================
- * File:   OpcodeFlags.cs
+ * File:   ImmediateSizes.cs
  * Author: Cole Tobin
  * =============================================================================
- * Copyright (c) 2022-2023 Cole Tobin
+ * Copyright (c) 2023 Cole Tobin
  *
  * This file is part of Mimix86.
  *
@@ -21,25 +21,13 @@
  * =============================================================================
  */
 
-using System;
+namespace Mimix86.Generators.Opcodes.Encoding;
 
-namespace Mimix86.Core.Cpu.Decoder;
-
-/// <summary>
-/// Various flags used to direct usage of this opcode post-decoding.
-/// </summary>
-[Flags]
-public enum OpcodeFlags
+// these MUST be kept in sync with `Mimix86.Core.Cpu.Decoder.ImmediateSizes`
+public enum ImmediateSizes
 {
-    /// <summary>
-    /// Indicates that this opcode is "lockable" if the ModR/M byte signifies a memory form.
-    /// </summary>
-    Lockable = 1 << 0,
-
-    /// <summary>
-    /// Indicates that this opcode ends an instruction "trace".
-    /// This indicates that the opcode changes the control flow of the instruction stream, such as through a jump.
-    /// </summary>
-    // TODO: can other things end a trace?
-    EndTrace = 1 << 1,
+    Byte,
+    Word,
+    WordByte,
+    PointerWordWord,
 }

@@ -32,6 +32,7 @@ namespace SExpressionReader;
 /// </summary>
 [PublicAPI]
 public readonly struct Atom
+    : IEquatable<Atom>
 {
     private readonly object? _value;
 
@@ -94,6 +95,39 @@ public readonly struct Atom
     }
 
 
+    // CS1591 is documentation comments
+#pragma warning disable CS1591
+
+    public static bool operator ==(Atom lhs, Atom rhs)
+    {
+        object? left = lhs._value;
+        object? right = rhs._value;
+        if (ReferenceEquals(left, right))
+            return true;
+        if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
+            return false;
+
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Atom left, Atom right) =>
+        !(left == right);
+
+#pragma warning restore CS1591
+
+    /// <inheritdoc />
+    public override bool Equals(object? obj) =>
+        obj is Atom other && this == other;
+
+    /// <inheritdoc />
+    public bool Equals(Atom other) =>
+        this == other;
+
+    /// <inheritdoc />
+    public override int GetHashCode() =>
+        _value?.GetHashCode() ?? 0;
+
+
     /// <inheritdoc />
     public override string ToString()
     {
@@ -102,7 +136,7 @@ public readonly struct Atom
 
         string? str = _value.ToString();
         if (str is null)
-            return "<>ERR<>";
+            return "";
 
         if (str.Contains('"'))
             return $"\"{str.Replace("\"", "\\\"")}\""; // quote it and escape inner quotes

@@ -102,6 +102,46 @@ public readonly struct AtomOrExpression
         throw new InvalidCastException("Cannot cast an atom to an expression.");
     }
 
+    /// <summary>
+    /// Try to get this <see cref="AtomOrExpression" /> as an atom.
+    /// </summary>
+    /// <param name="atom">
+    /// If this <see cref="AtomOrExpression" /> is an atom, this will contain the internal value as an atom.
+    /// If this is an expression, this is undefined.
+    /// </param>
+    /// <returns><c>true</c> if this <see cref="AtomOrExpression" /> is an atom; <c>false</c> otherwise.</returns>
+    public bool TryAsAtom(out Atom atom)
+    {
+        if (IsAtom)
+        {
+            atom = _atom;
+            return true;
+        }
+
+        atom = default;
+        return false;
+    }
+
+    /// <summary>
+    /// Try to get this <see cref="AtomOrExpression" /> as an expression.
+    /// </summary>
+    /// <param name="expression">
+    /// If this <see cref="AtomOrExpression" /> is an expression, this will contain the internal value as an expression.
+    /// If this is an atom, this is undefined.
+    /// </param>
+    /// <returns><c>true</c> if this <see cref="AtomOrExpression" /> is an expression; <c>false</c> otherwise.</returns>
+    public bool TryAsExpression([NotNullWhen(true)] out Expression? expression)
+    {
+        if (IsExpression)
+        {
+            expression = _expression;
+            return true;
+        }
+
+        expression = null;
+        return false;
+    }
+
 
     /// <inheritdoc />
     public override string ToString() =>

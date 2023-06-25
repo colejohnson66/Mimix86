@@ -7,12 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Mimix86.Core\Mimix86.Core.csproj" />
         <ProjectReference Include="..\SExpressionReader\SExpressionReader.csproj" />
     </ItemGroup>
 
     <ItemGroup>
         <None Update="Data\*\*.*" CopyToOutputDirectory="PreserveNewest" />
+        <None Update="Data\*\*\*.*" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 
 </Project>

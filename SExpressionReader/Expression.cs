@@ -22,6 +22,7 @@
  */
 
 using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace SExpressionReader;
 ///   another expression.
 /// </summary>
 [PublicAPI]
-public sealed class Expression : IEnumerable<AtomOrExpression>
+public sealed class Expression : IReadOnlyList<AtomOrExpression>
 {
     private readonly AtomOrExpression[] _children;
 
@@ -43,6 +44,21 @@ public sealed class Expression : IEnumerable<AtomOrExpression>
     {
         _children = children.ToArray();
     }
+
+
+    /// <inheritdoc />
+    public AtomOrExpression this[int index]
+    {
+        get
+        {
+            if (index < 0 || index >= _children.Length)
+                throw new ArgumentOutOfRangeException(nameof(index), index, "Index must be positive and less than the number of children.");
+            return _children[index];
+        }
+    }
+
+    /// <inheritdoc />
+    public int Count => _children.Length;
 
 
     /// <inheritdoc />

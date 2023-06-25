@@ -31,6 +31,9 @@ namespace Mimix86.Core.Cpu.Execution;
 /// </summary>
 public static class Push
 {
+    public static void Eb(CpuCore cpu, Instruction instr) =>
+        throw new NotImplementedException();
+
     public static void Ew(CpuCore cpu, Instruction instr) =>
         throw new NotImplementedException();
 

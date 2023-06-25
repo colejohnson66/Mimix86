@@ -78,9 +78,11 @@ public sealed class OpcodeEncoding :
                 case EncodingPart.Immediate imm:
                     if (Immediate is not null)
                     {
-                        if (Opcode is not 0xC8 || Immediate is not ImmSize.Word || imm.Size is not ImmSize.Byte)
-                            throw new InvalidDataException("Multiple immediates are only allowed for ENTER.");
-                        Immediate = ImmSize.WordByte;
+                        // `ENTER Iw, Ib` is the only opcode with two immediates
+                        // validate that this is indeed `ENTER Iw, Ib`, and, if so, override the size to the correct enum member
+                        if (Opcode is not 0xC8 || Immediate is not ImmediateSizes.Word || imm.Size is not ImmediateSizes.Byte)
+                            throw new InvalidDataException("Multiple immediates are only allowed for ENTER Iw, Ib.");
+                        Immediate = ImmediateSizes.WordByte;
                         break;
                     }
 
@@ -107,7 +109,7 @@ public sealed class OpcodeEncoding :
 
     public EncodingPart.ModRM? ModRM { get; }
 
-    public ImmSize? Immediate { get; }
+    public ImmediateSizes? Immediate { get; }
 
 
     public int CompareTo(OpcodeEncoding? other)

@@ -1,8 +1,8 @@
 ﻿/* =============================================================================
- * File:   Opcode.cs
+ * File:   Instruction.cs
  * Author: Cole Tobin
  * =============================================================================
- * Copyright (c) 2022-2023 Cole Tobin
+ * Copyright (c) 2023 Cole Tobin
  *
  * This file is part of Mimix86.
  *
@@ -21,55 +21,88 @@
  * =============================================================================
  */
 
-using DslLib;
 using Mimix86.Generators.Opcodes.Encoding;
+using SExpressionReader;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
 namespace Mimix86.Generators.Opcodes;
 
-public class Opcode :
-    IComparable<Opcode>,
-    IEquatable<Opcode>
+public sealed class Instruction :
+    IComparable<Instruction>,
+    IEquatable<Instruction>
 {
     private readonly string _mnemonic;
     private readonly string[] _operands;
-    public OpcodeEncoding Encoding { get; }
-    public string RequiredCpuLevelString { get; }
     private readonly bool _lockable;
+    private readonly bool _endTrace;
+
+    private readonly string? _decodeFlags;
+
+    public OpcodeEncoding Encoding { get; }
 
     public string TitleCaseMnemonic { get; }
     public string OperandsString { get; }
 
-    private readonly string? _opmapFlags;
 
-    public Opcode(Node node)
+    public Instruction(Expression node)
     {
-        Node[] children = node.Children!;
+        if (node.Count is not 4)
+            throw new InvalidDataException("Instruction entry is not the right length.");
 
-        _mnemonic = children[0].Text!;
-        _operands = children[1].Children!.Select(operand => operand.Text!).ToArray();
-        Encoding = new(children[2].Children!.Select(operand => operand.Text!).ToArray());
-        RequiredCpuLevelString = children[3].Text!;
-        _lockable = children.Length > 4 && children[4].Children![0].Text! is "lock";
+        if (!node[0].TryAsAtom(out Atom mnemonic))
+            throw new InvalidDataException("Instruction mnemonic must be an atom.");
+        if (!node[1].TryAsExpression(out Expression? operands))
+            throw new InvalidDataException("Instruction operands must be an expression.");
+        if (!node[2].TryAsExpression(out Expression? encoding))
+            throw new InvalidDataException("Instruction encoding must be an expression.");
+        if (!node[3].TryAsExpression(out Expression? flags))
+            throw new InvalidDataException("Instruction flags must be an expression.");
+
+        _mnemonic = mnemonic.As<string>();
+        _operands = operands.Select(aoe => aoe.AsAtom().As<string>()).ToArray();
+        Encoding = new(encoding.Select(aoe => aoe.AsAtom().As<string>()).ToArray());
+
+        foreach (AtomOrExpression aoe in flags)
+        {
+            if (!aoe.TryAsAtom(out Atom atom) || !atom.TryAs(out string? str))
+                throw new InvalidDataException("Instruction flags must be strings.");
+            if (str is "lockable")
+            {
+                if (_lockable)
+                    throw new InvalidDataException("Lockable flag must only be specified once.");
+                _lockable = true;
+            }
+            else if (str is "end-trace")
+            {
+                if (_endTrace)
+                    throw new InvalidDataException("End trace flag must only be specified once.");
+                _endTrace = true;
+            }
+            else
+            {
+                throw new InvalidDataException($"Unknown instruction flag: \"{str}\".");
+            }
+        }
 
         TitleCaseMnemonic = _mnemonic[0] + _mnemonic[1..].ToLowerInvariant();
         OperandsString = _operands.Join("");
 
-        _opmapFlags = null;
+        _decodeFlags = null;
         if (Encoding.ModRM?.HasAnyRequiredFields is true)
         {
-            List<string> flags = new();
+            List<string> decodeFlags = new();
             EncodingPart.ModRM modRM = Encoding.ModRM;
             if (modRM.Mod is not null)
-                flags.Add(modRM.Mod.Value is ModRMMod.Memory ? "MOD_MEM" : "MOD_REG");
+                decodeFlags.Add(modRM.Mod.Value is ModRMMod.Memory ? "ModMem" : "ModReg");
             if (modRM.Reg is not null)
-                flags.Add($"REG_{modRM.Reg.Value}");
+                decodeFlags.Add($"Reg{modRM.Reg.Value}");
             if (modRM.RM is not null)
-                flags.Add($"RM_{modRM.RM.Value}");
-            _opmapFlags = flags.Join(" | ");
+                decodeFlags.Add($"RM{modRM.RM.Value}");
+            _decodeFlags = decodeFlags.Join(" | ");
         }
     }
 
@@ -94,11 +127,12 @@ public class Opcode :
             $"\"{_mnemonic.ToLowerInvariant()}\", ");
 
         // execution function
-        builder.Append(
-            $"Execution.{TitleCaseMnemonic}."); // always prefix namespace; opcodes with no operands name clash with _opcodeName
+        // always prefix namespace; opcodes with no operands have a name clash with the opcode definition
+        builder.Append($"Execution.{TitleCaseMnemonic}.");
         if (_operands.Any())
         {
             // identifiers in C# can't begin with digits; prefix with an underscore if needed
+            // this is really only for `INT 3` (`Int._3`)
             if (char.IsAsciiDigit(operands[0]))
                 builder.Append('_');
             builder.Append(operands);
@@ -110,7 +144,15 @@ public class Opcode :
         builder.Append(", ");
 
         // flags
-        builder.Append(_lockable ? "OpcodeFlags.Lockable, " : "0, ");
+        List<string> flags = new();
+        if (_lockable)
+            flags.Add("OpcodeFlags.Lockable");
+        if (_endTrace)
+            flags.Add("OpcodeFlags.EndTrace");
+        builder.Append(flags.Any()
+            ? flags.Join(" | ")
+            : "0");
+        builder.Append(", ");
 
         // immediate
         builder.Append(Encoding.Immediate is not null
@@ -122,8 +164,7 @@ public class Opcode :
     }
 
 
-
-    public int CompareTo(Opcode? other)
+    public int CompareTo(Instruction? other)
     {
         if (ReferenceEquals(this, other))
             return 0;
@@ -138,9 +179,9 @@ public class Opcode :
     }
 
     public override bool Equals(object? obj) =>
-        obj is Opcode other && Equals(other);
+        obj is Instruction other && Equals(other);
 
-    public bool Equals(Opcode? other)
+    public bool Equals(Instruction? other)
     {
         if (ReferenceEquals(this, other))
             return true;

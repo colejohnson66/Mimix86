@@ -21,8 +21,9 @@
  * =============================================================================
  */
 
-using DslLib;
+using SExpressionReader;
 using System.IO;
+using System.Linq;
 
 namespace Mimix86.Generators.IsaExtension;
 
@@ -39,38 +40,53 @@ public static class IsaExtensionGenerator
         {
         """;
 
-    /* CpuLevel0 "Instructions present since the 8086"
+    /* (physical-address-extensions "Physical Address Extensions (PAE).")
      *      |
      *      v
-     * /// <summary>Instructions present since the 8086</summary>
-     * public static IsaExtension CpuLevel0 { get; } = new(0);
+     * /// <summary>Physical Address Extensions (PAE).</summary>
+     * public static IsaExtension PhysicalAddressExtensions { get; } = new(x);
      */
 
     public static void Run()
     {
-        string contents = File.ReadAllText("./Data/IsaExtension/List.m86");
+        string contents = File.ReadAllText("./Data/IsaExtension/list.lisp");
         using Parser parser = new(contents);
 
         string outputPath = Path.Combine(Helpers.Mimix86CorePath, "Cpu", "IsaExtension.StaticFields.g.cs");
         using FileStream handle = File.Open(outputPath, FileMode.Create, FileAccess.Write);
         using StreamWriter writer = new(handle);
 
-        int bitIndex = 0;
+        int currentIndex = 0;
         writer.Write(FILE_TEMPLATE_HEADER);
-        foreach (Node node in parser.Parse())
+        foreach (Expression expr in parser.Parse())
         {
-            // first child is the name
-            // second child is the description
-            Node[] children = node.Children!;
-            string name = children[0].Text!;
-            string description = children[1].Text!;
+            AtomOrExpression[] children = expr.ToArray();
+            if (children.Length is 0)
+                throw new InvalidDataException("Empty outer expression encountered.");
+            if (!children[0].TryAsAtom(out Atom exprName) || exprName.As<string>() is not "extensions")
+                throw new InvalidDataException("Unknown outermost expression.");
 
-            writer.WriteLine();
-            writer.WriteLine($"    /// <summary>{description}</summary>");
-            writer.WriteLine($"    public static IsaExtension {name} {{ get; }} = new({bitIndex});");
-
-            bitIndex++;
+            foreach (AtomOrExpression aoe in children.Skip(1))
+            {
+                if (!aoe.TryAsExpression(out Expression? extension))
+                    throw new InvalidDataException("Unknown atom inside extensions list.");
+                ProcessExtension(ref currentIndex, writer, extension);
+            }
         }
+
         writer.WriteLine("}");
+    }
+
+    private static void ProcessExtension(ref int bitIndex, StreamWriter writer, Expression expr)
+    {
+        if (expr.Count is not 2)
+            throw new InvalidDataException($"Expected an expression of length 2, but found one of length {expr.Count}.");
+
+        if (!expr[0].TryAsAtom(out Atom name) || !expr[1].TryAsAtom(out Atom description))
+            throw new InvalidDataException($"One or both extension expression children are not atoms.");
+
+        writer.WriteLine();
+        writer.WriteLine($"    /// <summary>{description.As<string>()}</summary>");
+        writer.WriteLine($"    public static IsaExtension {Helpers.KebabCaseToPascalCase(name.As<string>())} {{ get; }} = new({bitIndex});");
     }
 }

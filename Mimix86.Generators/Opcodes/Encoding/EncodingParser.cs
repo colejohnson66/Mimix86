@@ -138,11 +138,11 @@ public class EncodingParser
         // handle immediate values
         if (part[0] is 'i')
         {
-            ImmSize size = part switch
+            ImmediateSizes size = part switch
             {
-                "ib" => ImmSize.Byte,
-                "iw" => ImmSize.Word,
-                "ipw" => ImmSize.PointerWordWord,
+                "ib" => ImmediateSizes.Byte,
+                "iw" => ImmediateSizes.Word,
+                "ipw" => ImmediateSizes.PointerWordWord,
                 _ => throw new InvalidDataException($"Unknown immediate: \"{part}\"."),
             };
             return new EncodingPart.Immediate(size);

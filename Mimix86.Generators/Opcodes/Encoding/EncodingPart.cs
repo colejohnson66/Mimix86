@@ -96,6 +96,6 @@ public record EncodingPart
     /// Represents an immediate with a specified size.
     /// </summary>
     /// <param name="Size">The size of the immediate.</param>
-    public record Immediate(ImmSize Size)
+    public record Immediate(ImmediateSizes Size)
         : EncodingPart;
 }

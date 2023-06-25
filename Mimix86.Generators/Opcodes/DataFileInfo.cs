@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   ImmSize.cs
+ * File:   DataFileInfo.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2023 Cole Tobin
@@ -21,13 +21,6 @@
  * =============================================================================
  */
 
-namespace Mimix86.Generators.Opcodes.Encoding;
+namespace Mimix86.Generators.Opcodes;
 
-// these MUST be kept in sync with Mimix86.Core
-public enum ImmSize
-{
-    Byte,
-    Word,
-    WordByte,
-    PointerWordWord,
-}
+public record DataFileInfo(DataFileType Type, string Name);

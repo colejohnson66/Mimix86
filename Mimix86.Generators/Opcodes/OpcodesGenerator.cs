@@ -21,8 +21,7 @@
  * =============================================================================
  */
 
-using DslLib;
-using Mimix86.Generators.Opcodes.Encoding;
+using SExpressionReader;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -83,27 +82,25 @@ public static class OpcodesGenerator
      * public static Opcode AddEbGb { get; } = new("add", Add.EbGb, OpcodeFlags.Lockable, 0);
      */
 
-    private static readonly List<Opcode> KnownOpcodes = new();
-    private static readonly SortedDictionary<string, List<Opcode>> OpcodeMap = new();
+    private static readonly List<Instruction> KnownInstructions = new();
 
     public static void Run()
     {
-        foreach (string path in Directory.GetFiles("./Data/Opcodes", "*.m86"))
-            ReadInput(path);
+        foreach (string path in Directory.GetFiles("./Data/Opcodes/CpuBaseSet", "*.lisp"))
+            ProcessFile(path);
 
         WriteOpcodeList();
 
-        BuildOpcodeMap();
-        WriteOpcodeMap();
+        // BuildInstructionMap();
     }
 
-    private static void ReadInput(string path)
+    private static void ProcessFile(string path)
     {
         string contents = File.ReadAllText(path);
         using Parser parser = new(contents);
 
-        foreach (Node node in parser.Parse())
-            KnownOpcodes.Add(new(node));
+        DataFile file = DataFile.Parse(parser);
+        KnownInstructions.AddRange(file.Instructions);
     }
 
     private static void WriteOpcodeList()
@@ -113,7 +110,7 @@ public static class OpcodesGenerator
         using StreamWriter writer = new(handle);
 
         writer.Write(OPCODE_LIST_TEMPLATE_HEADER);
-        foreach (Opcode op in KnownOpcodes.DistinctBy(op => (op.TitleCaseMnemonic, op.OperandsString)).Order())
+        foreach (Instruction op in KnownInstructions.DistinctBy(op => (op.TitleCaseMnemonic, op.OperandsString)).Order())
         {
             writer.WriteLine();
             writer.WriteLine(op.GenerateOpcodeMember());
@@ -121,54 +118,20 @@ public static class OpcodesGenerator
         writer.WriteLine("}");
     }
 
-    private static void BuildOpcodeMap()
-    {
-        // when building the opcode map, we also need to consider the encoding, unlike the opcode list
-        foreach (Opcode op in KnownOpcodes.DistinctBy(op => (op.TitleCaseMnemonic, op.OperandsString, op.Encoding)))
-        {
-            // "get or insert" operation here
-            string key = op.Encoding.OpcodeMapEntryName;
-            if (!OpcodeMap.TryGetValue(key, out List<Opcode>? value))
-            {
-                value = new();
-                OpcodeMap.Add(key, value);
-            }
-
-            value.Add(op);
-        }
-    }
-
-    private static void WriteOpcodeMap()
-    {
-        string outputPath = Path.Combine(Helpers.Mimix86CorePath, "Cpu", "Decoder", "OpcodeMap.g.cs");
-        using FileStream handle = File.Open(outputPath, FileMode.Create, FileAccess.Write);
-        using StreamWriter writer = new(handle);
-
-        writer.Write(OPCODE_MAP_TEMPLATE_HEADER);
-        foreach ((string entryName, List<Opcode> entryList) in OpcodeMap)
-        {
-            string definition = $"    public static readonly OpcodeMapEntry[] Opcode{entryName} =";
-            writer.WriteLine();
-
-            // if (!list.Any())
-            // {
-            //     // empty blocks
-            //     writer.WriteLine($"{definition} Array.Empty<OpcodeMapEntry>();");
-            //     continue;
-            // }
-
-            writer.WriteLine(definition);
-            writer.WriteLine("    {");
-            foreach (Opcode op in entryList.Order())
-            {
-                writer.Write($"        new({op.TitleCaseMnemonic}{op.OperandsString}, {op.RequiredCpuLevelString}");
-                EncodingPart.ModRM? modRM = op.Encoding.ModRM;
-                if (modRM?.HasAnyRequiredFields is true) // ModR/M decode flags only matter if any are required
-                    writer.Write($", {modRM.BuildDecodeFlagsString()}");
-                writer.WriteLine("),");
-            }
-            writer.WriteLine("    };");
-        }
-        writer.WriteLine("}");
-    }
+    // private static void BuildInstructionMap()
+    // {
+    //     // when building the opcode map, we also need to consider the encoding, unlike the opcode list
+    //     foreach (Instruction op in KnownInstructions.DistinctBy(op => (op.TitleCaseMnemonic, op.OperandsString, op.Encoding)))
+    //     {
+    //         // "get or insert" operation here
+    //         string key = op.Encoding.OpcodeMapEntryName;
+    //         if (!InstructionMap.TryGetValue(key, out List<Instruction>? value))
+    //         {
+    //             value = new();
+    //             InstructionMap.Add(key, value);
+    //         }
+    //
+    //         value.Add(op);
+    //     }
+    // }
 }

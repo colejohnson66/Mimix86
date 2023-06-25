@@ -63,11 +63,9 @@ public sealed class Parser : IDisposable
     }
 
     /// <summary>
-    /// Parse out the input string into a series of nodes, one for each line of the input.
+    /// Parse out the input string into a series of expressions.
     /// </summary>
-    /// <returns>
-    /// An <see cref="IEnumerable{T}" /> of <see cref="Expression" /> objects.
-    /// </returns>
+    /// <returns>An enumeration of expressions, one for each outer-most one in the input.</returns>
     public IEnumerable<Expression> Parse()
     {
         while (_tokens.Peek() is not null)

@@ -23,9 +23,6 @@
 
 namespace Mimix86.Core.Cpu;
 
-// CS1591 is XML documentation
-#pragma warning disable CS1591
-
 /// <summary>
 /// Contains the various ISA extensions.
 /// These are used to determine if certain opcodes can be executed.
