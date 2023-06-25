@@ -76,7 +76,7 @@ public static class OpcodesGenerator
 
         """;
 
-    /* ADD [Eb Gb] [00 /r] .. [lock]
+    /* (ADD  (Eb Gb)  (00 /r)  (lockable))
      *      |
      *      v
      * public static Opcode AddEbGb { get; } = new("add", Add.EbGb, OpcodeFlags.Lockable, 0);
@@ -86,7 +86,7 @@ public static class OpcodesGenerator
 
     public static void Run()
     {
-        foreach (string path in Directory.GetFiles("./Data/Opcodes/CpuBaseSet", "*.lisp"))
+        foreach (string path in Directory.EnumerateFiles("./Data/Opcodes", "*.lisp", SearchOption.AllDirectories))
             ProcessFile(path);
 
         WriteOpcodeList();
