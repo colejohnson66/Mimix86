@@ -23,7 +23,7 @@
 
 using System;
 
-namespace Mimix86.Core.Cpu.Decoder;
+namespace Mimix86.Core.Cpu.Isa;
 
 /// <summary>
 /// Various flags used to direct usage of this opcode post-decoding.

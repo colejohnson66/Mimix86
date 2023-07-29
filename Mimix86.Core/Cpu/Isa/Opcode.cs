@@ -21,9 +21,10 @@
  * =============================================================================
  */
 
+using Mimix86.Core.Cpu.Decoder;
 using System;
 
-namespace Mimix86.Core.Cpu.Decoder;
+namespace Mimix86.Core.Cpu.Isa;
 
 /// <summary>
 /// Represents a single opcode.
