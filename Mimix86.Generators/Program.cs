@@ -21,7 +21,6 @@
  * =============================================================================
  */
 
-using Mimix86.Generators.IsaExtension;
 using Mimix86.Generators.Opcodes;
 
 namespace Mimix86.Generators;
@@ -30,7 +29,6 @@ public static class Program
 {
     public static void Main()
     {
-        IsaExtensionGenerator.Run();
         OpcodesGenerator.Run();
     }
 }
