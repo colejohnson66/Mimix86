@@ -40,16 +40,16 @@ public enum TwoBytePrefix
 
     /// <summary>
     /// The <c>DREX</c> opcode map escape prefix, located at <c>[0F 24]</c>.
-    /// The <c>DREX</c> byte itself is located between the ModR/M and SIB byte and the displacement (or immediate if no
-    ///   displacement is present).
+    /// The <c>DREX</c> payload byte itself is located after the SIB byte (or ModR/M byte if the SIB byte is not
+    ///   present), and before the displacement and immediate (if present).
     /// This is the <c>MOV Ry,Ty</c> instruction on the 80386 and 80486.
     /// </summary>
     Drex0F24,
 
     /// <summary>
     /// The <c>DREX</c> opcode map escape prefix, located at <c>[0F 25]</c>.
-    /// The <c>DREX</c> byte itself is located between the ModR/M and SIB byte and the displacement (or immediate if no
-    ///   displacement is present).
+    /// The <c>DREX</c> payload byte itself is located after the SIB byte (or ModR/M byte if the SIB byte is not
+    ///   present), and before the displacement and immediate (if present).
     /// </summary>
     Drex0F25,
 
