@@ -40,7 +40,6 @@ namespace Mimix86.Core.Cpu.Decoder;
 ///   <c>0F&#xA0;01&#xA0;/4</c> (register form only).
 /// Therefore, its entry will contain <see cref="ModReg" />&#xA0;|&#xA0;<see cref="Reg4" />.
 /// </example>
-[SuppressMessage("ReSharper", "ShiftExpressionZeroLeftOperand")]
 public readonly struct DecodeFlags
 {
     /* Flags are organized internally as follows:
@@ -112,18 +111,25 @@ public readonly struct DecodeFlags
 
     /// <summary>Decode requires ModRM.rm is 0</summary>
     public static DecodeFlags RM0 { get; } = new(RM_OFFSET, RM_MASK, 0);
+
     /// <summary>Decode requires ModRM.rm is 1</summary>
     public static DecodeFlags RM1 { get; } = new(RM_OFFSET, RM_MASK, 1);
+
     /// <summary>Decode requires ModRM.rm is 2</summary>
     public static DecodeFlags RM2 { get; } = new(RM_OFFSET, RM_MASK, 2);
+
     /// <summary>Decode requires ModRM.rm is 3</summary>
     public static DecodeFlags RM3 { get; } = new(RM_OFFSET, RM_MASK, 3);
+
     /// <summary>Decode requires ModRM.rm is 4</summary>
     public static DecodeFlags RM4 { get; } = new(RM_OFFSET, RM_MASK, 4);
+
     /// <summary>Decode requires ModRM.rm is 5</summary>
     public static DecodeFlags RM5 { get; } = new(RM_OFFSET, RM_MASK, 5);
+
     /// <summary>Decode requires ModRM.rm is 6</summary>
     public static DecodeFlags RM6 { get; } = new(RM_OFFSET, RM_MASK, 6);
+
     /// <summary>Decode requires ModRM.rm is 7</summary>
     public static DecodeFlags RM7 { get; } = new(RM_OFFSET, RM_MASK, 7);
 
@@ -136,18 +142,25 @@ public readonly struct DecodeFlags
 
     /// <summary>Decode requires ModRM.reg is 0</summary>
     public static DecodeFlags Reg0 { get; } = new(REG_OFFSET, REG_MASK, 0);
+
     /// <summary>Decode requires ModRM.reg is 1</summary>
     public static DecodeFlags Reg1 { get; } = new(REG_OFFSET, REG_MASK, 1);
+
     /// <summary>Decode requires ModRM.reg is 2</summary>
     public static DecodeFlags Reg2 { get; } = new(REG_OFFSET, REG_MASK, 2);
+
     /// <summary>Decode requires ModRM.reg is 3</summary>
     public static DecodeFlags Reg3 { get; } = new(REG_OFFSET, REG_MASK, 3);
+
     /// <summary>Decode requires ModRM.reg is 4</summary>
     public static DecodeFlags Reg4 { get; } = new(REG_OFFSET, REG_MASK, 4);
+
     /// <summary>Decode requires ModRM.reg is 5</summary>
     public static DecodeFlags Reg5 { get; } = new(REG_OFFSET, REG_MASK, 5);
+
     /// <summary>Decode requires ModRM.reg is 6</summary>
     public static DecodeFlags Reg6 { get; } = new(REG_OFFSET, REG_MASK, 6);
+
     /// <summary>Decode requires ModRM.reg is 7</summary>
     public static DecodeFlags Reg7 { get; } = new(REG_OFFSET, REG_MASK, 7);
 
@@ -160,12 +173,13 @@ public readonly struct DecodeFlags
 
     /// <summary>Decode requires ModRM.mod is b11 (register form)</summary>
     public static DecodeFlags ModReg { get; } = new(MOD_OFFSET, MOD_ENABLE, 0);
+
     /// <summary>Decode requires ModRM.mod is not b11 (memory form)</summary>
     public static DecodeFlags ModMem { get; } = new(MOD_OFFSET, MOD_ENABLE, 1);
 
     #endregion
 
-    // future: instruction set (16, 32, 64)
+    // future: instruction set (real, v8086, 32, 64)
 
     // future: OSIZE (16, 32, 64)
 
@@ -175,7 +189,7 @@ public readonly struct DecodeFlags
 
     // future: VLEN (128, 256, 512)
 
-    // future: VEX.W bit
+    // future: (E)VEX.W bit
 
     // future: ModMemSib (shorthand for ModMem | RM4 | AS32)
 

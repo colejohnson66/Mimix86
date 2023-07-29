@@ -28,7 +28,7 @@ namespace Mimix86.Core.Cpu.Decoder;
 /// </summary>
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
-public enum TwoBytePrefix
+public enum TwoBytePrefixes
 {
     // sorted by their byte values
 

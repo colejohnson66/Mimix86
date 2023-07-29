@@ -22,6 +22,7 @@
  */
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -37,30 +38,39 @@ internal static class DecoderStoreByInstructionMap
 
     static DecoderStoreByInstructionMap()
     {
-        MapToStorageIndex = new int[Enum.GetValues<InstructionMap>().Length];
-        MapToStorageIndex[(int)InstructionMap.OneByte] = 0;
-        MapToStorageIndex[(int)InstructionMap.TwoByte] = -1;
-        MapToStorageIndex[(int)InstructionMap._3DNow] = -1;
-        MapToStorageIndex[(int)InstructionMap.ThreeByte0F38] = -1;
-        MapToStorageIndex[(int)InstructionMap.ThreeByte0F3A] = -1;
-        MapToStorageIndex[(int)InstructionMap.Drex0F24] = -1;
-        MapToStorageIndex[(int)InstructionMap.Drex0F25] = -1;
-        MapToStorageIndex[(int)InstructionMap.Drex0F7A] = -1;
-        MapToStorageIndex[(int)InstructionMap.Drex0F7B] = -1;
-        MapToStorageIndex[(int)InstructionMap.Vex0F] = -1;
-        MapToStorageIndex[(int)InstructionMap.Vex0F38] = -1;
-        MapToStorageIndex[(int)InstructionMap.Vex0F3A] = -1;
-        MapToStorageIndex[(int)InstructionMap.Xop8] = -1;
-        MapToStorageIndex[(int)InstructionMap.Xop9] = -1;
-        MapToStorageIndex[(int)InstructionMap.XopA] = -1;
-        MapToStorageIndex[(int)InstructionMap.L1OMScalar] = -1;
-        MapToStorageIndex[(int)InstructionMap.L1OMVector] = -1;
-        MapToStorageIndex[(int)InstructionMap.MvexEvex] = -1;
-        MapToStorageIndex[(int)InstructionMap.MvexEvex0F] = -1;
-        MapToStorageIndex[(int)InstructionMap.MvexEvex0F38] = -1;
-        MapToStorageIndex[(int)InstructionMap.MvexEvex0F3A] = -1;
-        MapToStorageIndex[(int)InstructionMap.MvexEvex5] = -1;
-        MapToStorageIndex[(int)InstructionMap.MvexEvex6] = -1;
+        MapToStorageIndex = new int[Enum.GetValues<OpcodeMaps>().Length];
+        MapToStorageIndex[(int)OpcodeMaps.OneByte] = 0;
+        MapToStorageIndex[(int)OpcodeMaps.TwoByte] = -1;
+        MapToStorageIndex[(int)OpcodeMaps._3DNow] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.ThreeByte0F38] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.ThreeByte0F3A] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.Drex0F24] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.Drex0F25] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.Drex0F7A] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.Drex0F7B] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.Vex0F] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.Vex0F38] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.Vex0F3A] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.Xop8] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.Xop9] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.XopA] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.L1OMScalar] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.L1OMVector] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.Mvex] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.Mvex0F] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.Mvex0F38] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.Mvex0F3A] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.Evex] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.Evex0F] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.Evex0F38] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.Evex0F3A] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.Evex4] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.Evex5] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.Evex6] = -1;
+
+        // ensure all elements have been assigned
+        // skip the first element as it's `OneByte` which should be zero
+        Debug.Assert(MapToStorageIndex.Skip(1).All(idx => idx is not 0));
 
         SupportedMapCount = MapToStorageIndex.Max() + 1;
     }
@@ -69,24 +79,25 @@ internal static class DecoderStoreByInstructionMap
 internal sealed class DecoderStoreByInstructionMap<T>
 {
     // can't get a span of a 2D array, so use a 1D with a stride (how a 2D works internally)
-    private readonly T[] _storage = new T[DecoderStoreByInstructionMap.SupportedMapCount * 256];
+    private const int ELEMENTS_PER_MAP = 256; // max(8 bits)
+    private readonly T[] _storage = new T[DecoderStoreByInstructionMap.SupportedMapCount * ELEMENTS_PER_MAP];
 
-    public Span<T> this[InstructionMap map] =>
-        _storage.AsSpan(GetIndex(map, 0), 256);
+    public Span<T> this[OpcodeMaps map] =>
+        _storage.AsSpan(GetIndex(map, 0), ELEMENTS_PER_MAP);
 
-    public T this[InstructionMap map, byte b]
+    public T this[OpcodeMaps map, byte b]
     {
         get => _storage[GetIndex(map, b)];
         set => _storage[GetIndex(map, b)] = value;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static int GetIndex(InstructionMap map, byte b)
+    private static int GetIndex(OpcodeMaps map, byte b)
     {
         int index = DecoderStoreByInstructionMap.MapToStorageIndex[(int)map];
         if (index < 0)
             throw new ArgumentOutOfRangeException(nameof(map), map, "Specified opcode map is unsupported.");
 
-        return index * 256 + b;
+        return index * ELEMENTS_PER_MAP + b;
     }
 }

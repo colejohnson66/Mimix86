@@ -27,7 +27,7 @@ namespace Mimix86.Core.Cpu.Decoder;
 /// Contains the various one-byte prefix bytes that can occur when decoding x86 instructions.
 /// </summary>
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
-public enum OneBytePrefix
+public enum OneBytePrefixes
 {
     // sorted by their byte values
 

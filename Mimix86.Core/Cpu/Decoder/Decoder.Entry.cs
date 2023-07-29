@@ -30,6 +30,7 @@ public sealed partial class Decoder
     private class Entry
     {
         public bool HasModRM { get; set; }
-        public List<DecoderInstructionEntry> Instructions { get; } = new(16);
+
+        public List<DecoderInstructionEntry> Instructions { get; } = new();
     }
 }

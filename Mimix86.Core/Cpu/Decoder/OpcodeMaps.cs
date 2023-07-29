@@ -26,7 +26,7 @@ namespace Mimix86.Core.Cpu.Decoder;
 /// <summary>
 /// Contains the various maps that instructions may be in.
 /// </summary>
-public enum InstructionMap
+public enum OpcodeMaps
 {
     /// <summary>
     /// Indicates that the relevant opcode is in the (original) one-byte opcode space.
@@ -118,36 +118,65 @@ public enum InstructionMap
     L1OMVector,
 
     /// <summary>
-    /// Indicates that the relevant opcode is in the MVEX/EVEX opcode space, using map 0, which corresponds to the
-    ///   legacy <see cref="OneByte" /> map.
+    /// Indicates that the relevant opcode is in the MVEX opcode space, using map 0, which corresponds to the legacy
+    ///   <see cref="OneByte" /> map.
     /// </summary>
-    MvexEvex,
+    Mvex,
 
     /// <summary>
-    /// Indicates that the relevant opcode is in the MVEX/EVEX opcode space, using map 1, which corresponds to the
-    ///   legacy <see cref="TwoByte" /> map.
+    /// Indicates that the relevant opcode is in the MVEX opcode space, using map 1, which corresponds to the legacy
+    ///   <see cref="TwoByte" /> map.
     /// </summary>
-    MvexEvex0F,
+    Mvex0F,
 
     /// <summary>
-    /// Indicates that the relevant opcode is in the MVEX/EVEX opcode space, using map 2, which corresponds to the
-    ///   legacy <see cref="ThreeByte0F38" /> map.
+    /// Indicates that the relevant opcode is in the MVEX opcode space, using map 2, which corresponds to the legacy
+    ///   <see cref="ThreeByte0F38" /> map.
     /// </summary>
-    MvexEvex0F38,
+    Mvex0F38,
 
     /// <summary>
-    /// Indicates that the relevant opcode is in the MVEX/EVEX opcode space, using map 3, which corresponds to the
-    ///   legacy <see cref="ThreeByte0F3A" /> map.
+    /// Indicates that the relevant opcode is in the MVEX opcode space, using map 3, which corresponds to the legacy
+    ///   <see cref="ThreeByte0F3A" /> map.
     /// </summary>
-    MvexEvex0F3A,
+    Mvex0F3A,
 
     /// <summary>
-    /// Indicates that the relevant opcode is in the MVEX/EVEX opcode space, using map 5.
+    /// Indicates that the relevant opcode is in the EVEX opcode space, using map 0, which corresponds to the legacy
+    ///   <see cref="OneByte" /> map.
     /// </summary>
-    MvexEvex5,
+    Evex,
 
     /// <summary>
-    /// Indicates that the relevant opcode is in the MVEX/EVEX opcode space, using map 6.
+    /// Indicates that the relevant opcode is in the EVEX opcode space, using map 1, which corresponds to the legacy
+    ///   <see cref="TwoByte" /> map.
     /// </summary>
-    MvexEvex6,
+    Evex0F,
+
+    /// <summary>
+    /// Indicates that the relevant opcode is in the EVEX opcode space, using map 2, which corresponds to the legacy
+    ///   <see cref="ThreeByte0F38" /> map.
+    /// </summary>
+    Evex0F38,
+
+    /// <summary>
+    /// Indicates that the relevant opcode is in the EVEX opcode space, using map 3, which corresponds to the legacy
+    ///   <see cref="ThreeByte0F3A" /> map.
+    /// </summary>
+    Evex0F3A,
+
+    /// <summary>
+    /// Indicates that the relevant opcode is in the EVEX opcode space, using map 4.
+    /// </summary>
+    Evex4,
+
+    /// <summary>
+    /// Indicates that the relevant opcode is in the EVEX opcode space, using map 5.
+    /// </summary>
+    Evex5,
+
+    /// <summary>
+    /// Indicates that the relevant opcode is in the EVEX opcode space, using map 6.
+    /// </summary>
+    Evex6,
 }

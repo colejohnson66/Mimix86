@@ -56,7 +56,9 @@ public class DecodeFlagsBuilder
          */
 
         // mod
-        _value |= (b & 0xC0) is 0xC0 ? DecodeFlags.ModReg : DecodeFlags.ModMem;
+        _value |= (b & 0xC0) is 0xC0
+            ? DecodeFlags.ModReg
+            : DecodeFlags.ModMem;
 
         // reg
         _value |= ((b >> 3) & 7) switch
@@ -88,7 +90,7 @@ public class DecodeFlagsBuilder
     }
 
 
-    // future: instruction set (16, 32, 64)
+    // future: instruction set (real, v8086, 32, 64)
 
     // future: OSIZE (16, 32, 64)
 
@@ -98,7 +100,7 @@ public class DecodeFlagsBuilder
 
     // future: VLEN (128, 256, 512)
 
-    // future: VEX.W bit
+    // future: (E)VEX.W bit
 
 
     /// <summary>
