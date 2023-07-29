@@ -31,6 +31,6 @@ namespace Mimix86.Core.Cpu.Execution;
 /// </summary>
 public static class Aad
 {
-    public static void Ib(CpuCore cpu, Instruction instr) =>
+    public static void Ib(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }

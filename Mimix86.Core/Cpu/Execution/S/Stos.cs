@@ -31,7 +31,7 @@ namespace Mimix86.Core.Cpu.Execution;
 /// </summary>
 public static class Stosb
 {
-    public static void _(CpuCore cpu, Instruction instr) =>
+    public static void _(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }
 
@@ -40,6 +40,6 @@ public static class Stosb
 /// </summary>
 public static class Stosw
 {
-    public static void _(CpuCore cpu, Instruction instr) =>
+    public static void _(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }

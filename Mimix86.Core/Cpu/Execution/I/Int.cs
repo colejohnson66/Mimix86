@@ -31,10 +31,10 @@ namespace Mimix86.Core.Cpu.Execution;
 /// </summary>
 public static class Int
 {
-    public static void _3(CpuCore cpu, Instruction instr) =>
+    public static void _3(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void Ib(CpuCore cpu, Instruction instr) =>
+    public static void Ib(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }
 
@@ -43,6 +43,6 @@ public static class Int
 /// </summary>
 public static class Into
 {
-    public static void _(CpuCore cpu, Instruction instr) =>
+    public static void _(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }

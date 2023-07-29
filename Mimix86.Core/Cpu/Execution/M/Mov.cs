@@ -31,45 +31,45 @@ namespace Mimix86.Core.Cpu.Execution;
 /// </summary>
 public static class Mov
 {
-    public static void ALOb(CpuCore cpu, Instruction instr) =>
+    public static void ALOb(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void AXOw(CpuCore cpu, Instruction instr) =>
+    public static void AXOw(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void EbGb(CpuCore cpu, Instruction instr) =>
+    public static void EbGb(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void EbIb(CpuCore cpu, Instruction instr) =>
+    public static void EbIb(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void EwGw(CpuCore cpu, Instruction instr) =>
+    public static void EwGw(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void EwIw(CpuCore cpu, Instruction instr) =>
+    public static void EwIw(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void EwSw(CpuCore cpu, Instruction instr) =>
+    public static void EwSw(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void GbEb(CpuCore cpu, Instruction instr) =>
+    public static void GbEb(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void GwEw(CpuCore cpu, Instruction instr) =>
+    public static void GwEw(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void ObAL(CpuCore cpu, Instruction instr) =>
+    public static void ObAL(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void OwAX(CpuCore cpu, Instruction instr) =>
+    public static void OwAX(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void SwEw(CpuCore cpu, Instruction instr) =>
+    public static void SwEw(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void ZbIb(CpuCore cpu, Instruction instr) =>
+    public static void ZbIb(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void ZwIw(CpuCore cpu, Instruction instr) =>
+    public static void ZwIw(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }

@@ -21,6 +21,7 @@
  * =============================================================================
  */
 
+using Mimix86.Core.Cpu.Decoder.Map;
 using System;
 
 namespace Mimix86.Core.Cpu.Decoder;
@@ -34,7 +35,7 @@ public sealed partial class Decoder
     private readonly OneBytePrefixes?[] _oneBytePrefixes = new OneBytePrefixes?[256];
     // private readonly TwoBytePrefix?[] _twoBytePrefixes = new TwoBytePrefix?[256];
 
-    private readonly DecoderStoreByInstructionMap<Entry?> _instructions = new();
+    private readonly OpcodeMapDictionary<EntrySet?> _instructions = new();
 
 
     /// <summary>
@@ -74,7 +75,7 @@ public sealed partial class Decoder
     /// <exception cref="InvalidOperationException">
     /// If the opcode map/byte combination is already registered.
     /// </exception>
-    public void RegisterOpcodeMapByte(OpcodeMaps map, byte b, OpcodeMapEntryFlags flags)
+    public void RegisterOpcodeMapByte(OpcodeMaps map, byte b, OpcodeMapIndexFlags flags)
     {
         if (_instructions[map, b] is not null)
             throw new InvalidOperationException("Instruction map/byte combination is already registered.");
@@ -96,7 +97,7 @@ public sealed partial class Decoder
     /// <exception cref="InvalidOperationException">
     /// If any opcode map/bytes combination are already registered.
     /// </exception>
-    public void RegisterOpcodeMapBytes(OpcodeMaps map, byte[] bytes, OpcodeMapEntryFlags flags)
+    public void RegisterOpcodeMapBytes(OpcodeMaps map, byte[] bytes, OpcodeMapIndexFlags flags)
     {
         ArgumentNullException.ThrowIfNull(bytes);
 
@@ -113,9 +114,9 @@ public sealed partial class Decoder
     /// <exception cref="InvalidOperationException">
     /// If any opcode map/bytes combination is already registered.
     /// </exception>
-    public void RegisterOpcodeMapBytes(OpcodeMaps map, ReadOnlySpan<byte> bytes, OpcodeMapEntryFlags flags)
+    public void RegisterOpcodeMapBytes(OpcodeMaps map, ReadOnlySpan<byte> bytes, OpcodeMapIndexFlags flags)
     {
-        Span<Entry?> span = _instructions[map];
+        Span<EntrySet?> span = _instructions[map];
         foreach (byte b in bytes)
         {
             if (span[b] is not null)
@@ -142,9 +143,9 @@ public sealed partial class Decoder
     /// <exception cref="InvalidOperationException">
     /// If the opcode map/byte combination is not registered.
     /// </exception>
-    public void RegisterInstruction(OpcodeMaps map, byte b, DecoderInstructionEntry entry)
+    public void RegisterInstruction(OpcodeMaps map, byte b, OpcodeMapOpcodeEntry entry)
     {
-        Entry? mapEntry = _instructions[map, b];
+        EntrySet? mapEntry = _instructions[map, b];
         if (mapEntry is null)
             throw new InvalidOperationException("Instruction map/byte combination is not registered.");
 

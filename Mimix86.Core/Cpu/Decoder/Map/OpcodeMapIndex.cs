@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   OpcodeMapEntryFlags.cs
+ * File:   OpcodeMapIndex.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2023 Cole Tobin
@@ -21,15 +21,11 @@
  * =============================================================================
  */
 
-namespace Mimix86.Core.Cpu.Decoder;
+namespace Mimix86.Core.Cpu.Decoder.Map;
 
 /// <summary>
-/// Represents the flags for an opcode map/byte entry.
+/// Represents an index into the opcode map, as a tuple of the map itself, and the byte value.
 /// </summary>
-public struct OpcodeMapEntryFlags
-{
-    /// <summary>
-    /// Get a flag indicating if this opcode map/byte entry has a ModR/M byte.
-    /// </summary>
-    public bool HasModRM { get; init; }
-}
+/// <param name="Map">The map <see cref="Byte" /> indexes into.</param>
+/// <param name="Byte">The index into the map (<see cref="Map" />).</param>
+public record struct OpcodeMapIndex(OpcodeMaps Map, byte Byte);

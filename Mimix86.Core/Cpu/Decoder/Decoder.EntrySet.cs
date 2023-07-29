@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   Decoder.Entry.cs
+ * File:   Decoder.EntrySet.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2023 Cole Tobin
@@ -21,16 +21,19 @@
  * =============================================================================
  */
 
+using Mimix86.Core.Cpu.Decoder.Map;
 using System.Collections.Generic;
 
 namespace Mimix86.Core.Cpu.Decoder;
 
 public sealed partial class Decoder
 {
-    private class Entry
+    private class EntrySet
     {
-        public OpcodeMapEntryFlags Flags { get; init; }
+        // flags that dictate how the decoder should proceed when this opcode map/byte combo is reached
+        public OpcodeMapIndexFlags Flags { get; init; }
 
-        public List<DecoderInstructionEntry> Instructions { get; } = new();
+        // instructions that may be decoded from this opcode map/byte combo
+        public List<OpcodeMapOpcodeEntry> Instructions { get; } = new();
     }
 }

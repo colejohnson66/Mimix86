@@ -31,9 +31,9 @@ namespace Mimix86.Core.Cpu.Execution;
 /// </summary>
 public static class Retf
 {
-    public static void _(CpuCore cpu, Instruction instr) =>
+    public static void _(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void Iw(CpuCore cpu, Instruction instr) =>
+    public static void Iw(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }

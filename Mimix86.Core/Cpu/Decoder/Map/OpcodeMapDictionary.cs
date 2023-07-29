@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   DecoderStoreByInstructionMap.cs
+ * File:   OpcodeMapDictionary.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2023 Cole Tobin
@@ -26,17 +26,18 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace Mimix86.Core.Cpu.Decoder;
+namespace Mimix86.Core.Cpu.Decoder.Map;
 
-// stores a mapping from `DecoderMap` to an array of `T[256]`, but in a more compact form than a dictionary would
+// stores a mapping from `OpcodeMaps` to an array of `T[256]`,
+//   but in a more compact form than a dictionary would
 
-internal static class DecoderStoreByInstructionMap
+internal static class OpcodeMapDictionary
 {
     // maps enum values to their index in the storage array
     public static readonly int[] MapToStorageIndex;
     public static readonly int SupportedMapCount;
 
-    static DecoderStoreByInstructionMap()
+    static OpcodeMapDictionary()
     {
         MapToStorageIndex = new int[Enum.GetValues<OpcodeMaps>().Length];
         MapToStorageIndex[(int)OpcodeMaps.OneByte] = 0;
@@ -76,11 +77,11 @@ internal static class DecoderStoreByInstructionMap
     }
 }
 
-internal sealed class DecoderStoreByInstructionMap<T>
+internal sealed class OpcodeMapDictionary<T>
 {
     // can't get a span of a 2D array, so use a 1D with a stride (how a 2D works internally)
     private const int ELEMENTS_PER_MAP = 256; // max(8 bits)
-    private readonly T[] _storage = new T[DecoderStoreByInstructionMap.SupportedMapCount * ELEMENTS_PER_MAP];
+    private readonly T[] _storage = new T[OpcodeMapDictionary.SupportedMapCount * ELEMENTS_PER_MAP];
 
     public Span<T> this[OpcodeMaps map] =>
         _storage.AsSpan(GetIndex(map, 0), ELEMENTS_PER_MAP);
@@ -94,7 +95,7 @@ internal sealed class DecoderStoreByInstructionMap<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int GetIndex(OpcodeMaps map, byte b)
     {
-        int index = DecoderStoreByInstructionMap.MapToStorageIndex[(int)map];
+        int index = OpcodeMapDictionary.MapToStorageIndex[(int)map];
         if (index < 0)
             throw new ArgumentOutOfRangeException(nameof(map), map, "Specified opcode map is unsupported.");
 

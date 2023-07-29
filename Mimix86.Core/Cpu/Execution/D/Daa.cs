@@ -31,6 +31,6 @@ namespace Mimix86.Core.Cpu.Execution;
 /// </summary>
 public static class Daa
 {
-    public static void _(CpuCore cpu, Instruction instr) =>
+    public static void _(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }

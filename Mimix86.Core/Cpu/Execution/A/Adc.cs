@@ -31,30 +31,30 @@ namespace Mimix86.Core.Cpu.Execution;
 /// </summary>
 public static class Adc
 {
-    public static void ALIb(CpuCore cpu, Instruction instr) =>
+    public static void ALIb(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void AXIw(CpuCore cpu, Instruction instr) =>
+    public static void AXIw(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void EbGb(CpuCore cpu, Instruction instr) =>
+    public static void EbGb(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void EbIb(CpuCore cpu, Instruction instr) =>
+    public static void EbIb(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void EwGw(CpuCore cpu, Instruction instr) =>
+    public static void EwGw(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void EwIb(CpuCore cpu, Instruction instr) =>
+    public static void EwIb(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void EwIw(CpuCore cpu, Instruction instr) =>
+    public static void EwIw(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void GbEb(CpuCore cpu, Instruction instr) =>
+    public static void GbEb(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void GwEw(CpuCore cpu, Instruction instr) =>
+    public static void GwEw(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }

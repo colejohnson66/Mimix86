@@ -31,12 +31,12 @@ namespace Mimix86.Core.Cpu.Execution;
 /// </summary>
 public static class Xchg
 {
-    public static void AXZw(CpuCore cpu, Instruction instr) =>
+    public static void AXZw(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void EbGb(CpuCore cpu, Instruction instr) =>
+    public static void EbGb(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void EwGw(CpuCore cpu, Instruction instr) =>
+    public static void EwGw(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }

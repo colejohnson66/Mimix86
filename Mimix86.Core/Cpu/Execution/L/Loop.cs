@@ -31,7 +31,7 @@ namespace Mimix86.Core.Cpu.Execution;
 /// </summary>
 public static class Loop
 {
-    public static void Jb(CpuCore cpu, Instruction instr) =>
+    public static void Jb(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }
 
@@ -40,7 +40,7 @@ public static class Loop
 /// </summary>
 public static class Loope
 {
-    public static void Jb(CpuCore cpu, Instruction instr) =>
+    public static void Jb(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }
 
@@ -49,6 +49,6 @@ public static class Loope
 /// </summary>
 public static class Loopne
 {
-    public static void Jb(CpuCore cpu, Instruction instr) =>
+    public static void Jb(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }

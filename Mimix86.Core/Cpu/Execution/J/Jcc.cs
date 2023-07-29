@@ -31,6 +31,6 @@ namespace Mimix86.Core.Cpu.Execution;
 /// </summary>
 public static class Jcc
 {
-    public static void Jb(CpuCore cpu, Instruction instr) =>
+    public static void Jb(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }

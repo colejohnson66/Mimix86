@@ -21,7 +21,7 @@
  * =============================================================================
  */
 
-namespace Mimix86.Core.Cpu.Decoder;
+namespace Mimix86.Core.Cpu.Decoder.Map;
 
 /// <summary>
 /// Contains the various maps that instructions may be in.

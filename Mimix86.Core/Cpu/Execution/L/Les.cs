@@ -31,6 +31,6 @@ namespace Mimix86.Core.Cpu.Execution;
 /// </summary>
 public static class Les
 {
-    public static void GwMw(CpuCore cpu, Instruction instr) =>
+    public static void GwMw(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }

@@ -1,8 +1,8 @@
 ﻿/* =============================================================================
- * File:   Std.cs
+ * File:   OpcodeMapIndexFlags.cs
  * Author: Cole Tobin
  * =============================================================================
- * Copyright (c) 2022-2023 Cole Tobin
+ * Copyright (c) 2023 Cole Tobin
  *
  * This file is part of Mimix86.
  *
@@ -21,16 +21,15 @@
  * =============================================================================
  */
 
-using Mimix86.Core.Cpu.Decoder;
-using System;
-
-namespace Mimix86.Core.Cpu.Execution;
+namespace Mimix86.Core.Cpu.Decoder.Map;
 
 /// <summary>
-/// Handler functions for the <c>STD</c> opcode.
+/// Represents the flags for an opcode map/byte index.
 /// </summary>
-public static class Std
+public struct OpcodeMapIndexFlags
 {
-    public static void _(CpuCore cpu, DecodedInstruction instruction) =>
-        throw new NotImplementedException();
+    /// <summary>
+    /// Get a flag indicating if this opcode map/byte index has a ModR/M byte.
+    /// </summary>
+    public bool HasModRM { get; init; }
 }

@@ -31,15 +31,15 @@ namespace Mimix86.Core.Cpu.Execution;
 /// </summary>
 public static class Out
 {
-    public static void DXAL(CpuCore cpu, Instruction instr) =>
+    public static void DXAL(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void DXAX(CpuCore cpu, Instruction instr) =>
+    public static void DXAX(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void IbAL(CpuCore cpu, Instruction instr) =>
+    public static void IbAL(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void IbAX(CpuCore cpu, Instruction instr) =>
+    public static void IbAX(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }

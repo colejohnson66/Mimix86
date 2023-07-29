@@ -31,15 +31,15 @@ namespace Mimix86.Core.Cpu.Execution;
 /// </summary>
 public static class In
 {
-    public static void ALDX(CpuCore cpu, Instruction instr) =>
+    public static void ALDX(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void ALIb(CpuCore cpu, Instruction instr) =>
+    public static void ALIb(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void AXDX(CpuCore cpu, Instruction instr) =>
+    public static void AXDX(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void AXIb(CpuCore cpu, Instruction instr) =>
+    public static void AXIb(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }

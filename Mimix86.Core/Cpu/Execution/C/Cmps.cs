@@ -31,7 +31,7 @@ namespace Mimix86.Core.Cpu.Execution;
 /// </summary>
 public static class Cmpsb
 {
-    public static void _(CpuCore cpu, Instruction instr) =>
+    public static void _(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }
 
@@ -40,6 +40,6 @@ public static class Cmpsb
 /// </summary>
 public static class Cmpsw
 {
-    public static void _(CpuCore cpu, Instruction instr) =>
+    public static void _(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }

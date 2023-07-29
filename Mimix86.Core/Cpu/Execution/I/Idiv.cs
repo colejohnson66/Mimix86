@@ -31,9 +31,9 @@ namespace Mimix86.Core.Cpu.Execution;
 /// </summary>
 public static class Idiv
 {
-    public static void Eb(CpuCore cpu, Instruction instr) =>
+    public static void Eb(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void Ew(CpuCore cpu, Instruction instr) =>
+    public static void Ew(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }

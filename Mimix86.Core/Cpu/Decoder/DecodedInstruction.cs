@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   Instruction.cs
+ * File:   DecodedInstruction.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2022-2023 Cole Tobin
@@ -29,7 +29,7 @@ namespace Mimix86.Core.Cpu.Decoder;
 /// <summary>
 /// Represents a single decoded instruction.
 /// </summary>
-public class Instruction
+public class DecodedInstruction
 {
     /// <summary>
     /// The ID of the actual opcode that will be executed.
@@ -92,7 +92,7 @@ public class Instruction
     // /// <summary>
     // /// Get or set the SIB byte, if it exists.
     // /// </summary>
-    // public Optional<byte> Sib { get; set; } = Optional<byte>.None;
+    // public byte? Sib { get; set; } = Optional<byte>.None;
 
     /// <summary>
     /// Get or set the displacement, if it exists.
@@ -114,7 +114,7 @@ public class Instruction
     // future: W, Z, B, LL, v'vvvv, and aaa
 
     /// <summary>
-    /// Construct a new <see cref="Instruction" /> object with a specified CPU mode bit width.
+    /// Construct a new <see cref="DecodedInstruction" /> object with a specified CPU mode bit width.
     /// </summary>
     /// <param name="defaultOperandSize">The default operand size.</param>
     /// <param name="defaultAddressSize">The default address size.</param>
@@ -125,7 +125,7 @@ public class Instruction
     ///   <item>if <paramref name="defaultAddressSize" /> is not 16, 32, or 64</item>
     /// </list>
     /// </exception>
-    public Instruction(int defaultOperandSize, int defaultAddressSize)
+    public DecodedInstruction(int defaultOperandSize, int defaultAddressSize)
     {
         if (defaultOperandSize is not (16 or 32 or 64))
             throw new ArgumentOutOfRangeException(nameof(defaultOperandSize), defaultOperandSize, "Unknown operand size.");

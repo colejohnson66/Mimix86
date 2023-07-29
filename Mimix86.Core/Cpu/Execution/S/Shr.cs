@@ -31,15 +31,15 @@ namespace Mimix86.Core.Cpu.Execution;
 /// </summary>
 public static class Shr
 {
-    public static void Eb1(CpuCore cpu, Instruction instr) =>
+    public static void Eb1(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void EbCL(CpuCore cpu, Instruction instr) =>
+    public static void EbCL(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void Ew1(CpuCore cpu, Instruction instr) =>
+    public static void Ew1(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void EwCL(CpuCore cpu, Instruction instr) =>
+    public static void EwCL(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }

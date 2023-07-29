@@ -31,21 +31,21 @@ namespace Mimix86.Core.Cpu.Execution;
 /// </summary>
 public static class Pop
 {
-    public static void Ew(CpuCore cpu, Instruction instr) =>
+    public static void Ew(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void Zw(CpuCore cpu, Instruction instr) =>
+    public static void Zw(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void CS(CpuCore cpu, Instruction instr) =>
+    public static void CS(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void DS(CpuCore cpu, Instruction instr) =>
+    public static void DS(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void ES(CpuCore cpu, Instruction instr) =>
+    public static void ES(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
-    public static void SS(CpuCore cpu, Instruction instr) =>
+    public static void SS(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }
