@@ -31,7 +31,7 @@ public enum OneBytePrefix
     // sorted by their byte values
 
     /// <summary>
-    /// The two byte opcode map escape prefix, typically located at <c>[0F]</c>.
+    /// The two-byte opcode map escape prefix, typically located at <c>[0F]</c>.
     /// </summary>
     TwoByteEscape,
 
@@ -71,11 +71,29 @@ public enum OneBytePrefix
     L1OMScalar,
 
     /// <summary>
-    /// The <c>MVEX/EVEX</c> prefix, typically located at <c>[62]</c>.
-    /// Which prefix is used depends on the "U" bit (bit 2) in byte 2 of the 3 byte payload.
+    /// The four-byte <c>EVEX</c> prefix, typically located at <c>[62]</c>.
     /// This is normally the <c>BOUND</c> instruction.
     /// </summary>
-    MvexEvex,
+    /// <remarks>
+    /// Despite originally being the same as the <see cref="Mvex" /> prefix, but with the "U" bit being set, Intel APX
+    ///   has changed this.
+    /// The interpretation of the 3-byte payload is (now) dependent on the opcode byte that follows this prefix.
+    /// </remarks>
+    Evex,
+
+    /// <summary>
+    /// The four-byte <c>MVEX</c> prefix, typically located at <c>[62]</c>.
+    /// This is normally the <c>BOUND</c> instruction.
+    /// </summary>
+    /// <remarks>
+    /// This was the original prefix used in Intel's Xeon Phi line of coprocessors.
+    /// Once AVX-512 was released on client processors, the three-byte payload was changed.
+    /// In the MVEX prefix, the "U" bit (bit 2 of byte 2 of the three-byte payload) is clear, but is set for
+    ///   <see cref="Evex" />.
+    /// Since the introduction of Intel APX in July 2023, this is no longer true, with the "U" bit being overloaded as
+    ///   another payload bit.
+    /// </remarks>
+    Mvex,
 
     /// <summary>
     /// The <c>FS</c> segment prefix, typically located at <c>[64]</c>.
@@ -116,7 +134,13 @@ public enum OneBytePrefix
     Vex2,
 
     /// <summary>
-    /// The <c>L1OM</c> vector for scalar instructions, typically located at <c>[D6]</c>.
+    /// The two-byte <c>REX2</c>, typically located at <c>[D5]</c>.
+    /// This is normally the <c>AAD Ib</c> instruction..
+    /// </summary>
+    Rex2,
+
+    /// <summary>
+    /// The three-byte <c>L1OM</c> vector for scalar instructions, typically located at <c>[D6]</c>.
     /// This is normally the <c>SALC</c> instruction.
     /// </summary>
     L1OMVector,
