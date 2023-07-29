@@ -21,7 +21,9 @@
  * =============================================================================
  */
 
-namespace Mimix86.Core.Cpu.Decoder;
+using Mimix86.Core.Cpu.Decoder;
+
+namespace Mimix86.Core.Cpu.Execution;
 
 /// <summary>
 /// The type of an instruction execution handler.

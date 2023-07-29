@@ -21,6 +21,7 @@
  * =============================================================================
  */
 
+using Mimix86.Core.Cpu.Execution;
 using Mimix86.Core.Cpu.Isa;
 using System;
 

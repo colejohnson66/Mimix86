@@ -22,6 +22,7 @@
  */
 
 using Mimix86.Core.Cpu.Decoder;
+using Mimix86.Core.Cpu.Execution;
 using System;
 
 namespace Mimix86.Core.Cpu.Isa;
