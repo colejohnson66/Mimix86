@@ -46,8 +46,7 @@ public record DataFile(
         {
             if (node.Count < 2)
                 throw new InvalidDataException("Expression is too small.");
-            if (!node[0].TryAsAtom(out Atom atom) || !atom.TryAs(out string? key))
-                throw new InvalidDataException("First entry of each main expression must be a string.");
+            string key = node[0].AsAtom().Value;
 
             if (key is "file")
             {
@@ -89,100 +88,88 @@ public record DataFile(
 
     private static DataFileInfo ProcessInfo(IEnumerable<AtomOrExpression> file)
     {
-        DataFileType? type = null;
         string? name = null;
+        string[]? summary = null;
 
-        foreach (AtomOrExpression aoe in file)
+        foreach (Expression expr in file.Select(aoe => aoe.AsExpression()))
         {
-            if (!aoe.TryAsExpression(out Expression? expr))
-                throw new InvalidDataException("Unknown atom in prefix list.");
-            if (expr.Count is not 2)
-                throw new InvalidDataException("File info expression is not the right length.");
+            string key = expr[0].AsAtom().Value;
 
-            if (!expr[0].TryAsAtom(out Atom keyAtom) || !keyAtom.TryAs(out string? key))
-                throw new InvalidDataException("File info key must be a string.");
-            if (!expr[1].TryAsAtom(out Atom valueAtom) || !valueAtom.TryAs(out string? value))
-                throw new InvalidDataException("File info value must be a string.");
-
-            if (key is "type")
-            {
-                if (type is not null)
-                    throw new InvalidDataException("Duplicate \"type\" entry.");
-                type = value switch
-                {
-                    "cpu-base-set" => DataFileType.CpuBaseSet,
-                    _              => null,
-                };
-                if (type is null)
-                    throw new InvalidDataException("Unknown file type.");
-            }
             if (key is "name")
             {
                 if (name is not null)
                     throw new InvalidDataException("Duplicate \"name\" entry.");
-                name = value;
+                name = expr[1].AsAtom().Value;
+            }
+            else if (key is "summary")
+            {
+                if (summary is not null)
+                    throw new InvalidDataException("Duplicate \"summary\" entry.");
+                summary = expr[1]
+                    .AsExpression()
+                    .Select(aoe => aoe.AsAtom().Value)
+                    .ToArray();
+            }
+            else
+            {
+                throw new InvalidCastException("Unknown key in info.");
             }
         }
 
-        if (type is null || name is null)
+        if (name is null || summary is null)
             throw new InvalidDataException("Incomplete file info.");
 
-        return new(type.Value, name);
+        return new(name, summary);
     }
 
-    private static SortedDictionary<byte, string> ProcessPrefixes(IEnumerable<AtomOrExpression> prefixes, Func<string, string?> lookup)
+    private static SortedDictionary<byte, string> ProcessPrefixes(IEnumerable<AtomOrExpression> prefixes, Func<string, string> lookup)
     {
         SortedDictionary<byte, string> result = new();
 
-        foreach (AtomOrExpression aoe in prefixes)
+        foreach (Expression expr in prefixes.Select(aoe => aoe.AsExpression()))
         {
-            if (!aoe.TryAsExpression(out Expression? expr))
-                throw new InvalidDataException("Unknown atom in prefix list.");
             if (expr.Count is not 2)
                 throw new InvalidDataException("Prefix expression is not the right length.");
 
-            if (!expr[0].TryAsAtom(out Atom valueAtom) ||
-                !valueAtom.TryAs(out string? valueStr) ||
-                !byte.TryParse(valueStr, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte value))
-                throw new InvalidDataException("Prefix value must be a two-hex-digit number.");
-            if (!expr[1].TryAsAtom(out Atom prefixAtom) ||
-                !prefixAtom.TryAs(out string? prefix))
-                throw new InvalidDataException("Prefix must be a string.");
+            byte value = byte.Parse(expr[0].AsAtom().Value, NumberStyles.HexNumber);
+            string prefix = expr[1].AsAtom().Value;
 
-            string? enumMember = lookup(prefix!);
-            if (enumMember is null)
-                throw new InvalidDataException("Unknown or unsupported prefix.");
-
-            if (!result.TryAdd(value, enumMember))
-                throw new InvalidDataException("Duplicate prefix value.");
+            result.Add(value, lookup(prefix));
         }
 
         return result;
     }
 
-    private static string? GetEnumMemberForOneBytePrefix(string key) =>
+    private static string GetEnumMemberForOneBytePrefix(string key) =>
         key switch
         {
-            // "two-byte"    => "TwoByteEscape", // [0F]
-            "ES" => "SegmentES", // [26]
-            "CS" => "SegmentCS", // [2E]
-            "DS" => "SegmentDS", // [36]
-            "SS" => "SegmentSS", // [3E]
-            // "REX"         => "Rex",           // [40]..[4F]
-            // "l1om-scalar" => "L1OMScalar",    // [62]
-            // "mvex-evex"   => "MvexEvex",      // [62]
-            // "FS"          => "SegmentFS",     // [64]
-            // "GS"          => "SegmentGS",     // [65]
-            // "OSIZE"       => "OperandSize",   // [66]
-            // "ASIZE"       => "AddressSize",   // [67]
-            // "xop"         => "Xop",           // [8F]
-            // "vex3"        => "Vex3",          // [C4]
-            // "vex2"        => "Vex2",          // [C5]
-            // "l1om-vector" => "L1OMVector",    // [D6]
-            "LOCK"  => "Lock",    // [F0]
-            "REPNE" => "Repne",   // [F2]
-            "REPE"  => "RepRepe", // [F3]
-            _       => null,
+            "two-byte"    => "TwoByteEscape", // [0F]
+            "seg-es"      => "SegmentES",     // [26]
+            "seg-cs"      => "SegmentCS",     // [2E]
+            "seg-ds"      => "SegmentDS",     // [36]
+            "seg-ss"      => "SegmentSS",     // [3E]
+            "rex"         => "Rex",           // [40]..[4F]
+            "l1om-scalar" => "L1OMScalar",    // [62]
+            "mvex"        => "Mvex",          // [62]
+            "evex"        => "Evex",          // [62]
+            "seg-ds2"     => "SegmentDS2",    // [63]
+            "rep-c"       => "Repc",          // [64]
+            "seg-fs"      => "SegmentFS",     // [64]
+            "rep-nc"      => "Repnc",         // [65]
+            "seg-gs"      => "SegmentGS",     // [65]
+            "osize"       => "OperandSize",   // [66]
+            "asize"       => "AddressSize",   // [67]
+            "xop"         => "Xop",           // [8F]
+            "vex3"        => "Vex3",          // [C4]
+            "vex2"        => "Vex2",          // [C5]
+            "rex2"        => "Rex2",          // [D5]
+            "seg-ds3"     => "SegmentDS3",    // [D6]
+            "l1om-vector" => "L1OMVector",    // [D6]
+            "lock"        => "Lock",          // [F0]
+            "seg-iram"    => "SegmentIRam",   // [F1]
+            "rep-ne"      => "Repne",         // [F2]
+            "rep-e"       => "RepRepe",       // [F3]
+            _             => throw new InvalidDataException("Unknown or unsupported prefix."),
         };
 
     // private static string? GetEnumMemberForTwoBytePrefix(string key) =>
@@ -195,7 +182,7 @@ public record DataFile(
     //         "three-byte-3a" => "ThreeByteEscape0F3A", // [0F 3A]
     //         "drex-7a"       => "Drex0F7A",            // [0F 7A]
     //         "drex-7b"       => "Drex0F7B",            // [0F 7B]
-    //         _               => null,
+    //         _               => throw new InvalidDataException("Unknown or unsupported prefix."),
     //     };
 
     private static List<Instruction> ProcessInstructions(IEnumerable<AtomOrExpression> instructions)

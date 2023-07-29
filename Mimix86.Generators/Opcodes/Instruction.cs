@@ -50,26 +50,12 @@ public sealed class Instruction :
 
     public Instruction(Expression node)
     {
-        if (node.Count is not 4)
-            throw new InvalidDataException("Instruction entry is not the right length.");
+        _mnemonic = node[0].AsAtom().Value;
+        _operands = node[1].AsExpression().Select(aoe => aoe.AsAtom().Value).ToArray();
+        Encoding = new(node[2].AsExpression().Select(aoe => aoe.AsAtom().Value).ToArray());
 
-        if (!node[0].TryAsAtom(out Atom mnemonic))
-            throw new InvalidDataException("Instruction mnemonic must be an atom.");
-        if (!node[1].TryAsExpression(out Expression? operands))
-            throw new InvalidDataException("Instruction operands must be an expression.");
-        if (!node[2].TryAsExpression(out Expression? encoding))
-            throw new InvalidDataException("Instruction encoding must be an expression.");
-        if (!node[3].TryAsExpression(out Expression? flags))
-            throw new InvalidDataException("Instruction flags must be an expression.");
-
-        _mnemonic = mnemonic.As<string>();
-        _operands = operands.Select(aoe => aoe.AsAtom().As<string>()).ToArray();
-        Encoding = new(encoding.Select(aoe => aoe.AsAtom().As<string>()).ToArray());
-
-        foreach (AtomOrExpression aoe in flags)
+        foreach (string str in node[3].AsExpression().Select(aoe => aoe.AsAtom().Value))
         {
-            if (!aoe.TryAsAtom(out Atom atom) || !atom.TryAs(out string? str))
-                throw new InvalidDataException("Instruction flags must be strings.");
             if (str is "lockable")
             {
                 if (_lockable)

@@ -93,9 +93,6 @@ public sealed class Parser : IDisposable
         if (Match(TokenType.RightParenthesis, out _))
             throw new InvalidDataException();
 
-        if (Match(TokenType.Null, out Token? _))
-            return new Atom(null);
-
         if (Match(TokenType.String, out Token? tok))
             return GetString(tok);
 

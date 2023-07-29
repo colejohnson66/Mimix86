@@ -139,10 +139,6 @@ internal sealed class Tokenizer : IDisposable
                 }
 
                 // unquoted strings can be null
-                string value = str.ToString();
-                if (value is "NULL")
-                    yield return new(TokenType.Null, "NULL");
-
                 yield return new(TokenType.String, str.ToString());
             }
         }

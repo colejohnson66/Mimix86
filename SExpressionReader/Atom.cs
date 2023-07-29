@@ -23,7 +23,7 @@
 
 using JetBrains.Annotations;
 using System;
-using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 
 namespace SExpressionReader;
 
@@ -34,16 +34,19 @@ namespace SExpressionReader;
 public readonly struct Atom
     : IEquatable<Atom>
 {
-    private readonly object? _value;
+    /// <summary>
+    /// Get the string value of this atom.
+    /// </summary>
+    public string Value { get; }
 
-    internal Atom(object? value)
+    internal Atom(string value)
     {
-        _value = value;
+        Value = value;
     }
 
 
     /// <summary>
-    /// Get the internal value of this atom.
+    /// Parse this atom into a specified type.
     /// </summary>
     /// <typeparam name="T">The type to get the value as.</typeparam>
     /// <returns>The internal value, cast to <typeparamref name="T" />.</returns>
@@ -51,48 +54,8 @@ public readonly struct Atom
     /// If the internal value is not assignable to a variable of <typeparamref name="T" />.
     /// </exception>
     public T As<T>()
-    {
-        if (_value is null)
-        {
-            // if `T` is not nullable but `_value` is, the cast is impossible
-            if (default(T) is null)
-                return default!;
-            throw new InvalidCastException();
-        }
-
-        if (_value.GetType().IsAssignableTo(typeof(T)))
-            return (T)_value;
-
-        throw new InvalidCastException();
-    }
-
-    /// <summary>
-    /// Try to cast the internal value of this atom to <typeparamref name="T" />.
-    /// </summary>
-    /// <param name="value">
-    /// If this function returns <c>true</c>, this contains the internal value of this atom after casting to
-    ///   <typeparamref name="T" />.
-    /// </param>
-    /// <typeparam name="T">The type to get the value as.</typeparam>
-    /// <returns><c>true</c> if the value was cast successfully; <c>false</c> otherwise.</returns>
-    public bool TryAs<T>([MaybeNullWhen(true)] out T value)
-    {
-        value = default!;
-
-        if (_value is null)
-        {
-            // if `T` is not nullable but `_value` is, the cast is impossible
-            return default(T) is null;
-        }
-
-        if (_value.GetType().IsAssignableTo(typeof(T)))
-        {
-            value = (T)_value;
-            return true;
-        }
-
-        return false;
-    }
+        where T : ISpanParsable<T> =>
+        T.Parse(Value, CultureInfo.InvariantCulture);
 
 
     // CS1591 is documentation comments
@@ -100,8 +63,8 @@ public readonly struct Atom
 
     public static bool operator ==(Atom lhs, Atom rhs)
     {
-        object? left = lhs._value;
-        object? right = rhs._value;
+        object? left = lhs.Value;
+        object? right = rhs.Value;
         if (ReferenceEquals(left, right))
             return true;
         if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
@@ -125,24 +88,17 @@ public readonly struct Atom
 
     /// <inheritdoc />
     public override int GetHashCode() =>
-        _value?.GetHashCode() ?? 0;
+        Value?.GetHashCode() ?? 0;
 
 
     /// <inheritdoc />
     public override string ToString()
     {
-        if (_value is null)
-            return "NULL";
+        if (Value.Contains('"'))
+            return $"\"{Value.Replace("\"", "\\\"")}\""; // quote it and escape inner quotes
+        if (Value.Contains(' '))
+            return $"\"{Value}\"";
 
-        string? str = _value.ToString();
-        if (str is null)
-            return "";
-
-        if (str.Contains('"'))
-            return $"\"{str.Replace("\"", "\\\"")}\""; // quote it and escape inner quotes
-        if (str.Contains(' '))
-            return $"\"{str}\"";
-
-        return str; // no quotes or spaces, so no quoting needed
+        return Value; // no quotes or spaces, so no quoting needed
     }
 }

@@ -23,4 +23,4 @@
 
 namespace Mimix86.Generators.Opcodes;
 
-public record DataFileInfo(DataFileType Type, string Name);
+public record DataFileInfo(string Name, string[] Summary);

@@ -27,8 +27,5 @@ internal enum TokenType
 {
     LeftParenthesis,
     RightParenthesis,
-    Null,
     String,
-
-    // TODO: support numbers
 }

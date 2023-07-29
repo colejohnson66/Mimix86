@@ -1,5 +1,5 @@
 ﻿; ==============================================================================
-; File:   8086.lisp
+; File:   I8086.lisp
 ; Author: Cole Tobin
 ; ==============================================================================
 ; Copyright (c) 2023 Cole Tobin
@@ -21,8 +21,13 @@
 ; ==============================================================================
 
 (file
-    (type  cpu-base-set)
-    (name  8086)
+    (name  I8086)
+    (summary
+        (
+            "Represents the instructions added with the original 8086."
+            "Undefined instructions are available with <see cref=\"I8086Undefined\" />."
+        )
+    )
 )
 
 ; Flags:
@@ -86,14 +91,14 @@
 
 
 (one-b-prefixes
-    (26 ES)
-    (2E CS)
-    (36 SS)
-    (3E DS)
-    (F0 LOCK)
-    (F1 LOCK)
-    (F2 REPNE)
-    (F3 REPE)
+    (26 seg-es)
+    (2E seg-cs)
+    (36 seg-ss)
+    (3E seg-ds)
+    (F0 lock)
+    (F1 lock)
+    (F2 rep-ne)
+    (F3 rep-e)
 )
 
 
@@ -377,6 +382,6 @@
 
 
     ; FPU instructions
-    ; TODO: [D8-DF] ESC block (in FpuBaseSet/8087.m86)
+    ; TODO: [D8-DF] ESC block (in I8087.lisp)
     (WAIT  ()  (9B)  ())
 )
