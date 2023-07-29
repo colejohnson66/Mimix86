@@ -69,19 +69,19 @@ public sealed partial class Decoder
     /// </summary>
     /// <param name="map">The opcode map to register into.</param>
     /// <param name="b">The byte to register.</param>
-    /// <param name="hasModRM"><c>true</c> if this instruction map/byte combination has a ModR/M byte.</param>
+    /// <param name="flags">The flags for this opcode map/byte combination.</param>
     /// <exception cref="ArgumentOutOfRangeException">If <paramref name="map" /> is unsupported.</exception>
     /// <exception cref="InvalidOperationException">
     /// If the opcode map/byte combination is already registered.
     /// </exception>
-    public void RegisterOpcodeMapByte(OpcodeMaps map, byte b, bool hasModRM)
+    public void RegisterOpcodeMapByte(OpcodeMaps map, byte b, OpcodeMapEntryFlags flags)
     {
         if (_instructions[map, b] is not null)
             throw new InvalidOperationException("Instruction map/byte combination is already registered.");
 
         _instructions[map, b] = new()
         {
-            HasModRM = hasModRM,
+            Flags = flags,
         };
     }
 
@@ -90,17 +90,17 @@ public sealed partial class Decoder
     /// </summary>
     /// <param name="map">The opcode map to register into.</param>
     /// <param name="bytes">The bytes to register.</param>
-    /// <param name="hasModRM"><c>true</c> if these instruction map/byte combinations all have a ModR/M byte.</param>
+    /// <param name="flags">The flags for all of these opcode map/byte combinations.</param>
     /// <exception cref="ArgumentNullException">If <paramref name="bytes" /> is <c>null</c>.</exception>
     /// <exception cref="ArgumentOutOfRangeException">If <paramref name="map" /> is unsupported.</exception>
     /// <exception cref="InvalidOperationException">
     /// If any opcode map/bytes combination are already registered.
     /// </exception>
-    public void RegisterOpcodeMapBytes(OpcodeMaps map, byte[] bytes, bool hasModRM)
+    public void RegisterOpcodeMapBytes(OpcodeMaps map, byte[] bytes, OpcodeMapEntryFlags flags)
     {
         ArgumentNullException.ThrowIfNull(bytes);
 
-        RegisterOpcodeMapBytes(map, bytes.AsSpan(), hasModRM);
+        RegisterOpcodeMapBytes(map, bytes.AsSpan(), flags);
     }
 
     /// <summary>
@@ -108,12 +108,12 @@ public sealed partial class Decoder
     /// </summary>
     /// <param name="map">The opcode map to register into.</param>
     /// <param name="bytes">The bytes to register.</param>
-    /// <param name="hasModRM"><c>true</c> if these instruction map/byte combinations all have a ModR/M byte.</param>
+    /// <param name="flags">The flags for all of these opcode map/byte combinations.</param>
     /// <exception cref="ArgumentOutOfRangeException">If <paramref name="map" /> is unsupported.</exception>
     /// <exception cref="InvalidOperationException">
     /// If any opcode map/bytes combination is already registered.
     /// </exception>
-    public void RegisterOpcodeMapBytes(OpcodeMaps map, ReadOnlySpan<byte> bytes, bool hasModRM)
+    public void RegisterOpcodeMapBytes(OpcodeMaps map, ReadOnlySpan<byte> bytes, OpcodeMapEntryFlags flags)
     {
         Span<Entry?> span = _instructions[map];
         foreach (byte b in bytes)
@@ -126,7 +126,7 @@ public sealed partial class Decoder
         {
             span[b] = new()
             {
-                HasModRM = hasModRM,
+                Flags = flags,
             };
         }
     }

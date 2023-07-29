@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   Decoder.Entry.cs
+ * File:   OpcodeMapEntryFlags.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2023 Cole Tobin
@@ -21,16 +21,15 @@
  * =============================================================================
  */
 
-using System.Collections.Generic;
-
 namespace Mimix86.Core.Cpu.Decoder;
 
-public sealed partial class Decoder
+/// <summary>
+/// Represents the flags for an opcode map/byte entry.
+/// </summary>
+public struct OpcodeMapEntryFlags
 {
-    private class Entry
-    {
-        public OpcodeMapEntryFlags Flags { get; init; }
-
-        public List<DecoderInstructionEntry> Instructions { get; } = new();
-    }
+    /// <summary>
+    /// Get a flag indicating if this opcode map/byte entry has a ModR/M byte.
+    /// </summary>
+    public bool HasModRM { get; init; }
 }
