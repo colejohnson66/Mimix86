@@ -26,7 +26,6 @@ namespace Mimix86.Core.Cpu;
 /// <summary>
 /// Represents the four architectural segment registers, defined by their prefix byte.
 /// </summary>
-[SuppressMessage("ReSharper", "InconsistentNaming")]
 public enum SegmentNames : byte
 {
     /// <summary>
@@ -49,6 +48,12 @@ public enum SegmentNames : byte
     /// </summary>
     [UsedImplicitly] DS = 0x3E,
 
+    // add with NEC V55 support
+    // /// <summary>
+    // /// Indicates the <c>DS2</c> segment, with the prefix byte, <c>[63]</c>.
+    // /// </summary>
+    // [UsedImplicitly] DS2 = 0x63,
+
     // add with 80386+ support
     // /// <summary>
     // /// Indicates the <c>FS</c> segment, with the prefix byte, <c>[64]</c>.
@@ -60,4 +65,16 @@ public enum SegmentNames : byte
     // /// Indicates the <c>GS</c> segment, with the prefix byte, <c>[65]</c>.
     // /// </summary>
     // GS = 0x65,
+
+    // add with NEC V55 support
+    // /// <summary>
+    // /// Indicates the <c>DS3</c> segment, with the prefix byte, <c>[D6]</c>.
+    // /// </summary>
+    // [UsedImplicitly] DS3 = 0xD6,
+
+    // add with NEC V55 support
+    // /// <summary>
+    // /// Indicates the <c>IRAM</c> segment, with the prefix byte, <c>[F1]</c>.
+    // /// </summary>
+    // [UsedImplicitly] IRAM = 0xF1,
 }
