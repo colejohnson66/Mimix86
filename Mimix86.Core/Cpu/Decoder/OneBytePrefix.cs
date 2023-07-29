@@ -26,6 +26,7 @@ namespace Mimix86.Core.Cpu.Decoder;
 /// <summary>
 /// Contains the various one-byte prefix bytes that can occur when decoding x86 instructions.
 /// </summary>
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public enum OneBytePrefix
 {
     // sorted by their byte values
@@ -96,6 +97,21 @@ public enum OneBytePrefix
     Mvex,
 
     /// <summary>
+    /// The <c>DS2</c> segment prefix, typically located at <c>[63]</c>.
+    /// </summary>
+    SegmentDS2,
+
+    /// <summary>
+    /// The <c>REPC</c> prefix, typically located at <c>[64]</c>.
+    /// </summary>
+    Repc,
+
+    /// <summary>
+    /// The <c>REPNC</c> prefix, typically located at <c>[65]</c>.
+    /// </summary>
+    Repnc,
+
+    /// <summary>
     /// The <c>FS</c> segment prefix, typically located at <c>[64]</c>.
     /// This is also overloaded by the Pentium P4 as a "hint alternating branch taken/not taken" for <c>Jcc</c>.
     /// </summary>
@@ -140,6 +156,11 @@ public enum OneBytePrefix
     Rex2,
 
     /// <summary>
+    /// The <c>DS3</c> segment prefix, typically located at <c>[D6]</c>.
+    /// </summary>
+    SegmentDS3,
+
+    /// <summary>
     /// The three-byte <c>L1OM</c> vector for scalar instructions, typically located at <c>[D6]</c>.
     /// This is normally the <c>SALC</c> instruction.
     /// </summary>
@@ -149,6 +170,11 @@ public enum OneBytePrefix
     /// The <c>LOCK</c> prefix, typically located at <c>[F0]</c>.
     /// </summary>
     Lock,
+
+    /// <summary>
+    /// The <c>IRAM</c> segment prefix, typically located at <c>[F1]</c>.
+    /// </summary>
+    SegmentIRam,
 
     /// <summary>
     /// The <c>REPNE</c> prefix, typically located at <c>[F2]</c>.

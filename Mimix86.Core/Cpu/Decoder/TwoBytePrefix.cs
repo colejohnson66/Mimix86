@@ -26,6 +26,8 @@ namespace Mimix86.Core.Cpu.Decoder;
 /// <summary>
 /// Contains the various two-byte prefix bytes that can occur when decoding x86 instructions.
 /// </summary>
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 public enum TwoBytePrefix
 {
     // sorted by their byte values
