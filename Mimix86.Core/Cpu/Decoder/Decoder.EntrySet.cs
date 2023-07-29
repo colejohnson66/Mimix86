@@ -34,6 +34,6 @@ public sealed partial class Decoder
         public OpcodeMapIndexFlags Flags { get; init; }
 
         // instructions that may be decoded from this opcode map/byte combo
-        public List<OpcodeMapOpcodeEntry> Instructions { get; } = new();
+        public List<OpcodeMapEntry> Instructions { get; } = new();
     }
 }

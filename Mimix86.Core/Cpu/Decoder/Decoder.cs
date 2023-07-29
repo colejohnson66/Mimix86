@@ -143,7 +143,7 @@ public sealed partial class Decoder
     /// <exception cref="InvalidOperationException">
     /// If the opcode map/byte combination is not registered.
     /// </exception>
-    public void RegisterInstruction(OpcodeMaps map, byte b, OpcodeMapOpcodeEntry entry)
+    public void RegisterInstruction(OpcodeMaps map, byte b, OpcodeMapEntry entry)
     {
         EntrySet? mapEntry = _instructions[map, b];
         if (mapEntry is null)

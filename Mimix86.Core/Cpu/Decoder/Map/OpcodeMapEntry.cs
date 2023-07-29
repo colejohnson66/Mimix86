@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   OpcodeMapOpcodeEntry.cs
+ * File:   OpcodeMapEntry.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2023 Cole Tobin
@@ -30,24 +30,24 @@ namespace Mimix86.Core.Cpu.Decoder.Map;
 /// Represents a single opcode in the decoder as its <see cref="Opcode" /> and <see cref="DecodeFlags" />.
 /// </summary>
 [PublicAPI]
-public readonly struct OpcodeMapOpcodeEntry
+public readonly struct OpcodeMapEntry
 {
     /// <summary>
-    /// Construct a new <see cref="OpcodeMapOpcodeEntry" /> with a specified opcode, and no decode flags.
+    /// Construct a new <see cref="OpcodeMapEntry" /> with a specified opcode, and no decode flags.
     /// </summary>
     /// <param name="opcode">The ID of the actual opcode.</param>
     /// <exception cref="ArgumentNullException">If <paramref name="opcode" /> is <c>null</c>.</exception>
-    public OpcodeMapOpcodeEntry(Opcode opcode)
+    public OpcodeMapEntry(Opcode opcode)
         : this(opcode, DecodeFlags.None)
     { }
 
     /// <summary>
-    /// Construct a new <see cref="OpcodeMapOpcodeEntry" /> with a specified opcode and decode flags.
+    /// Construct a new <see cref="OpcodeMapEntry" /> with a specified opcode and decode flags.
     /// </summary>
     /// <param name="opcode">The ID of the actual opcode.</param>
     /// <param name="flags">The required flags to decode to this opcode entry.</param>
     /// <exception cref="ArgumentNullException">If <paramref name="opcode" /> is <c>null</c>.</exception>
-    public OpcodeMapOpcodeEntry(Opcode opcode, DecodeFlags flags)
+    public OpcodeMapEntry(Opcode opcode, DecodeFlags flags)
     {
         ArgumentNullException.ThrowIfNull(opcode);
 

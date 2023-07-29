@@ -72,17 +72,6 @@ public enum OneBytePrefixes
     L1OMScalar,
 
     /// <summary>
-    /// The four-byte <c>EVEX</c> prefix, typically located at <c>[62]</c>.
-    /// This is normally the <c>BOUND</c> instruction.
-    /// </summary>
-    /// <remarks>
-    /// Despite originally being the same as the <see cref="Mvex" /> prefix, but with the "U" bit being set, Intel APX
-    ///   has changed this.
-    /// The interpretation of the 3-byte payload is (now) dependent on the opcode byte that follows this prefix.
-    /// </remarks>
-    Evex,
-
-    /// <summary>
     /// The four-byte <c>MVEX</c> prefix, typically located at <c>[62]</c>.
     /// This is normally the <c>BOUND</c> instruction.
     /// </summary>
@@ -97,6 +86,17 @@ public enum OneBytePrefixes
     Mvex,
 
     /// <summary>
+    /// The four-byte <c>EVEX</c> prefix, typically located at <c>[62]</c>.
+    /// This is normally the <c>BOUND</c> instruction.
+    /// </summary>
+    /// <remarks>
+    /// Despite originally being the same as the <see cref="Mvex" /> prefix, but with the "U" bit being set, Intel APX
+    ///   has changed this.
+    /// The interpretation of the 3-byte payload is (now) dependent on the opcode byte that follows this prefix.
+    /// </remarks>
+    Evex,
+
+    /// <summary>
     /// The <c>DS2</c> segment prefix, typically located at <c>[63]</c>.
     /// </summary>
     SegmentDS2,
@@ -107,15 +107,15 @@ public enum OneBytePrefixes
     Repc,
 
     /// <summary>
-    /// The <c>REPNC</c> prefix, typically located at <c>[65]</c>.
-    /// </summary>
-    Repnc,
-
-    /// <summary>
     /// The <c>FS</c> segment prefix, typically located at <c>[64]</c>.
     /// This is also overloaded by the Pentium P4 as a "hint alternating branch taken/not taken" for <c>Jcc</c>.
     /// </summary>
     SegmentFS,
+
+    /// <summary>
+    /// The <c>REPNC</c> prefix, typically located at <c>[65]</c>.
+    /// </summary>
+    Repnc,
 
     /// <summary>
     /// The <c>GS</c> segment prefix, typically located at <c>[65]</c>.
