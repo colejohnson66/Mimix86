@@ -31,9 +31,15 @@ public sealed partial class Decoder
     private class EntrySet
     {
         // flags that dictate how the decoder should proceed when this opcode map/byte combo is reached
-        public OpcodeMapIndexFlags Flags { get; init; }
+        public OpcodeMapIndexFlags Flags { get; }
 
         // instructions that may be decoded from this opcode map/byte combo
         public List<OpcodeMapEntry> Instructions { get; } = new();
+
+
+        public EntrySet(OpcodeMapIndexFlags flags)
+        {
+            Flags = flags;
+        }
     }
 }

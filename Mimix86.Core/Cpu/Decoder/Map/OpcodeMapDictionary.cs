@@ -84,21 +84,18 @@ internal sealed class OpcodeMapDictionary<T>
     private readonly T[] _storage = new T[OpcodeMapDictionary.SupportedMapCount * ELEMENTS_PER_MAP];
 
     public Span<T> this[OpcodeMaps map] =>
-        _storage.AsSpan(GetIndex(map, 0), ELEMENTS_PER_MAP);
+        _storage.AsSpan(GetIndex(new(map, 0)), ELEMENTS_PER_MAP);
 
-    public T this[OpcodeMaps map, byte b]
-    {
-        get => _storage[GetIndex(map, b)];
-        set => _storage[GetIndex(map, b)] = value;
-    }
+    public ref T this[OpcodeMapIndex index] =>
+        ref _storage[GetIndex(index)];
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static int GetIndex(OpcodeMaps map, byte b)
+    private static int GetIndex(OpcodeMapIndex index)
     {
-        int index = OpcodeMapDictionary.MapToStorageIndex[(int)map];
-        if (index < 0)
-            throw new ArgumentOutOfRangeException(nameof(map), map, "Specified opcode map is unsupported.");
+        int offset = OpcodeMapDictionary.MapToStorageIndex[(int)index.Map];
+        if (offset < 0)
+            throw new ArgumentOutOfRangeException(nameof(index), index, "Specified opcode map is unsupported.");
 
-        return index * ELEMENTS_PER_MAP + b;
+        return offset * ELEMENTS_PER_MAP + index.Byte;
     }
 }

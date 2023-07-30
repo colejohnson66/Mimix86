@@ -28,4 +28,9 @@ namespace Mimix86.Core.Cpu.Decoder.Map;
 /// </summary>
 /// <param name="Map">The map <see cref="Byte" /> indexes into.</param>
 /// <param name="Byte">The index into the map (<see cref="Map" />).</param>
-public record struct OpcodeMapIndex(OpcodeMaps Map, byte Byte);
+public readonly record struct OpcodeMapIndex(OpcodeMaps Map, byte Byte)
+{
+    /// <inheritdoc />
+    public override string ToString() =>
+        $"{Map}[{Byte:X2}]";
+}

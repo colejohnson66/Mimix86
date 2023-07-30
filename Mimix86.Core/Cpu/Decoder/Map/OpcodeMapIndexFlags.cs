@@ -21,15 +21,38 @@
  * =============================================================================
  */
 
+using System;
+
 namespace Mimix86.Core.Cpu.Decoder.Map;
 
 /// <summary>
 /// Represents the flags for an opcode map/byte index.
 /// </summary>
-public struct OpcodeMapIndexFlags
+public readonly struct OpcodeMapIndexFlags : IEquatable<OpcodeMapIndexFlags>
 {
     /// <summary>
     /// Get a flag indicating if this opcode map/byte index has a ModR/M byte.
     /// </summary>
     public bool HasModRM { get; init; }
+
+
+#pragma warning disable CS1591
+    public static bool operator ==(OpcodeMapIndexFlags lhs, OpcodeMapIndexFlags rhs) =>
+        lhs.HasModRM == rhs.HasModRM;
+
+    public static bool operator !=(OpcodeMapIndexFlags lhs, OpcodeMapIndexFlags rhs) =>
+        !(lhs == rhs);
+#pragma warning restore CS1591
+
+    /// <inheritdoc />
+    public override bool Equals(object? obj) =>
+        obj is OpcodeMapIndexFlags other && Equals(other);
+
+    /// <inheritdoc />
+    public bool Equals(OpcodeMapIndexFlags other) =>
+        this == other;
+
+    /// <inheritdoc />
+    public override int GetHashCode() =>
+        HasModRM.GetHashCode();
 }

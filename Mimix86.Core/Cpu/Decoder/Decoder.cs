@@ -22,6 +22,7 @@
  */
 
 using Mimix86.Core.Cpu.Decoder.Map;
+using Mimix86.Core.Cpu.Isa;
 using System;
 
 namespace Mimix86.Core.Cpu.Decoder;
@@ -33,122 +34,77 @@ namespace Mimix86.Core.Cpu.Decoder;
 public sealed partial class Decoder
 {
     private readonly OneBytePrefixes?[] _oneBytePrefixes = new OneBytePrefixes?[256];
-    // private readonly TwoBytePrefix?[] _twoBytePrefixes = new TwoBytePrefix?[256];
+    private readonly TwoBytePrefixes?[] _twoBytePrefixes = new TwoBytePrefixes?[256];
 
     private readonly OpcodeMapDictionary<EntrySet?> _instructions = new();
 
 
     /// <summary>
-    /// Register a single one-byte prefix to a specified byte value.
+    /// Register an ISA extension set.
     /// </summary>
-    /// <param name="b">The byte value to register the prefix to.</param>
-    /// <param name="prefix">The prefix to register.</param>
-    /// <exception cref="ArgumentOutOfRangeException">
-    /// If any of the following are <c>true</c>:
-    /// <list type="bullet">
-    ///   <item>if <paramref name="prefix" /> is unsupported</item>
-    /// </list>
-    /// </exception>
-    /// <exception cref="InvalidOperationException">
-    /// If the specified one-byte prefix is already registered at the specified byte value.
-    /// </exception>
-    public void RegisterOneBytePrefix(byte b, OneBytePrefixes prefix)
+    /// <param name="extension">The extension set to register.</param>
+    public void RegisterIsaExtension(IsaExtension extension)
     {
-        if (prefix is not (OneBytePrefixes.SegmentES or OneBytePrefixes.SegmentCS or OneBytePrefixes.SegmentDS or OneBytePrefixes.SegmentSS) &&
-            prefix is not (OneBytePrefixes.Lock or OneBytePrefixes.Repne or OneBytePrefixes.RepRepe))
-            throw new ArgumentOutOfRangeException(nameof(prefix), prefix, "Prefix is not supported yet.");
+        ArgumentNullException.ThrowIfNull(extension);
 
-        if (_oneBytePrefixes[b] is not null)
-            throw new InvalidOperationException($"One-byte prefix at [{b:X2}] is already registered as {_oneBytePrefixes[b]}.");
-
-        _oneBytePrefixes[b] = prefix;
-    }
-
-
-    /// <summary>
-    /// Register an opcode map/byte combination.
-    /// </summary>
-    /// <param name="map">The opcode map to register into.</param>
-    /// <param name="b">The byte to register.</param>
-    /// <param name="flags">The flags for this opcode map/byte combination.</param>
-    /// <exception cref="ArgumentOutOfRangeException">If <paramref name="map" /> is unsupported.</exception>
-    /// <exception cref="InvalidOperationException">
-    /// If the opcode map/byte combination is already registered.
-    /// </exception>
-    public void RegisterOpcodeMapByte(OpcodeMaps map, byte b, OpcodeMapIndexFlags flags)
-    {
-        if (_instructions[map, b] is not null)
-            throw new InvalidOperationException("Instruction map/byte combination is already registered.");
-
-        _instructions[map, b] = new()
+        if (extension.OneBytePrefixes is not null)
         {
-            Flags = flags,
-        };
-    }
-
-    /// <summary>
-    /// Register multiple opcode map/byte combinations.
-    /// </summary>
-    /// <param name="map">The opcode map to register into.</param>
-    /// <param name="bytes">The bytes to register.</param>
-    /// <param name="flags">The flags for all of these opcode map/byte combinations.</param>
-    /// <exception cref="ArgumentNullException">If <paramref name="bytes" /> is <c>null</c>.</exception>
-    /// <exception cref="ArgumentOutOfRangeException">If <paramref name="map" /> is unsupported.</exception>
-    /// <exception cref="InvalidOperationException">
-    /// If any opcode map/bytes combination are already registered.
-    /// </exception>
-    public void RegisterOpcodeMapBytes(OpcodeMaps map, byte[] bytes, OpcodeMapIndexFlags flags)
-    {
-        ArgumentNullException.ThrowIfNull(bytes);
-
-        RegisterOpcodeMapBytes(map, bytes.AsSpan(), flags);
-    }
-
-    /// <summary>
-    /// Register multiple opcode map/byte combinations.
-    /// </summary>
-    /// <param name="map">The opcode map to register into.</param>
-    /// <param name="bytes">The bytes to register.</param>
-    /// <param name="flags">The flags for all of these opcode map/byte combinations.</param>
-    /// <exception cref="ArgumentOutOfRangeException">If <paramref name="map" /> is unsupported.</exception>
-    /// <exception cref="InvalidOperationException">
-    /// If any opcode map/bytes combination is already registered.
-    /// </exception>
-    public void RegisterOpcodeMapBytes(OpcodeMaps map, ReadOnlySpan<byte> bytes, OpcodeMapIndexFlags flags)
-    {
-        Span<EntrySet?> span = _instructions[map];
-        foreach (byte b in bytes)
-        {
-            if (span[b] is not null)
-                throw new InvalidOperationException($"Instruction map/byte combination ({map}:{b:x2}) is already registered.");
-        }
-
-        foreach (byte b in bytes)
-        {
-            span[b] = new()
+            foreach ((byte b, OneBytePrefixes prefix) in extension.OneBytePrefixes)
             {
-                Flags = flags,
-            };
+                ref OneBytePrefixes? old = ref _oneBytePrefixes[b];
+                if (old is not null)
+                {
+                    // throw if different; otherwise, ignore
+                    if (old == prefix)
+                        throw new InvalidOperationException($"One-byte prefix {prefix} at [{b:X2}] is already registered as {old}.");
+                    continue;
+                }
+                old = prefix;
+            }
         }
-    }
 
+        if (extension.TwoBytePrefixes is not null)
+        {
+            foreach ((byte b, TwoBytePrefixes prefix) in extension.TwoBytePrefixes)
+            {
+                ref TwoBytePrefixes? old = ref _twoBytePrefixes[b];
+                if (old is not null)
+                {
+                    // throw if different; otherwise, ignore
+                    if (old != prefix)
+                        throw new InvalidOperationException($"Two-byte prefix {prefix} at [{b:X2}] is already registered as {old}.");
+                    continue;
+                }
+                old = prefix;
+            }
+        }
 
-    /// <summary>
-    /// Register a single opcode entry in a specified opcode map/byte combination.
-    /// </summary>
-    /// <param name="map">The opcode map to register into.</param>
-    /// <param name="b">The byte to register into.</param>
-    /// <param name="entry">The entry to register</param>
-    /// <exception cref="ArgumentOutOfRangeException">If <paramref name="map" /> is unsupported.</exception>
-    /// <exception cref="InvalidOperationException">
-    /// If the opcode map/byte combination is not registered.
-    /// </exception>
-    public void RegisterInstruction(OpcodeMaps map, byte b, OpcodeMapEntry entry)
-    {
-        EntrySet? mapEntry = _instructions[map, b];
-        if (mapEntry is null)
-            throw new InvalidOperationException("Instruction map/byte combination is not registered.");
+        if (extension.OpcodeMapFlags is not null)
+        {
+            foreach ((OpcodeMapIndex index, OpcodeMapIndexFlags flags) in extension.OpcodeMapFlags)
+            {
+                ref EntrySet? set = ref _instructions[index];
 
-        mapEntry.Instructions.Add(entry);
+                if (set is not null)
+                {
+                    if (set.Flags != flags)
+                        throw new InvalidOperationException("Cannot register an opcode map index with different flags than already registered as.");
+                    continue;
+                }
+                set = new(flags);
+            }
+        }
+
+        // must register entries after flags, otherwise sets could be `null` prematurely
+        if (extension.OpcodeMapEntries is not null)
+        {
+            foreach ((OpcodeMapIndex index, OpcodeMapEntry entry) in extension.OpcodeMapEntries)
+            {
+                ref EntrySet? set = ref _instructions[index];
+                if (set is null)
+                    throw new InvalidOperationException("Cannot register an opcode map entry before the index is registered.");
+                set.Instructions.Add(entry);
+            }
+        }
     }
 }
