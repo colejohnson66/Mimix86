@@ -111,9 +111,6 @@ public sealed partial class Opcode
     /// <summary>The <c>CALL Apww</c> opcode.</summary>
     public static Opcode CallApww { get; } = new("call", Execution.Call.Apww, OpcodeFlags.EndTrace, ImmediateSizes.PointerWordWord);
 
-    /// <summary>The <c>CALL Eb</c> opcode.</summary>
-    public static Opcode CallEb { get; } = new("call", Execution.Call.Eb, OpcodeFlags.EndTrace, null);
-
     /// <summary>The <c>CALL Ew</c> opcode.</summary>
     public static Opcode CallEw { get; } = new("call", Execution.Call.Ew, OpcodeFlags.EndTrace, null);
 
@@ -249,9 +246,6 @@ public sealed partial class Opcode
     /// <summary>The <c>JMP Apww</c> opcode.</summary>
     public static Opcode JmpApww { get; } = new("jmp", Execution.Jmp.Apww, OpcodeFlags.EndTrace, ImmediateSizes.PointerWordWord);
 
-    /// <summary>The <c>JMP Eb</c> opcode.</summary>
-    public static Opcode JmpEb { get; } = new("jmp", Execution.Jmp.Eb, OpcodeFlags.EndTrace, null);
-
     /// <summary>The <c>JMP Ew</c> opcode.</summary>
     public static Opcode JmpEw { get; } = new("jmp", Execution.Jmp.Ew, OpcodeFlags.EndTrace, null);
 
@@ -354,9 +348,6 @@ public sealed partial class Opcode
     /// <summary>The <c>NEG Ew</c> opcode.</summary>
     public static Opcode NegEw { get; } = new("neg", Execution.Neg.Ew, 0, null);
 
-    /// <summary>The <c>NOP</c> opcode.</summary>
-    public static Opcode Nop { get; } = new("nop", Execution.Nop._, 0, null);
-
     /// <summary>The <c>NOT Eb</c> opcode.</summary>
     public static Opcode NotEb { get; } = new("not", Execution.Not.Eb, 0, null);
 
@@ -431,9 +422,6 @@ public sealed partial class Opcode
 
     /// <summary>The <c>PUSH ES</c> opcode.</summary>
     public static Opcode PushES { get; } = new("push", Execution.Push.ES, 0, null);
-
-    /// <summary>The <c>PUSH Eb</c> opcode.</summary>
-    public static Opcode PushEb { get; } = new("push", Execution.Push.Eb, 0, null);
 
     /// <summary>The <c>PUSH Ew</c> opcode.</summary>
     public static Opcode PushEw { get; } = new("push", Execution.Push.Ew, 0, null);
