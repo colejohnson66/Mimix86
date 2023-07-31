@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   OpcodeMapIndex.cs
+ * File:   DecoderStates.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2023 Cole Tobin
@@ -21,16 +21,12 @@
  * =============================================================================
  */
 
-namespace Mimix86.Core.Cpu.Decoder.Map;
+namespace Mimix86.Core.Cpu.Decoder;
 
 /// <summary>
-/// Represents an index into the opcode map, as a tuple of the map itself, and the byte value.
+/// Represents the various states that the decoder (<see cref="Decoder" />) can be in.
 /// </summary>
-/// <param name="Map">The map <see cref="Byte" /> indexes into.</param>
-/// <param name="Byte">The index into the map (<see cref="Map" />).</param>
-public readonly record struct OpcodeMapIndex(OpcodeMaps Map, byte Byte)
+public enum DecoderStates
 {
-    /// <inheritdoc />
-    public override string ToString() =>
-        $"{Map}[{Byte:X2}]";
+    // TODO
 }

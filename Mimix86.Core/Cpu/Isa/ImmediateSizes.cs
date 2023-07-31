@@ -21,7 +21,7 @@
  * =============================================================================
  */
 
-namespace Mimix86.Core.Cpu.Decoder;
+namespace Mimix86.Core.Cpu.Isa;
 
 /// <summary>
 /// Contains the various immediate sizes for use by the decoder.

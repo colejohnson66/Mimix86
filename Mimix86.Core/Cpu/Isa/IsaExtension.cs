@@ -22,7 +22,7 @@
  */
 
 using Mimix86.Core.Cpu.Decoder;
-using Mimix86.Core.Cpu.Decoder.Map;
+using Mimix86.Core.Cpu.Decoder.OpcodeMap;
 using System.Collections.Generic;
 
 namespace Mimix86.Core.Cpu.Isa;
@@ -31,29 +31,30 @@ namespace Mimix86.Core.Cpu.Isa;
 /// Represents an ISA extension.
 /// This contains the prefixes and opcodes that will be registered.
 /// </summary>
-public sealed class IsaExtension
+[PublicAPI] // TODO: remove
+public sealed partial class IsaExtension
 {
     /// <summary>
     /// Get the one-byte prefixes that this ISA extension will register.
     /// If <c>null</c>, no one-byte prefixes will be registered.
     /// </summary>
-    public Dictionary<byte, OneBytePrefixes>? OneBytePrefixes { get; init; }
+    public Dictionary<byte, Prefixes.OneByte>? OneBytePrefixes { get; init; }
 
     /// <summary>
     /// Get the two-byte prefixes that this ISA extension will register.
     /// If <c>null</c>, no two-byte prefixes will be registered.
     /// </summary>
-    public Dictionary<byte, TwoBytePrefixes>? TwoBytePrefixes { get; init; }
+    public Dictionary<byte, Prefixes.TwoByte>? TwoBytePrefixes { get; init; }
 
     /// <summary>
     /// Get the flags for the opcode map/byte combinations that this ISA extension will register.
     /// If <c>null</c>, no opcode flags will be registered.
     /// </summary>
-    public Dictionary<OpcodeMapIndex, OpcodeMapIndexFlags>? OpcodeMapFlags { get; init; }
+    public Dictionary<OpcodeMaps, Dictionary<byte, OpcodeEntryFlags>>? OpcodeMapFlags { get; init; }
 
     /// <summary>
     /// Get the opcode map/byte combination that this ISA extension will register.
     /// If <c>null</c>, no opcodes will be registered.
     /// </summary>
-    public Dictionary<OpcodeMapIndex, OpcodeMapEntry>? OpcodeMapEntries { get; init; }
+    public Dictionary<OpcodeMaps, Dictionary<byte, OpcodeEntry>>? OpcodeMapEntries { get; init; }
 }

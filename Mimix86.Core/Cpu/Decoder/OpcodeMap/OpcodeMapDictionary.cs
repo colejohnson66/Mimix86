@@ -26,7 +26,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace Mimix86.Core.Cpu.Decoder.Map;
+namespace Mimix86.Core.Cpu.Decoder.OpcodeMap;
 
 // stores a mapping from `OpcodeMaps` to an array of `T[256]`,
 //   but in a more compact form than a dictionary would
@@ -80,7 +80,7 @@ internal static class OpcodeMapDictionary
 internal sealed class OpcodeMapDictionary<T>
 {
     // can't get a span of a 2D array, so use a 1D with a stride (how a 2D works internally)
-    private const int ELEMENTS_PER_MAP = 256; // max(8 bits)
+    private const int ELEMENTS_PER_MAP = 1 << 8;
     private readonly T[] _storage = new T[OpcodeMapDictionary.SupportedMapCount * ELEMENTS_PER_MAP];
 
     public Span<T> this[OpcodeMaps map] =>

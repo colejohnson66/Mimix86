@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   DecodeFlagsBuilder.cs
+ * File:   OpcodeEntryFlagsBuilder.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2022-2023 Cole Tobin
@@ -23,23 +23,23 @@
 
 using System.Diagnostics;
 
-namespace Mimix86.Core.Cpu.Decoder;
+namespace Mimix86.Core.Cpu.Decoder.OpcodeMap;
 
 /// <summary>
-/// Contains a "builder" class to assist in creation of a <see cref="DecodeFlags" /> object during the decode stage.
+/// Contains a "builder" class to assist in creation of a <see cref="OpcodeEntryFlags" /> object during the decode stage.
 /// </summary>
 /// <remarks>
 /// After all the flags are extracted from the instruction stream, <see cref="Matches" /> can be used to see if another
-///   <see cref="DecodeFlags" /> object matches them.
+///   <see cref="OpcodeEntryFlags" /> object matches them.
 /// </remarks>
-public class DecodeFlagsBuilder
+public class OpcodeEntryFlagsBuilder
 {
-    private DecodeFlags _value;
+    private OpcodeEntryFlags _value;
 
     /// <summary>
-    /// Construct a new, empty, <see cref="DecodeFlagsBuilder" />.
+    /// Construct a new, empty, <see cref="OpcodeEntryFlagsBuilder" />.
     /// </summary>
-    public DecodeFlagsBuilder()
+    public OpcodeEntryFlagsBuilder()
     { }
 
 
@@ -57,34 +57,34 @@ public class DecodeFlagsBuilder
 
         // mod
         _value |= (b & 0xC0) is 0xC0
-            ? DecodeFlags.ModReg
-            : DecodeFlags.ModMem;
+            ? OpcodeEntryFlags.ModReg
+            : OpcodeEntryFlags.ModMem;
 
         // reg
         _value |= ((b >> 3) & 7) switch
         {
-            0 => DecodeFlags.Reg0,
-            1 => DecodeFlags.Reg1,
-            2 => DecodeFlags.Reg2,
-            3 => DecodeFlags.Reg3,
-            4 => DecodeFlags.Reg4,
-            5 => DecodeFlags.Reg5,
-            6 => DecodeFlags.Reg6,
-            7 => DecodeFlags.Reg7,
+            0 => OpcodeEntryFlags.Reg0,
+            1 => OpcodeEntryFlags.Reg1,
+            2 => OpcodeEntryFlags.Reg2,
+            3 => OpcodeEntryFlags.Reg3,
+            4 => OpcodeEntryFlags.Reg4,
+            5 => OpcodeEntryFlags.Reg5,
+            6 => OpcodeEntryFlags.Reg6,
+            7 => OpcodeEntryFlags.Reg7,
             _ => throw new UnreachableException(),
         };
 
         // r/m
         _value |= (b & 7) switch
         {
-            0 => DecodeFlags.RM0,
-            1 => DecodeFlags.RM1,
-            2 => DecodeFlags.RM2,
-            3 => DecodeFlags.RM3,
-            4 => DecodeFlags.RM4,
-            5 => DecodeFlags.RM5,
-            6 => DecodeFlags.RM6,
-            7 => DecodeFlags.RM7,
+            0 => OpcodeEntryFlags.RM0,
+            1 => OpcodeEntryFlags.RM1,
+            2 => OpcodeEntryFlags.RM2,
+            3 => OpcodeEntryFlags.RM3,
+            4 => OpcodeEntryFlags.RM4,
+            5 => OpcodeEntryFlags.RM5,
+            6 => OpcodeEntryFlags.RM6,
+            7 => OpcodeEntryFlags.RM7,
             _ => throw new UnreachableException(),
         };
     }
@@ -110,6 +110,6 @@ public class DecodeFlagsBuilder
     /// <returns>
     /// A boolean indicating if the provided opcode flags are a match to the ones extracted from the instruction stream.
     /// </returns>
-    public bool Matches(DecodeFlags opcodeFlags) =>
+    public bool Matches(OpcodeEntryFlags opcodeFlags) =>
         (_value.Values & opcodeFlags.Masks) == opcodeFlags.Values;
 }

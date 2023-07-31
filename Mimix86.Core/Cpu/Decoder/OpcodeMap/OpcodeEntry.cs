@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   OpcodeMapEntry.cs
+ * File:   OpcodeEntry.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2023 Cole Tobin
@@ -24,30 +24,30 @@
 using Mimix86.Core.Cpu.Isa;
 using System;
 
-namespace Mimix86.Core.Cpu.Decoder.Map;
+namespace Mimix86.Core.Cpu.Decoder.OpcodeMap;
 
 /// <summary>
-/// Represents a single opcode in the decoder as its <see cref="Opcode" /> and <see cref="DecodeFlags" />.
+/// Represents a single opcode in the decoder as its <see cref="Opcode" /> and <see cref="OpcodeEntryFlags" />.
 /// </summary>
 [PublicAPI]
-public readonly struct OpcodeMapEntry
+public readonly struct OpcodeEntry
 {
     /// <summary>
-    /// Construct a new <see cref="OpcodeMapEntry" /> with a specified opcode, and no decode flags.
+    /// Construct a new <see cref="OpcodeEntry" /> with a specified opcode, and no decode flags.
     /// </summary>
     /// <param name="opcode">The ID of the actual opcode.</param>
     /// <exception cref="ArgumentNullException">If <paramref name="opcode" /> is <c>null</c>.</exception>
-    public OpcodeMapEntry(Opcode opcode)
-        : this(opcode, DecodeFlags.None)
+    public OpcodeEntry(Opcode opcode)
+        : this(opcode, OpcodeEntryFlags.None)
     { }
 
     /// <summary>
-    /// Construct a new <see cref="OpcodeMapEntry" /> with a specified opcode and decode flags.
+    /// Construct a new <see cref="OpcodeEntry" /> with a specified opcode and decode flags.
     /// </summary>
     /// <param name="opcode">The ID of the actual opcode.</param>
     /// <param name="flags">The required flags to decode to this opcode entry.</param>
     /// <exception cref="ArgumentNullException">If <paramref name="opcode" /> is <c>null</c>.</exception>
-    public OpcodeMapEntry(Opcode opcode, DecodeFlags flags)
+    public OpcodeEntry(Opcode opcode, OpcodeEntryFlags flags)
     {
         ArgumentNullException.ThrowIfNull(opcode);
 
@@ -60,5 +60,5 @@ public readonly struct OpcodeMapEntry
     public Opcode Opcode { get; }
 
     /// <summary>The required flags to decode to this opcode entry.</summary>
-    public DecodeFlags Flags { get; init; }
+    public OpcodeEntryFlags Flags { get; init; }
 }

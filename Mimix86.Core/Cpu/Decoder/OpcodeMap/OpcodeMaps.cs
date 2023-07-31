@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   InstructionMap.cs
+ * File:   OpcodeMaps.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2023 Cole Tobin
@@ -21,7 +21,7 @@
  * =============================================================================
  */
 
-namespace Mimix86.Core.Cpu.Decoder.Map;
+namespace Mimix86.Core.Cpu.Decoder.OpcodeMap;
 
 /// <summary>
 /// Contains the various maps that instructions may be in.

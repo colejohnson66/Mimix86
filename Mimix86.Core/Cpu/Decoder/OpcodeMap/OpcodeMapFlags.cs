@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   Decoder.cs
+ * File:   OpcodeMapFlags.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2023 Cole Tobin
@@ -21,13 +21,19 @@
  * =============================================================================
  */
 
-namespace Mimix86.Core.Cpu.Decoder;
+using System;
+
+namespace Mimix86.Core.Cpu.Decoder.OpcodeMap;
 
 /// <summary>
-/// Represents an x86 instruction decoder.
+/// Contains the various flags for an opcode map/byte index.
 /// </summary>
-[PublicAPI]
-public sealed class Decoder
+[Flags]
+public enum OpcodeMapFlags
 {
-    // TODO
+    /// <summary>
+    /// Indicates that the relevant opcode map entry has a ModR/M byte that must be decoded immediately after the opcode
+    ///   byte.
+    /// </summary>
+    HasModRM = 1 << 0,
 }

@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   DecodeFlags.cs
+ * File:   OpcodeEntryFlags.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2022-2023 Cole Tobin
@@ -23,14 +23,14 @@
 
 using System.Runtime.CompilerServices;
 
-namespace Mimix86.Core.Cpu.Decoder;
+namespace Mimix86.Core.Cpu.Decoder.OpcodeMap;
 
 /// <summary>
 /// Contains information for the instruction decoder that indicates if a specific opcode in a group is valid.
 /// </summary>
 /// <remarks>
-/// After decoding all the flags with a <see cref="DecodeFlagsBuilder" />, an opcode from the group can be checked with
-///   <see cref="DecodeFlagsBuilder.Matches" />.
+/// After decoding all the flags with a <see cref="OpcodeEntryFlagsBuilder" />, an opcode from the group can be checked with
+///   <see cref="OpcodeEntryFlagsBuilder.Matches" />.
 /// </remarks>
 /// <example>
 /// The <c>0F&#xA0;01</c> opcode group contains a few dozen individual opcodes.
@@ -40,7 +40,7 @@ namespace Mimix86.Core.Cpu.Decoder;
 ///   <c>0F&#xA0;01&#xA0;/4</c> (register form only).
 /// Therefore, its entry will contain <see cref="ModReg" />&#xA0;|&#xA0;<see cref="Reg4" />.
 /// </example>
-public readonly struct DecodeFlags
+public readonly struct OpcodeEntryFlags
 {
     /* Flags are organized internally as follows:
      * ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┐
@@ -69,39 +69,39 @@ public readonly struct DecodeFlags
 
 
     /// <summary>
-    /// The "raw" value of this <see cref="DecodeFlags" />.
+    /// The "raw" value of this <see cref="OpcodeEntryFlags" />.
     /// This contains the <see cref="Masks" /> in the upper 32 bits and the <see cref="Values" /> in the lower 32.
     /// </summary>
     public ulong RawValue { get; }
 
     /// <summary>
-    /// The "masks" of this <see cref="DecodeFlags" />.
+    /// The "masks" of this <see cref="OpcodeEntryFlags" />.
     /// These bits indicate which bits in <see cref="Values" /> are valid.
     /// </summary>
     public uint Masks => (uint)((RawValue >> 32) & 0xFFFF_FFFFu);
 
     /// <summary>
-    /// The "values" of this <see cref="DecodeFlags" />.
+    /// The "values" of this <see cref="OpcodeEntryFlags" />.
     /// These bits indicate flags that must match in order for the decoder to consider the associated opcode a valid
     ///   target.
     /// </summary>
     public uint Values => (uint)(RawValue & 0xFFFF_FFFFu);
 
-    private DecodeFlags(int offset, uint mask, uint value)
+    private OpcodeEntryFlags(int offset, uint mask, uint value)
     {
         ulong masks = (ulong)mask << offset;
         ulong values = (ulong)value << offset;
         RawValue = (masks << MASKS_OFFSET) | values;
     }
 
-    private DecodeFlags(ulong rawValue)
+    private OpcodeEntryFlags(ulong rawValue)
     {
         RawValue = rawValue;
     }
 
 
     /// <summary>No flags.</summary>
-    public static DecodeFlags None { get; } = new(0);
+    public static OpcodeEntryFlags None { get; } = new(0);
 
 
     #region [0..=2] ModR/M.RM
@@ -110,28 +110,28 @@ public readonly struct DecodeFlags
     private const uint RM_MASK = 0b111;
 
     /// <summary>Decode requires ModRM.rm is 0</summary>
-    public static DecodeFlags RM0 { get; } = new(RM_OFFSET, RM_MASK, 0);
+    public static OpcodeEntryFlags RM0 { get; } = new(RM_OFFSET, RM_MASK, 0);
 
     /// <summary>Decode requires ModRM.rm is 1</summary>
-    public static DecodeFlags RM1 { get; } = new(RM_OFFSET, RM_MASK, 1);
+    public static OpcodeEntryFlags RM1 { get; } = new(RM_OFFSET, RM_MASK, 1);
 
     /// <summary>Decode requires ModRM.rm is 2</summary>
-    public static DecodeFlags RM2 { get; } = new(RM_OFFSET, RM_MASK, 2);
+    public static OpcodeEntryFlags RM2 { get; } = new(RM_OFFSET, RM_MASK, 2);
 
     /// <summary>Decode requires ModRM.rm is 3</summary>
-    public static DecodeFlags RM3 { get; } = new(RM_OFFSET, RM_MASK, 3);
+    public static OpcodeEntryFlags RM3 { get; } = new(RM_OFFSET, RM_MASK, 3);
 
     /// <summary>Decode requires ModRM.rm is 4</summary>
-    public static DecodeFlags RM4 { get; } = new(RM_OFFSET, RM_MASK, 4);
+    public static OpcodeEntryFlags RM4 { get; } = new(RM_OFFSET, RM_MASK, 4);
 
     /// <summary>Decode requires ModRM.rm is 5</summary>
-    public static DecodeFlags RM5 { get; } = new(RM_OFFSET, RM_MASK, 5);
+    public static OpcodeEntryFlags RM5 { get; } = new(RM_OFFSET, RM_MASK, 5);
 
     /// <summary>Decode requires ModRM.rm is 6</summary>
-    public static DecodeFlags RM6 { get; } = new(RM_OFFSET, RM_MASK, 6);
+    public static OpcodeEntryFlags RM6 { get; } = new(RM_OFFSET, RM_MASK, 6);
 
     /// <summary>Decode requires ModRM.rm is 7</summary>
-    public static DecodeFlags RM7 { get; } = new(RM_OFFSET, RM_MASK, 7);
+    public static OpcodeEntryFlags RM7 { get; } = new(RM_OFFSET, RM_MASK, 7);
 
     #endregion
 
@@ -141,28 +141,28 @@ public readonly struct DecodeFlags
     private const uint REG_MASK = 0b111;
 
     /// <summary>Decode requires ModRM.reg is 0</summary>
-    public static DecodeFlags Reg0 { get; } = new(REG_OFFSET, REG_MASK, 0);
+    public static OpcodeEntryFlags Reg0 { get; } = new(REG_OFFSET, REG_MASK, 0);
 
     /// <summary>Decode requires ModRM.reg is 1</summary>
-    public static DecodeFlags Reg1 { get; } = new(REG_OFFSET, REG_MASK, 1);
+    public static OpcodeEntryFlags Reg1 { get; } = new(REG_OFFSET, REG_MASK, 1);
 
     /// <summary>Decode requires ModRM.reg is 2</summary>
-    public static DecodeFlags Reg2 { get; } = new(REG_OFFSET, REG_MASK, 2);
+    public static OpcodeEntryFlags Reg2 { get; } = new(REG_OFFSET, REG_MASK, 2);
 
     /// <summary>Decode requires ModRM.reg is 3</summary>
-    public static DecodeFlags Reg3 { get; } = new(REG_OFFSET, REG_MASK, 3);
+    public static OpcodeEntryFlags Reg3 { get; } = new(REG_OFFSET, REG_MASK, 3);
 
     /// <summary>Decode requires ModRM.reg is 4</summary>
-    public static DecodeFlags Reg4 { get; } = new(REG_OFFSET, REG_MASK, 4);
+    public static OpcodeEntryFlags Reg4 { get; } = new(REG_OFFSET, REG_MASK, 4);
 
     /// <summary>Decode requires ModRM.reg is 5</summary>
-    public static DecodeFlags Reg5 { get; } = new(REG_OFFSET, REG_MASK, 5);
+    public static OpcodeEntryFlags Reg5 { get; } = new(REG_OFFSET, REG_MASK, 5);
 
     /// <summary>Decode requires ModRM.reg is 6</summary>
-    public static DecodeFlags Reg6 { get; } = new(REG_OFFSET, REG_MASK, 6);
+    public static OpcodeEntryFlags Reg6 { get; } = new(REG_OFFSET, REG_MASK, 6);
 
     /// <summary>Decode requires ModRM.reg is 7</summary>
-    public static DecodeFlags Reg7 { get; } = new(REG_OFFSET, REG_MASK, 7);
+    public static OpcodeEntryFlags Reg7 { get; } = new(REG_OFFSET, REG_MASK, 7);
 
     #endregion
 
@@ -172,10 +172,10 @@ public readonly struct DecodeFlags
     private const uint MOD_ENABLE = 1;
 
     /// <summary>Decode requires ModRM.mod is b11 (register form)</summary>
-    public static DecodeFlags ModReg { get; } = new(MOD_OFFSET, MOD_ENABLE, 0);
+    public static OpcodeEntryFlags ModReg { get; } = new(MOD_OFFSET, MOD_ENABLE, 0);
 
     /// <summary>Decode requires ModRM.mod is not b11 (memory form)</summary>
-    public static DecodeFlags ModMem { get; } = new(MOD_OFFSET, MOD_ENABLE, 1);
+    public static OpcodeEntryFlags ModMem { get; } = new(MOD_OFFSET, MOD_ENABLE, 1);
 
     #endregion
 
@@ -196,7 +196,7 @@ public readonly struct DecodeFlags
 
 #pragma warning disable CS1591
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static DecodeFlags operator |(DecodeFlags lhs, DecodeFlags rhs) =>
+    public static OpcodeEntryFlags operator |(OpcodeEntryFlags lhs, OpcodeEntryFlags rhs) =>
         new(lhs.RawValue | rhs.RawValue);
 #pragma warning restore CS1591
 }

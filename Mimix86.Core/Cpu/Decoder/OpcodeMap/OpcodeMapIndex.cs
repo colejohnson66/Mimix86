@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   Decoder.EntrySet.cs
+ * File:   OpcodeMapIndex.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2023 Cole Tobin
@@ -21,25 +21,16 @@
  * =============================================================================
  */
 
-using Mimix86.Core.Cpu.Decoder.Map;
-using System.Collections.Generic;
+namespace Mimix86.Core.Cpu.Decoder.OpcodeMap;
 
-namespace Mimix86.Core.Cpu.Decoder;
-
-public sealed partial class Decoder
+/// <summary>
+/// Represents an index into the opcode map, as a tuple of the map itself, and the byte value.
+/// </summary>
+/// <param name="Map">The map <see cref="Byte" /> indexes into.</param>
+/// <param name="Byte">The index into the map (<see cref="Map" />).</param>
+public readonly record struct OpcodeMapIndex(OpcodeMaps Map, byte Byte)
 {
-    private class EntrySet
-    {
-        // flags that dictate how the decoder should proceed when this opcode map/byte combo is reached
-        public OpcodeMapIndexFlags Flags { get; }
-
-        // instructions that may be decoded from this opcode map/byte combo
-        public List<OpcodeMapEntry> Instructions { get; } = new();
-
-
-        public EntrySet(OpcodeMapIndexFlags flags)
-        {
-            Flags = flags;
-        }
-    }
+    /// <inheritdoc />
+    public override string ToString() =>
+        $"{Map}[{Byte:X2}]";
 }

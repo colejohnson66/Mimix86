@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   OpcodeMapIndexFlags.cs
+ * File:   ByteEntry.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2023 Cole Tobin
@@ -21,38 +21,25 @@
  * =============================================================================
  */
 
-using System;
+using System.Collections.Generic;
 
-namespace Mimix86.Core.Cpu.Decoder.Map;
+namespace Mimix86.Core.Cpu.Decoder.OpcodeMap;
 
 /// <summary>
-/// Represents the flags for an opcode map/byte index.
+/// Represents a single opcode map plus byte entry in the opcode map store (<see cref="OpcodeMapStore" />).
+/// Each entry contains flags to dictate decoding, and a list of possible opcodes that can result.
 /// </summary>
-public readonly struct OpcodeMapIndexFlags : IEquatable<OpcodeMapIndexFlags>
+internal sealed class OpcodeMapEntry
 {
-    /// <summary>
-    /// Get a flag indicating if this opcode map/byte index has a ModR/M byte.
-    /// </summary>
-    public bool HasModRM { get; init; }
+    // flags that dictate how the decoder should proceed when this opcode map/byte combo is reached
+    public OpcodeMapFlags Flags { get; }
+
+    // instructions that may be decoded from this opcode map/byte combo
+    public List<OpcodeEntry> Instructions { get; } = new();
 
 
-#pragma warning disable CS1591
-    public static bool operator ==(OpcodeMapIndexFlags lhs, OpcodeMapIndexFlags rhs) =>
-        lhs.HasModRM == rhs.HasModRM;
-
-    public static bool operator !=(OpcodeMapIndexFlags lhs, OpcodeMapIndexFlags rhs) =>
-        !(lhs == rhs);
-#pragma warning restore CS1591
-
-    /// <inheritdoc />
-    public override bool Equals(object? obj) =>
-        obj is OpcodeMapIndexFlags other && Equals(other);
-
-    /// <inheritdoc />
-    public bool Equals(OpcodeMapIndexFlags other) =>
-        this == other;
-
-    /// <inheritdoc />
-    public override int GetHashCode() =>
-        HasModRM.GetHashCode();
+    public OpcodeMapEntry(OpcodeMapFlags flags)
+    {
+        Flags = flags;
+    }
 }
