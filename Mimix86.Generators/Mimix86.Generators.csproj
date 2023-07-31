@@ -11,8 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="Data\*\*.*" CopyToOutputDirectory="PreserveNewest" />
-        <None Update="Data\*\*\*.*" CopyToOutputDirectory="PreserveNewest" />
+        <None Update="Data\Opcodes\*.lisp" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 
 </Project>
