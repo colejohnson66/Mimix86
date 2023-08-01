@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   OpcodeEntryFlagsBuilder.cs
+ * File:   OpcodeDecodeFlagsBuilder.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2022-2023 Cole Tobin
@@ -26,20 +26,20 @@ using System.Diagnostics;
 namespace Mimix86.Core.Cpu.Decoder.OpcodeMap;
 
 /// <summary>
-/// Contains a "builder" class to assist in creation of a <see cref="OpcodeEntryFlags" /> object during the decode stage.
+/// Contains a "builder" class to assist in creation of a <see cref="OpmapCellEntryFlags" /> object during the decode stage.
 /// </summary>
 /// <remarks>
 /// After all the flags are extracted from the instruction stream, <see cref="Matches" /> can be used to see if another
-///   <see cref="OpcodeEntryFlags" /> object matches them.
+///   <see cref="OpmapCellEntryFlags" /> object matches them.
 /// </remarks>
-public class OpcodeEntryFlagsBuilder
+public class OpmapCellEntryFlagsBuilder
 {
-    private OpcodeEntryFlags _value;
+    private OpmapCellEntryFlags _value;
 
     /// <summary>
-    /// Construct a new, empty, <see cref="OpcodeEntryFlagsBuilder" />.
+    /// Construct a new, empty, <see cref="OpmapCellEntryFlagsBuilder" />.
     /// </summary>
-    public OpcodeEntryFlagsBuilder()
+    public OpmapCellEntryFlagsBuilder()
     { }
 
 
@@ -57,34 +57,34 @@ public class OpcodeEntryFlagsBuilder
 
         // mod
         _value |= (b & 0xC0) is 0xC0
-            ? OpcodeEntryFlags.ModReg
-            : OpcodeEntryFlags.ModMem;
+            ? OpmapCellEntryFlags.ModReg
+            : OpmapCellEntryFlags.ModMem;
 
         // reg
         _value |= ((b >> 3) & 7) switch
         {
-            0 => OpcodeEntryFlags.Reg0,
-            1 => OpcodeEntryFlags.Reg1,
-            2 => OpcodeEntryFlags.Reg2,
-            3 => OpcodeEntryFlags.Reg3,
-            4 => OpcodeEntryFlags.Reg4,
-            5 => OpcodeEntryFlags.Reg5,
-            6 => OpcodeEntryFlags.Reg6,
-            7 => OpcodeEntryFlags.Reg7,
+            0 => OpmapCellEntryFlags.Reg0,
+            1 => OpmapCellEntryFlags.Reg1,
+            2 => OpmapCellEntryFlags.Reg2,
+            3 => OpmapCellEntryFlags.Reg3,
+            4 => OpmapCellEntryFlags.Reg4,
+            5 => OpmapCellEntryFlags.Reg5,
+            6 => OpmapCellEntryFlags.Reg6,
+            7 => OpmapCellEntryFlags.Reg7,
             _ => throw new UnreachableException(),
         };
 
         // r/m
         _value |= (b & 7) switch
         {
-            0 => OpcodeEntryFlags.RM0,
-            1 => OpcodeEntryFlags.RM1,
-            2 => OpcodeEntryFlags.RM2,
-            3 => OpcodeEntryFlags.RM3,
-            4 => OpcodeEntryFlags.RM4,
-            5 => OpcodeEntryFlags.RM5,
-            6 => OpcodeEntryFlags.RM6,
-            7 => OpcodeEntryFlags.RM7,
+            0 => OpmapCellEntryFlags.RM0,
+            1 => OpmapCellEntryFlags.RM1,
+            2 => OpmapCellEntryFlags.RM2,
+            3 => OpmapCellEntryFlags.RM3,
+            4 => OpmapCellEntryFlags.RM4,
+            5 => OpmapCellEntryFlags.RM5,
+            6 => OpmapCellEntryFlags.RM6,
+            7 => OpmapCellEntryFlags.RM7,
             _ => throw new UnreachableException(),
         };
     }
@@ -110,6 +110,6 @@ public class OpcodeEntryFlagsBuilder
     /// <returns>
     /// A boolean indicating if the provided opcode flags are a match to the ones extracted from the instruction stream.
     /// </returns>
-    public bool Matches(OpcodeEntryFlags opcodeFlags) =>
+    public bool Matches(OpmapCellEntryFlags opcodeFlags) =>
         (_value.Values & opcodeFlags.Masks) == opcodeFlags.Values;
 }

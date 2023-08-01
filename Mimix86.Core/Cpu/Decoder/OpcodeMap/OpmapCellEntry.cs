@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   OpcodeEntry.cs
+ * File:   OpcodeDecodeInfo.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2023 Cole Tobin
@@ -27,27 +27,26 @@ using System;
 namespace Mimix86.Core.Cpu.Decoder.OpcodeMap;
 
 /// <summary>
-/// Represents a single opcode in the decoder as its <see cref="Opcode" /> and <see cref="OpcodeEntryFlags" />.
+/// Represents a single opcode in the decoder as its <see cref="Opcode" /> and <see cref="OpmapCellEntryFlags" />.
 /// </summary>
-[PublicAPI]
-public readonly struct OpcodeEntry
+public readonly struct OpmapCellEntry
 {
     /// <summary>
-    /// Construct a new <see cref="OpcodeEntry" /> with a specified opcode, and no decode flags.
+    /// Construct a new <see cref="OpmapCellEntry" /> with a specified opcode, and no decode flags.
     /// </summary>
     /// <param name="opcode">The ID of the actual opcode.</param>
     /// <exception cref="ArgumentNullException">If <paramref name="opcode" /> is <c>null</c>.</exception>
-    public OpcodeEntry(Opcode opcode)
-        : this(opcode, OpcodeEntryFlags.None)
+    public OpmapCellEntry(Opcode opcode)
+        : this(opcode, OpmapCellEntryFlags.None)
     { }
 
     /// <summary>
-    /// Construct a new <see cref="OpcodeEntry" /> with a specified opcode and decode flags.
+    /// Construct a new <see cref="OpmapCellEntry" /> with a specified opcode and decode flags.
     /// </summary>
     /// <param name="opcode">The ID of the actual opcode.</param>
     /// <param name="flags">The required flags to decode to this opcode entry.</param>
     /// <exception cref="ArgumentNullException">If <paramref name="opcode" /> is <c>null</c>.</exception>
-    public OpcodeEntry(Opcode opcode, OpcodeEntryFlags flags)
+    public OpmapCellEntry(Opcode opcode, OpmapCellEntryFlags flags)
     {
         ArgumentNullException.ThrowIfNull(opcode);
 
@@ -60,5 +59,5 @@ public readonly struct OpcodeEntry
     public Opcode Opcode { get; }
 
     /// <summary>The required flags to decode to this opcode entry.</summary>
-    public OpcodeEntryFlags Flags { get; init; }
+    public OpmapCellEntryFlags Flags { get; init; }
 }

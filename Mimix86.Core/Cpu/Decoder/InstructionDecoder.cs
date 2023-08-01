@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   Decoder.cs
+ * File:   InstructionDecoder.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2023 Cole Tobin
@@ -27,7 +27,7 @@ namespace Mimix86.Core.Cpu.Decoder;
 /// Represents an x86 instruction decoder.
 /// </summary>
 [PublicAPI]
-public sealed class Decoder
+public sealed class InstructionDecoder
 {
     // TODO
 }

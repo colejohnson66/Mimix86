@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   OpcodeMapDictionary.cs
+ * File:   Opmap.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2023 Cole Tobin
@@ -24,20 +24,19 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace Mimix86.Core.Cpu.Decoder.OpcodeMap;
 
-// stores a mapping from `OpcodeMaps` to an array of `T[256]`,
-//   but in a more compact form than a dictionary would
-
-internal static class OpcodeMapDictionary
+/// <summary>
+/// Represents the actual opcode map.
+/// This maps individual bytes to operations that instruct the decoder (<see cref="Decoder" />) how to proceed.
+/// </summary>
+public class Opmap
 {
-    // maps enum values to their index in the storage array
     public static readonly int[] MapToStorageIndex;
     public static readonly int SupportedMapCount;
 
-    static OpcodeMapDictionary()
+    static Opmap()
     {
         MapToStorageIndex = new int[Enum.GetValues<OpcodeMaps>().Length];
         MapToStorageIndex[(int)OpcodeMaps.OneByte] = 0;
@@ -75,27 +74,36 @@ internal static class OpcodeMapDictionary
 
         SupportedMapCount = MapToStorageIndex.Max() + 1;
     }
-}
 
-internal sealed class OpcodeMapDictionary<T>
-{
-    // can't get a span of a 2D array, so use a 1D with a stride (how a 2D works internally)
-    private const int ELEMENTS_PER_MAP = 1 << 8;
-    private readonly T[] _storage = new T[OpcodeMapDictionary.SupportedMapCount * ELEMENTS_PER_MAP];
 
-    public Span<T> this[OpcodeMaps map] =>
-        _storage.AsSpan(GetIndex(new(map, 0)), ELEMENTS_PER_MAP);
+    private readonly OpmapCell?[] _storage = new OpmapCell?[SupportedMapCount * 256];
 
-    public ref T this[OpcodeMapIndex index] =>
-        ref _storage[GetIndex(index)];
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static int GetIndex(OpcodeMapIndex index)
+    /// <summary>
+    /// Get a span of opcode map cells for a specified opcode map.
+    /// </summary>
+    /// <param name="map">The map to get a span for.</param>
+    /// <exception cref="ArgumentOutOfRangeException">If <paramref name="map" /> is not supported.</exception>
+    /// <remarks>
+    /// If any elements are <c>null</c>, they are not registered yet.
+    /// </remarks>
+    public Span<OpmapCell?> this[OpcodeMaps map]
     {
-        int offset = OpcodeMapDictionary.MapToStorageIndex[(int)index.Map];
-        if (offset < 0)
-            throw new ArgumentOutOfRangeException(nameof(index), index, "Specified opcode map is unsupported.");
-
-        return offset * ELEMENTS_PER_MAP + index.Byte;
+        get
+        {
+            int index = MapToStorageIndex[(int)map];
+            if (index < 0)
+                throw new ArgumentOutOfRangeException(nameof(map), map, "Specified map is not supported.");
+            return _storage.AsSpan(index * 256, 256);
+        }
     }
+
+    /// <summary>
+    /// Get a single opcode map cell at a specified location.
+    /// </summary>
+    /// <param name="index">The location in the overarching opcode map to get a cell for.</param>
+    /// <remarks>
+    /// If <c>null</c>, the specified location is not registered yet.
+    /// </remarks>
+    public ref OpmapCell? this[OpmapCellIndex index] =>
+        ref _storage[index.ToFlattenedOpmapIndex()];
 }

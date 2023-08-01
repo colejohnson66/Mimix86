@@ -24,7 +24,7 @@
 namespace Mimix86.Core.Cpu.Decoder;
 
 /// <summary>
-/// Represents the various states that the decoder (<see cref="Decoder" />) can be in.
+/// Represents the various states that the decoder (<see cref="InstructionDecoder" />) can be in.
 /// </summary>
 public enum DecoderStates
 {

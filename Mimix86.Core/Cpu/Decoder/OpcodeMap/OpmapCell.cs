@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   OpcodeMapFlags.cs
+ * File:   OpmapCell.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2023 Cole Tobin
@@ -21,19 +21,15 @@
  * =============================================================================
  */
 
-using System;
+using OneOf;
 
 namespace Mimix86.Core.Cpu.Decoder.OpcodeMap;
 
 /// <summary>
-/// Contains the various flags for an opcode map/byte index.
+/// Represents a single cell in the opcode map.
+/// A cell is either a prefix (<see cref="Prefixes" />) or a collection of possible opcodes (a list of
+///   <see cref="OpmapCellEntryList" />).
 /// </summary>
-[Flags]
-public enum OpcodeMapFlags
-{
-    /// <summary>
-    /// Indicates that the relevant opcode map entry has a ModR/M byte that must be decoded immediately after the opcode
-    ///   byte.
-    /// </summary>
-    HasModRM = 1 << 0,
-}
+[GenerateOneOf]
+public sealed partial class OpmapCell : OneOfBase<Prefixes, OpmapCellEntryList>
+{ }

@@ -21,15 +21,40 @@
  * =============================================================================
  */
 
+using System;
+
 namespace Mimix86.Core.Cpu.Decoder.OpcodeMap;
 
 /// <summary>
-/// Represents an index into the opcode map, as a tuple of the map itself, and the byte value.
+/// Represents an index into the overarching opcode map, as a tuple of the map itself, and the byte value.
 /// </summary>
-/// <param name="Map">The map <see cref="Byte" /> indexes into.</param>
-/// <param name="Byte">The index into the map (<see cref="Map" />).</param>
-public readonly record struct OpcodeMapIndex(OpcodeMaps Map, byte Byte)
+public readonly struct OpmapCellIndex
 {
+    /// <summary>Get the individual map <see cref="Byte" /> indexes into.</summary>
+    public OpcodeMaps Map { get; }
+
+    /// <summary>Get the index into the individual map (<see cref="Map" />).</summary>
+    public byte Byte { get; }
+
+
+    /// <summary>
+    /// Construct a new <see cref="OpmapCellIndex" /> with a specified map and byte value.
+    /// </summary>
+    /// <param name="map">The map <see cref="Byte" /> indexes into.</param>
+    /// <param name="byte">The index into the map (<see cref="Map" />).</param>
+    /// <exception cref="ArgumentOutOfRangeException">If <paramref name="map" /> is not supported.</exception>
+    public OpmapCellIndex(OpcodeMaps map, byte @byte)
+    {
+        if (Opmap.MapToStorageIndex[(int)map] is -1)
+            throw new ArgumentOutOfRangeException(nameof(map), map, "Specified map is not supported.");
+
+        Map = map;
+        Byte = @byte;
+    }
+
+    internal int ToFlattenedOpmapIndex() =>
+        Opmap.MapToStorageIndex[(int)Map] * 256 + Byte;
+
     /// <inheritdoc />
     public override string ToString() =>
         $"{Map}[{Byte:X2}]";

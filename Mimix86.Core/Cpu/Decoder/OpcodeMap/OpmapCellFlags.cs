@@ -1,5 +1,5 @@
 ﻿/* =============================================================================
- * File:   ByteEntry.cs
+ * File:   OpcodeMapFlags.cs
  * Author: Cole Tobin
  * =============================================================================
  * Copyright (c) 2023 Cole Tobin
@@ -21,25 +21,19 @@
  * =============================================================================
  */
 
-using System.Collections.Generic;
+using System;
 
 namespace Mimix86.Core.Cpu.Decoder.OpcodeMap;
 
 /// <summary>
-/// Represents a single opcode map plus byte entry in the opcode map store (<see cref="OpcodeMapStore" />).
-/// Each entry contains flags to dictate decoding, and a list of possible opcodes that can result.
+/// Contains the various flags for an opcode map/byte index.
 /// </summary>
-internal sealed class OpcodeMapEntry
+[Flags]
+public enum OpmapCellFlags
 {
-    // flags that dictate how the decoder should proceed when this opcode map/byte combo is reached
-    public OpcodeMapFlags Flags { get; }
-
-    // instructions that may be decoded from this opcode map/byte combo
-    public List<OpcodeEntry> Instructions { get; } = new();
-
-
-    public OpcodeMapEntry(OpcodeMapFlags flags)
-    {
-        Flags = flags;
-    }
+    /// <summary>
+    /// Indicates that the relevant opcode map entry has a ModR/M byte that must be decoded immediately after the opcode
+    ///   byte.
+    /// </summary>
+    HasModRM = 1 << 0,
 }

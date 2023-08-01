@@ -30,6 +30,7 @@ namespace Mimix86.Core.Cpu.Decoder;
 /// <summary>
 /// Represents a single decoded instruction.
 /// </summary>
+[PublicAPI] // TODO: remove
 public class DecodedInstruction
 {
     /// <summary>
