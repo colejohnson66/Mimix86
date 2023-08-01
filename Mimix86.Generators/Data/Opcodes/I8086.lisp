@@ -37,7 +37,6 @@
     (36 seg-ss)
     (3E seg-ds)
     (F0 lock)
-    (F1 lock)
     (F2 rep-ne)
     (F3 rep-e)
 )
