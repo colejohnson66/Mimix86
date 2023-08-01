@@ -31,7 +31,6 @@ namespace Mimix86.Core.Cpu.Isa;
 /// Represents an ISA extension.
 /// This contains the prefixes and opcodes that will be registered.
 /// </summary>
-[PublicAPI] // TODO: remove
 public sealed class IsaExtension
 {
     /// <summary>

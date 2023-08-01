@@ -31,9 +31,9 @@ using System.Text;
 
 namespace Mimix86.Generators.Opcodes;
 
-public sealed class Instruction :
-    IComparable<Instruction>,
-    IEquatable<Instruction>
+public sealed class Opcode :
+    IComparable<Opcode>,
+    IEquatable<Opcode>
 {
     private readonly string _mnemonic;
     private readonly string[] _operands;
@@ -48,7 +48,7 @@ public sealed class Instruction :
     public string OperandsString { get; }
 
 
-    public Instruction(Expression node)
+    public Opcode(Expression node)
     {
         _mnemonic = node[0].AsAtom().Value;
         _operands = node[1].AsExpression().Select(aoe => aoe.AsAtom().Value).ToArray();
@@ -150,7 +150,7 @@ public sealed class Instruction :
     }
 
 
-    public int CompareTo(Instruction? other)
+    public int CompareTo(Opcode? other)
     {
         if (ReferenceEquals(this, other))
             return 0;
@@ -165,9 +165,9 @@ public sealed class Instruction :
     }
 
     public override bool Equals(object? obj) =>
-        obj is Instruction other && Equals(other);
+        obj is Opcode other && Equals(other);
 
-    public bool Equals(Instruction? other)
+    public bool Equals(Opcode? other)
     {
         if (ReferenceEquals(this, other))
             return true;

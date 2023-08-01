@@ -34,13 +34,13 @@ public record DataFile(
     DataFileInfo Info,
     IReadOnlyDictionary<byte, string>? OneBytePrefixes,
     // IReadOnlyDictionary<byte, string>? TwoBytePrefixes,
-    IReadOnlyList<Instruction> Instructions)
+    IReadOnlyList<Opcode> Opcodes)
 {
     public static DataFile Parse(Parser parser)
     {
         DataFileInfo? info = null;
         IReadOnlyDictionary<byte, string>? oneBytePrefixes = null;
-        IReadOnlyList<Instruction>? instructions = null;
+        IReadOnlyList<Opcode>? instructions = null;
 
         foreach (Expression node in parser.Parse())
         {
@@ -185,9 +185,9 @@ public record DataFile(
     //         _               => throw new InvalidDataException("Unknown or unsupported prefix."),
     //     };
 
-    private static List<Instruction> ProcessInstructions(IEnumerable<AtomOrExpression> instructions)
+    private static List<Opcode> ProcessInstructions(IEnumerable<AtomOrExpression> instructions)
     {
-        List<Instruction> result = new();
+        List<Opcode> result = new();
 
         foreach (AtomOrExpression aoe in instructions)
         {
