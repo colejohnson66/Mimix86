@@ -66,14 +66,14 @@ public enum Prefixes
     /// This is normally the <c>INC Zv</c> and <c>DEC Zv</c> instructions.
     /// </summary>
     /// <remarks>
-    /// When bound to a byte in the <see cref="Cpu.Decoder.Prefixes.OneByte" /> opmap, the four least-significant bits
-    ///   will be interpreted as the payload.
+    /// When bound to a byte in the opcode map, the four least-significant bits will be interpreted as the payload,
+    ///   regardless of the state of the other 15 bytes.
     /// Therefore, all sixteen possible values should be bound to this prefix for proper operation.
     /// </remarks>
     Rex,
 
     /// <summary>
-    /// The <c>L1OM</c> prefix for scalar instructions, typically located at <c>[62]</c>.
+    /// The pseudo-two-byte <c>L1OM</c> prefix for scalar instructions, typically located at <c>[62]</c>.
     /// This is normally the <c>BOUND</c> instruction.
     /// </summary>
     L1OMScalar,
@@ -140,7 +140,7 @@ public enum Prefixes
     AddressSize,
 
     /// <summary>
-    /// The <c>XOP</c> prefix, typically located at <c>[8F]</c>.
+    /// The three-byte <c>XOP</c> prefix, typically located at <c>[8F]</c>.
     /// </summary>
     Xop,
 
@@ -168,7 +168,7 @@ public enum Prefixes
     SegmentDS3,
 
     /// <summary>
-    /// The three-byte <c>L1OM</c> vector for scalar instructions, typically located at <c>[D6]</c>.
+    /// The three-byte <c>L1OM</c> prefix for vector instructions, typically located at <c>[D6]</c>.
     /// This is normally the <c>SALC</c> instruction.
     /// </summary>
     L1OMVector,
@@ -231,16 +231,14 @@ public enum Prefixes
     ThreeByteEscape0F3A,
 
     /// <summary>
-    /// The <c>DREX</c> opcode map escape prefix, located at <c>[0F 7A]</c>.
-    /// These opcodes do not actually contain a <c>DREX</c> byte, and are more similar to a normal three-byte map.
+    /// The three-byte opcode map escape prefix, located at <c>[0F 7A]</c>, used by SSE5.
     /// </summary>
-    Drex0F7A,
+    ThreeByteEscape0F7A,
 
     /// <summary>
-    /// The <c>DREX</c> opcode map escape prefix, located at <c>[0F 7B]</c>.
-    /// These opcodes do not actually contain a <c>DREX</c> byte, and are more similar to a normal three-byte map.
+    /// The three-byte opcode map escape prefix, located at <c>[0F 7B]</c>, used by SSE5.
     /// </summary>
-    Drex0F7B,
+    ThreeByteEscape0F7B,
 
     #endregion
 }

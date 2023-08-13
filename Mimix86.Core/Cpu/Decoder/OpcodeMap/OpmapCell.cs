@@ -21,15 +21,23 @@
  * =============================================================================
  */
 
-using OneOf;
+using System.Collections.Generic;
 
 namespace Mimix86.Core.Cpu.Decoder.OpcodeMap;
 
 /// <summary>
 /// Represents a single cell in the opcode map.
-/// A cell is either a prefix (<see cref="Prefixes" />) or a collection of possible opcodes (a list of
-///   <see cref="OpmapCellEntryList" />).
+/// A cell is a collection of opcodes or prefixes.
 /// </summary>
-[GenerateOneOf]
-public sealed partial class OpmapCell : OneOfBase<Prefixes, OpmapCellEntryList>
-{ }
+public sealed class OpmapCell
+{
+    /// <summary>
+    /// Get the flags for this opmap cell.
+    /// </summary>
+    public OpmapCellFlags Flags { get; init; }
+
+    /// <summary>
+    /// Get the entries in this opmap cell.
+    /// </summary>
+    public List<OpmapCellEntry> Entries { get; } = new();
+}

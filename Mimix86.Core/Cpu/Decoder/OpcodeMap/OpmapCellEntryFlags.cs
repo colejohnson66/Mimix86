@@ -101,7 +101,7 @@ public readonly struct OpmapCellEntryFlags
 
 
     /// <summary>No flags.</summary>
-    public static OpmapCellEntryFlags None { get; } = new(0);
+    [UsedImplicitly] public static OpmapCellEntryFlags None { get; } = new(0);
 
 
     #region [0..=2] ModR/M.RM
@@ -185,13 +185,15 @@ public readonly struct OpmapCellEntryFlags
 
     // future: ASIZE (16, 32, 64)
 
+    // future: ModMemSib (shorthand for ModMem | RM4 | AS32)
+
     // future: legacy SSE prefixes (NP, 66, F3, F2)
 
     // future: VLEN (128, 256, 512)
 
     // future: (E)VEX.W bit
 
-    // future: ModMemSib (shorthand for ModMem | RM4 | AS32)
+    // future: EVEX.ND bit (new data destination, using old EVEX.b from vector form)
 
 
 #pragma warning disable CS1591

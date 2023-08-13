@@ -37,9 +37,8 @@ public enum OpcodeFlags
     Lockable = 1 << 0,
 
     /// <summary>
-    /// Indicates that this opcode ends an instruction "trace".
+    /// Indicates that this opcode ends an instruction "trace", sometimes called a "basic block".
     /// This indicates that the opcode changes the control flow of the instruction stream, such as through a jump.
     /// </summary>
-    // TODO: can other things end a trace?
     EndTrace = 1 << 1,
 }

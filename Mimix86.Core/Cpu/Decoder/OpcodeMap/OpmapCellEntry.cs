@@ -22,42 +22,46 @@
  */
 
 using Mimix86.Core.Cpu.Isa;
+using OneOf;
 using System;
 
 namespace Mimix86.Core.Cpu.Decoder.OpcodeMap;
 
 /// <summary>
-/// Represents a single opcode in the decoder as its <see cref="Opcode" /> and <see cref="OpmapCellEntryFlags" />.
+/// Represents a single entry in an opcode map cell.
+/// An entry consists of either an opcode to execute or a prefix to interpret.
 /// </summary>
 public readonly struct OpmapCellEntry
 {
     /// <summary>
-    /// Construct a new <see cref="OpmapCellEntry" /> with a specified opcode, and no decode flags.
+    /// Construct a new <see cref="OpmapCellEntry" /> with a specified opcode or prefix and decode flags.
     /// </summary>
-    /// <param name="opcode">The ID of the actual opcode.</param>
-    /// <exception cref="ArgumentNullException">If <paramref name="opcode" /> is <c>null</c>.</exception>
-    public OpmapCellEntry(Opcode opcode)
-        : this(opcode, OpmapCellEntryFlags.None)
-    { }
-
-    /// <summary>
-    /// Construct a new <see cref="OpmapCellEntry" /> with a specified opcode and decode flags.
-    /// </summary>
-    /// <param name="opcode">The ID of the actual opcode.</param>
-    /// <param name="flags">The required flags to decode to this opcode entry.</param>
-    /// <exception cref="ArgumentNullException">If <paramref name="opcode" /> is <c>null</c>.</exception>
-    public OpmapCellEntry(Opcode opcode, OpmapCellEntryFlags flags)
+    /// <param name="value">Either the opcode to execute or prefix to interpret.</param>
+    /// <param name="flags">
+    /// The flags that are required for this entry to be used.
+    /// The default value is <see cref="OpmapCellEntryFlags.None" />.
+    /// </param>
+    /// <exception cref="ArgumentNullException">
+    /// If <paramref name="value" /> is a <c>null</c> <see cref="Opcode" />.
+    /// </exception>
+    public OpmapCellEntry(OneOf<Opcode, Prefixes> value, OpmapCellEntryFlags flags = default)
     {
-        ArgumentNullException.ThrowIfNull(opcode);
+        // `default(OpmapCellEntryFlags)` is "none"
+        if (value.IsT0)
+            ArgumentNullException.ThrowIfNull(value.AsT0, nameof(value));
 
-        Opcode = opcode;
+        Value = value;
         Flags = flags;
     }
 
 
-    /// <summary>The actual opcode to execute.</summary>
-    public Opcode Opcode { get; }
+    /// <summary>
+    /// Get either the opcode to execute or prefix to interpret.
+    /// </summary>
+    public OneOf<Opcode, Prefixes> Value { get; }
 
-    /// <summary>The required flags to decode to this opcode entry.</summary>
-    public OpmapCellEntryFlags Flags { get; init; }
+    /// <summary>
+    /// Get the flags that are required for this entry to be used.
+    /// </summary>
+    public OpmapCellEntryFlags Flags { get; }
 }

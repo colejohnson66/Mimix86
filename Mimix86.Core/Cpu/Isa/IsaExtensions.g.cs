@@ -18,15 +18,36 @@ public static class IsaExtensions
     /// </summary>
     public static IsaExtension I8086 { get; } = new()
     {
-        Prefixes = new()
+        OpcodeMapEntries =
         {
-            [new(OpcodeMaps.OneByte, 0x26)] = Prefixes.SegmentES,
-            [new(OpcodeMaps.OneByte, 0x2e)] = Prefixes.SegmentCS,
-            [new(OpcodeMaps.OneByte, 0x36)] = Prefixes.SegmentSS,
-            [new(OpcodeMaps.OneByte, 0x3e)] = Prefixes.SegmentDS,
-            [new(OpcodeMaps.OneByte, 0xf0)] = Prefixes.Lock,
-            [new(OpcodeMaps.OneByte, 0xf2)] = Prefixes.Repne,
-            [new(OpcodeMaps.OneByte, 0xf3)] = Prefixes.RepRepe,
+            [new(OpcodeMaps.OneByte, 0x26)] = (OpmapCellFlags.None, new()
+            {
+                new(Prefixes.SegmentES),
+            }),
+            [new(OpcodeMaps.OneByte, 0x2E)] = (OpmapCellFlags.None, new()
+            {
+                new(Prefixes.SegmentCS),
+            }),
+            [new(OpcodeMaps.OneByte, 0x36)] = (OpmapCellFlags.None, new()
+            {
+                new(Prefixes.SegmentSS),
+            }),
+            [new(OpcodeMaps.OneByte, 0x3E)] = (OpmapCellFlags.None, new()
+            {
+                new(Prefixes.SegmentDS),
+            }),
+            [new(OpcodeMaps.OneByte, 0xF0)] = (OpmapCellFlags.None, new()
+            {
+                new(Prefixes.Lock),
+            }),
+            [new(OpcodeMaps.OneByte, 0xF2)] = (OpmapCellFlags.None, new()
+            {
+                new(Prefixes.Repne),
+            }),
+            [new(OpcodeMaps.OneByte, 0xF3)] = (OpmapCellFlags.None, new()
+            {
+                new(Prefixes.RepRepe),
+            }),
         },
         // OpcodeMapFlags = new()
         // OpcodeMapEntries = new()
@@ -37,9 +58,12 @@ public static class IsaExtensions
     /// </summary>
     public static IsaExtension I8086Undefined { get; } = new()
     {
-        Prefixes = new()
+        OpcodeMapEntries =
         {
-            [new(OpcodeMaps.OneByte, 0xf1)] = Prefixes.Lock,
+            [new(OpcodeMaps.OneByte, 0xF1)] = (OpmapCellFlags.None, new()
+            {
+                new(Prefixes.Lock),
+            }),
         },
         // OpcodeMapFlags = new()
         // OpcodeMapEntries = new()

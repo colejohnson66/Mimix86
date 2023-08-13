@@ -131,21 +131,20 @@ public static class OpcodesGenerator
                 $"    public static IsaExtension {file.Info.Name} {{ get; }} = new()");
             writer.WriteLine("    {");
 
-            // prefixes
             if (file.OneBytePrefixes is not null)
             {
-                writer.WriteLine("        Prefixes = new()");
+                writer.WriteLine("        OpcodeMapEntries =");
                 writer.WriteLine("        {");
                 foreach ((byte b, string prefix) in file.OneBytePrefixes)
-                    writer.WriteLine($"            [new(OpcodeMaps.OneByte, 0x{b:x2})] = Prefixes.{prefix},");
+                {
+                    writer.WriteLine($"            [new(OpcodeMaps.OneByte, 0x{b:X2})] = (OpmapCellFlags.None, new()");
+                    writer.WriteLine("            {");
+                    writer.WriteLine($"                new(Prefixes.{prefix}),");
+                    writer.WriteLine("            }),");
+                }
+
                 writer.WriteLine("        },");
             }
-
-            // flags
-            writer.WriteLine("        // OpcodeMapFlags = new()");
-
-            // entries
-            writer.WriteLine("        // OpcodeMapEntries = new()");
 
             // close declaration
             writer.WriteLine("    };");

@@ -34,20 +34,7 @@ namespace Mimix86.Core.Cpu.Isa;
 public sealed class IsaExtension
 {
     /// <summary>
-    /// Get the prefixes that this ISA extension will register.
-    /// If <c>null</c>, no prefixes will be registered.
+    /// Get the opcode map cell entries that this ISA extension will register.
     /// </summary>
-    public Dictionary<OpmapCellIndex, Prefixes>? Prefixes { get; init; }
-
-    /// <summary>
-    /// Get the flags for each opcode map index that this ISA extension will register.
-    /// If <c>null</c>, no opcode flags will be registered.
-    /// </summary>
-    public Dictionary<OpmapCellIndex, OpmapCellFlags>? OpcodeMapFlags { get; init; }
-
-    /// <summary>
-    /// Get the opcodes for each opcode map index that this ISA extension will register.
-    /// If <c>null</c>, no opcodes will be registered.
-    /// </summary>
-    public Dictionary<OpmapCellIndex, OpmapCellEntryList>? OpcodeMapEntries { get; init; }
+    public Dictionary<OpmapCellIndex, (OpmapCellFlags, List<OpmapCellEntry>)> OpcodeMapEntries { get; } = new();
 }

@@ -32,6 +32,11 @@ namespace Mimix86.Core.Cpu.Decoder.OpcodeMap;
 public enum OpmapCellFlags
 {
     /// <summary>
+    /// Indicates that the relevant opcode map entry has no flags.
+    /// </summary>
+    None = 0,
+
+    /// <summary>
     /// Indicates that the relevant opcode map entry has a ModR/M byte that must be decoded immediately after the opcode
     ///   byte.
     /// </summary>
