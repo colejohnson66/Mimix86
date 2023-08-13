@@ -41,7 +41,7 @@ public static class OpcodesGenerator
 
         namespace Mimix86.Core.Cpu.Isa;
 
-        public sealed partial class Opcode
+        public static class Opcodes
         {
             /// <summary>
             /// The "undefined" opcode.
@@ -97,7 +97,7 @@ public static class OpcodesGenerator
 
     private static void WriteOpcodeList()
     {
-        string outputPath = Path.Combine(Helpers.Mimix86CorePath, "Cpu", "Isa", "Opcode.List.g.cs");
+        string outputPath = Path.Combine(Helpers.Mimix86CorePath, "Cpu", "Isa", "Opcodes.g.cs");
         using FileStream handle = File.Open(outputPath, FileMode.Create, FileAccess.Write);
         using StreamWriter writer = new(handle);
 

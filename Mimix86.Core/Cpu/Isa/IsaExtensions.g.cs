@@ -49,8 +49,6 @@ public static class IsaExtensions
                 new(Prefixes.RepRepe),
             }),
         },
-        // OpcodeMapFlags = new()
-        // OpcodeMapEntries = new()
     };
 
     /// <summary>
@@ -65,7 +63,5 @@ public static class IsaExtensions
                 new(Prefixes.Lock),
             }),
         },
-        // OpcodeMapFlags = new()
-        // OpcodeMapEntries = new()
     };
 }

@@ -22,63 +22,10 @@
  */
 
 using Mimix86.Core.Cpu.Execution;
-using System;
 
 namespace Mimix86.Core.Cpu.Isa;
 
 /// <summary>
 /// Represents a single opcode.
 /// </summary>
-public sealed partial class Opcode :
-    IEquatable<Opcode>
-{
-    private Opcode(string mnemonic, ExecutionHandler handler, OpcodeFlags flags, ImmediateSizes? immediateSize)
-    {
-        Mnemonic = mnemonic;
-        Handler = handler;
-        Flags = flags;
-        Immediate = immediateSize;
-    }
-
-
-    /// <summary>
-    /// The mnemonic of this opcode.
-    /// </summary>
-    public string Mnemonic { get; }
-
-    /// <summary>
-    /// The handler of this opcode.
-    /// </summary>
-    public ExecutionHandler Handler { get; }
-
-    /// <summary>
-    /// Any flags used to direct post-decoding.
-    /// </summary>
-    public OpcodeFlags Flags { get; }
-
-    /// <summary>
-    /// The size of the immediate for this opcode.
-    /// </summary>
-    public ImmediateSizes? Immediate { get; }
-
-
-    /// <inheritdoc />
-    public bool Equals(Opcode? other)
-    {
-        if (ReferenceEquals(this, other))
-            return true;
-        if (ReferenceEquals(other, null))
-            return false;
-
-        // the handlers are unique to their opcodes
-        return Mnemonic == other.Mnemonic && Handler == other.Handler;
-    }
-
-    /// <inheritdoc />
-    public override bool Equals(object? obj) =>
-        obj is Opcode other && Equals(other);
-
-    /// <inheritdoc />
-    public override int GetHashCode() =>
-        HashCode.Combine(Mnemonic, Handler); // the handlers are unique
-}
+public sealed record Opcode(string Mnemonic, ExecutionHandler Handler, OpcodeFlags Flags, ImmediateSizes? ImmediateSize);

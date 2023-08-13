@@ -36,7 +36,7 @@ public class DecodedInstruction
     /// <summary>
     /// The ID of the actual opcode that will be executed.
     /// </summary>
-    public Opcode Opcode { get; set; } = Opcode.Undefined;
+    public Opcode Opcode { get; set; } = Opcodes.Undefined;
 
     /// <summary>
     /// The actual execution handler that will be called after decoding completes.

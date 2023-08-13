@@ -7,7 +7,7 @@ using System;
 
 namespace Mimix86.Core.Cpu.Isa;
 
-public sealed partial class Opcode
+public static class Opcodes
 {
     /// <summary>
     /// The "undefined" opcode.
