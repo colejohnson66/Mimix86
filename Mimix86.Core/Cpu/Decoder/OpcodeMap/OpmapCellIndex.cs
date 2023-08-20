@@ -45,7 +45,7 @@ public readonly struct OpmapCellIndex
     /// <exception cref="ArgumentOutOfRangeException">If <paramref name="map" /> is not supported.</exception>
     public OpmapCellIndex(OpcodeMaps map, byte @byte)
     {
-        if (Opmap.MapToStorageIndex[(int)map] is -1)
+        if (OpmapTableStore.MapToStorageIndex[(int)map] is -1)
             throw new ArgumentOutOfRangeException(nameof(map), map, "Specified map is not supported.");
 
         Map = map;
@@ -53,7 +53,7 @@ public readonly struct OpmapCellIndex
     }
 
     internal int ToFlattenedOpmapIndex() =>
-        Opmap.MapToStorageIndex[(int)Map] * 256 + Byte;
+        OpmapTableStore.MapToStorageIndex[(int)Map] * 256 + Byte;
 
     /// <inheritdoc />
     public override string ToString() =>

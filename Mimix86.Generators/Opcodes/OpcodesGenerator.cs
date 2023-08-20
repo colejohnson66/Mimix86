@@ -88,6 +88,9 @@ public static class OpcodesGenerator
 
     private static void ProcessFile(string path)
     {
+        if (path.Contains("80286"))
+            return; // skip two byte opcodes for now
+
         string contents = File.ReadAllText(path);
         using Parser parser = new(contents);
 

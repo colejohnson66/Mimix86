@@ -51,4 +51,10 @@ public static class Push
 
     public static void SS(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
+
+    public static void Ib(CpuCore cpu, DecodedInstruction instruction) =>
+        throw new NotImplementedException();
+
+    public static void Iw(CpuCore cpu, DecodedInstruction instruction) =>
+        throw new NotImplementedException();
 }

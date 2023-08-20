@@ -38,12 +38,11 @@ public enum ImmediateSizes
     /// </summary>
     Word,
 
-    // add with 80186+ support
-    // /// <summary>
-    // /// Indicates an immediate that is a word followed by a byte (three bytes).
-    // /// </summary>
-    // /// <remarks>This exists solely for <see cref="Opcode.EnterIwIb" />.</remarks>
-    // WordByte,
+    /// <summary>
+    /// Indicates an immediate that is a word followed by a byte (three bytes).
+    /// </summary>
+    /// <remarks>This exists solely for <see cref="Opcodes.EnterIwIb" />.</remarks>
+    WordByte,
 
     // add with 80386+ support
     // /// <summary>

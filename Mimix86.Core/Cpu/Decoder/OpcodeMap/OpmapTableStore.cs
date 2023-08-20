@@ -31,12 +31,12 @@ namespace Mimix86.Core.Cpu.Decoder.OpcodeMap;
 /// Represents the actual opcode map.
 /// This maps individual bytes to operations that instruct the decoder (<see cref="Decoder" />) how to proceed.
 /// </summary>
-public class Opmap
+public class OpmapTableStore
 {
     internal static readonly int[] MapToStorageIndex;
     internal static readonly int SupportedMapCount;
 
-    static Opmap()
+    static OpmapTableStore()
     {
         MapToStorageIndex = new int[Enum.GetValues<OpcodeMaps>().Length];
         MapToStorageIndex[(int)OpcodeMaps.OneByte] = 0;
@@ -75,8 +75,8 @@ public class Opmap
         SupportedMapCount = MapToStorageIndex.Max() + 1;
     }
 
-
     private readonly OpmapCell?[] _storage = new OpmapCell?[SupportedMapCount * 256];
+
 
     /// <summary>
     /// Get a span of opcode map cells for a specified opcode map.

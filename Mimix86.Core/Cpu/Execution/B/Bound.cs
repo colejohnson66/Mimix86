@@ -1,8 +1,8 @@
 ﻿/* =============================================================================
- * File:   Imul.cs
+ * File:   Bound.cs
  * Author: Cole Tobin
  * =============================================================================
- * Copyright (c) 2022-2023 Cole Tobin
+ * Copyright (c) 2023 Cole Tobin
  *
  * This file is part of Mimix86.
  *
@@ -27,19 +27,10 @@ using System;
 namespace Mimix86.Core.Cpu.Execution;
 
 /// <summary>
-/// Handler functions for the <c>IMUL</c> opcode.
+/// Handler functions for the <c>BOUND</c> opcode.
 /// </summary>
-public static class Imul
+public static class Bound
 {
-    public static void Eb(CpuCore cpu, DecodedInstruction instruction) =>
-        throw new NotImplementedException();
-
-    public static void Ew(CpuCore cpu, DecodedInstruction instruction) =>
-        throw new NotImplementedException();
-
-    public static void GwEwIb(CpuCore cpu, DecodedInstruction instruction) =>
-        throw new NotImplementedException();
-
-    public static void GwEwIw(CpuCore cpu, DecodedInstruction instruction) =>
+    public static void GwMa(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }

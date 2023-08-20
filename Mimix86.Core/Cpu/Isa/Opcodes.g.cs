@@ -108,6 +108,9 @@ public static class Opcodes
     /// <summary>The <c>AND Gw, Ew</c> opcode.</summary>
     public static Opcode AndGwEw { get; } = new("and", Execution.And.GwEw, 0, null);
 
+    /// <summary>The <c>BOUND Gw, Ma</c> opcode.</summary>
+    public static Opcode BoundGwMa { get; } = new("bound", Execution.Bound.GwMa, 0, null);
+
     /// <summary>The <c>CALL Apww</c> opcode.</summary>
     public static Opcode CallApww { get; } = new("call", Execution.Call.Apww, OpcodeFlags.EndTrace, ImmediateSizes.PointerWordWord);
 
@@ -192,6 +195,9 @@ public static class Opcodes
     /// <summary>The <c>DIV Ew</c> opcode.</summary>
     public static Opcode DivEw { get; } = new("div", Execution.Div.Ew, 0, null);
 
+    /// <summary>The <c>ENTER Iw, Ib</c> opcode.</summary>
+    public static Opcode EnterIwIb { get; } = new("enter", Execution.Enter.IwIb, 0, ImmediateSizes.WordByte);
+
     /// <summary>The <c>HLT</c> opcode.</summary>
     public static Opcode Hlt { get; } = new("hlt", Execution.Hlt._, OpcodeFlags.EndTrace, null);
 
@@ -206,6 +212,12 @@ public static class Opcodes
 
     /// <summary>The <c>IMUL Ew</c> opcode.</summary>
     public static Opcode ImulEw { get; } = new("imul", Execution.Imul.Ew, 0, null);
+
+    /// <summary>The <c>IMUL Gw, Ew, Ib</c> opcode.</summary>
+    public static Opcode ImulGwEwIb { get; } = new("imul", Execution.Imul.GwEwIb, 0, ImmediateSizes.Byte);
+
+    /// <summary>The <c>IMUL Gw, Ew, Iw</c> opcode.</summary>
+    public static Opcode ImulGwEwIw { get; } = new("imul", Execution.Imul.GwEwIw, 0, ImmediateSizes.Word);
 
     /// <summary>The <c>IN AL, DX</c> opcode.</summary>
     public static Opcode InALDX { get; } = new("in", Execution.In.ALDX, 0, null);
@@ -227,6 +239,12 @@ public static class Opcodes
 
     /// <summary>The <c>INC Zw</c> opcode.</summary>
     public static Opcode IncZw { get; } = new("inc", Execution.Inc.Zw, 0, null);
+
+    /// <summary>The <c>INSB</c> opcode.</summary>
+    public static Opcode Insb { get; } = new("insb", Execution.Insb._, 0, null);
+
+    /// <summary>The <c>INSW</c> opcode.</summary>
+    public static Opcode Insw { get; } = new("insw", Execution.Insw._, 0, null);
 
     /// <summary>The <c>INT 3</c> opcode.</summary>
     public static Opcode Int3 { get; } = new("int", Execution.Int._3, OpcodeFlags.EndTrace, null);
@@ -269,6 +287,9 @@ public static class Opcodes
 
     /// <summary>The <c>LEA Gw, M</c> opcode.</summary>
     public static Opcode LeaGwM { get; } = new("lea", Execution.Lea.GwM, 0, null);
+
+    /// <summary>The <c>LEAVE</c> opcode.</summary>
+    public static Opcode Leave { get; } = new("leave", Execution.Leave._, 0, null);
 
     /// <summary>The <c>LES Gw, Mw</c> opcode.</summary>
     public static Opcode LesGwMw { get; } = new("les", Execution.Les.GwMw, 0, null);
@@ -393,6 +414,12 @@ public static class Opcodes
     /// <summary>The <c>OUT Ib, AX</c> opcode.</summary>
     public static Opcode OutIbAX { get; } = new("out", Execution.Out.IbAX, 0, ImmediateSizes.Byte);
 
+    /// <summary>The <c>OUTSB</c> opcode.</summary>
+    public static Opcode Outsb { get; } = new("outsb", Execution.Outsb._, 0, null);
+
+    /// <summary>The <c>OUTSW</c> opcode.</summary>
+    public static Opcode Outsw { get; } = new("outsw", Execution.Outsw._, 0, null);
+
     /// <summary>The <c>POP CS</c> opcode.</summary>
     public static Opcode PopCS { get; } = new("pop", Execution.Pop.CS, 0, null);
 
@@ -411,6 +438,9 @@ public static class Opcodes
     /// <summary>The <c>POP Zw</c> opcode.</summary>
     public static Opcode PopZw { get; } = new("pop", Execution.Pop.Zw, 0, null);
 
+    /// <summary>The <c>POPA</c> opcode.</summary>
+    public static Opcode Popa { get; } = new("popa", Execution.Popa._, 0, null);
+
     /// <summary>The <c>POPF</c> opcode.</summary>
     public static Opcode Popf { get; } = new("popf", Execution.Popf._, 0, null);
 
@@ -426,11 +456,20 @@ public static class Opcodes
     /// <summary>The <c>PUSH Ew</c> opcode.</summary>
     public static Opcode PushEw { get; } = new("push", Execution.Push.Ew, 0, null);
 
+    /// <summary>The <c>PUSH Ib</c> opcode.</summary>
+    public static Opcode PushIb { get; } = new("push", Execution.Push.Ib, 0, ImmediateSizes.Byte);
+
+    /// <summary>The <c>PUSH Iw</c> opcode.</summary>
+    public static Opcode PushIw { get; } = new("push", Execution.Push.Iw, 0, ImmediateSizes.Word);
+
     /// <summary>The <c>PUSH SS</c> opcode.</summary>
     public static Opcode PushSS { get; } = new("push", Execution.Push.SS, 0, null);
 
     /// <summary>The <c>PUSH Zw</c> opcode.</summary>
     public static Opcode PushZw { get; } = new("push", Execution.Push.Zw, 0, null);
+
+    /// <summary>The <c>PUSHA</c> opcode.</summary>
+    public static Opcode Pusha { get; } = new("pusha", Execution.Pusha._, 0, null);
 
     /// <summary>The <c>PUSHF</c> opcode.</summary>
     public static Opcode Pushf { get; } = new("pushf", Execution.Pushf._, 0, null);
@@ -441,11 +480,17 @@ public static class Opcodes
     /// <summary>The <c>RCL Eb, CL</c> opcode.</summary>
     public static Opcode RclEbCL { get; } = new("rcl", Execution.Rcl.EbCL, 0, null);
 
+    /// <summary>The <c>RCL Eb, Ib</c> opcode.</summary>
+    public static Opcode RclEbIb { get; } = new("rcl", Execution.Rcl.EbIb, 0, ImmediateSizes.Byte);
+
     /// <summary>The <c>RCL Ew, 1</c> opcode.</summary>
     public static Opcode RclEw1 { get; } = new("rcl", Execution.Rcl.Ew1, 0, null);
 
     /// <summary>The <c>RCL Ew, CL</c> opcode.</summary>
     public static Opcode RclEwCL { get; } = new("rcl", Execution.Rcl.EwCL, 0, null);
+
+    /// <summary>The <c>RCL Ew, Ib</c> opcode.</summary>
+    public static Opcode RclEwIb { get; } = new("rcl", Execution.Rcl.EwIb, 0, ImmediateSizes.Byte);
 
     /// <summary>The <c>RCR Eb, 1</c> opcode.</summary>
     public static Opcode RcrEb1 { get; } = new("rcr", Execution.Rcr.Eb1, 0, null);
@@ -453,11 +498,17 @@ public static class Opcodes
     /// <summary>The <c>RCR Eb, CL</c> opcode.</summary>
     public static Opcode RcrEbCL { get; } = new("rcr", Execution.Rcr.EbCL, 0, null);
 
+    /// <summary>The <c>RCR Eb, Ib</c> opcode.</summary>
+    public static Opcode RcrEbIb { get; } = new("rcr", Execution.Rcr.EbIb, 0, ImmediateSizes.Byte);
+
     /// <summary>The <c>RCR Ew, 1</c> opcode.</summary>
     public static Opcode RcrEw1 { get; } = new("rcr", Execution.Rcr.Ew1, 0, null);
 
     /// <summary>The <c>RCR Ew, CL</c> opcode.</summary>
     public static Opcode RcrEwCL { get; } = new("rcr", Execution.Rcr.EwCL, 0, null);
+
+    /// <summary>The <c>RCR Ew, Ib</c> opcode.</summary>
+    public static Opcode RcrEwIb { get; } = new("rcr", Execution.Rcr.EwIb, 0, ImmediateSizes.Byte);
 
     /// <summary>The <c>RET</c> opcode.</summary>
     public static Opcode Ret { get; } = new("ret", Execution.Ret._, OpcodeFlags.EndTrace, null);
@@ -477,11 +528,17 @@ public static class Opcodes
     /// <summary>The <c>ROL Eb, CL</c> opcode.</summary>
     public static Opcode RolEbCL { get; } = new("rol", Execution.Rol.EbCL, 0, null);
 
+    /// <summary>The <c>ROL Eb, Ib</c> opcode.</summary>
+    public static Opcode RolEbIb { get; } = new("rol", Execution.Rol.EbIb, 0, ImmediateSizes.Byte);
+
     /// <summary>The <c>ROL Ew, 1</c> opcode.</summary>
     public static Opcode RolEw1 { get; } = new("rol", Execution.Rol.Ew1, 0, null);
 
     /// <summary>The <c>ROL Ew, CL</c> opcode.</summary>
     public static Opcode RolEwCL { get; } = new("rol", Execution.Rol.EwCL, 0, null);
+
+    /// <summary>The <c>ROL Ew, Ib</c> opcode.</summary>
+    public static Opcode RolEwIb { get; } = new("rol", Execution.Rol.EwIb, 0, ImmediateSizes.Byte);
 
     /// <summary>The <c>ROR Eb, 1</c> opcode.</summary>
     public static Opcode RorEb1 { get; } = new("ror", Execution.Ror.Eb1, 0, null);
@@ -489,11 +546,17 @@ public static class Opcodes
     /// <summary>The <c>ROR Eb, CL</c> opcode.</summary>
     public static Opcode RorEbCL { get; } = new("ror", Execution.Ror.EbCL, 0, null);
 
+    /// <summary>The <c>ROR Eb, Ib</c> opcode.</summary>
+    public static Opcode RorEbIb { get; } = new("ror", Execution.Ror.EbIb, 0, ImmediateSizes.Byte);
+
     /// <summary>The <c>ROR Ew, 1</c> opcode.</summary>
     public static Opcode RorEw1 { get; } = new("ror", Execution.Ror.Ew1, 0, null);
 
     /// <summary>The <c>ROR Ew, CL</c> opcode.</summary>
     public static Opcode RorEwCL { get; } = new("ror", Execution.Ror.EwCL, 0, null);
+
+    /// <summary>The <c>ROR Ew, Ib</c> opcode.</summary>
+    public static Opcode RorEwIb { get; } = new("ror", Execution.Ror.EwIb, 0, ImmediateSizes.Byte);
 
     /// <summary>The <c>SAHF</c> opcode.</summary>
     public static Opcode Sahf { get; } = new("sahf", Execution.Sahf._, 0, null);
@@ -507,11 +570,17 @@ public static class Opcodes
     /// <summary>The <c>SAR Eb, CL</c> opcode.</summary>
     public static Opcode SarEbCL { get; } = new("sar", Execution.Sar.EbCL, 0, null);
 
+    /// <summary>The <c>SAR Eb, Ib</c> opcode.</summary>
+    public static Opcode SarEbIb { get; } = new("sar", Execution.Sar.EbIb, 0, ImmediateSizes.Byte);
+
     /// <summary>The <c>SAR Ew, 1</c> opcode.</summary>
     public static Opcode SarEw1 { get; } = new("sar", Execution.Sar.Ew1, 0, null);
 
     /// <summary>The <c>SAR Ew, CL</c> opcode.</summary>
     public static Opcode SarEwCL { get; } = new("sar", Execution.Sar.EwCL, 0, null);
+
+    /// <summary>The <c>SAR Ew, Ib</c> opcode.</summary>
+    public static Opcode SarEwIb { get; } = new("sar", Execution.Sar.EwIb, 0, ImmediateSizes.Byte);
 
     /// <summary>The <c>SBB AL, Ib</c> opcode.</summary>
     public static Opcode SbbALIb { get; } = new("sbb", Execution.Sbb.ALIb, 0, ImmediateSizes.Byte);
@@ -564,11 +633,17 @@ public static class Opcodes
     /// <summary>The <c>SHL Eb, CL</c> opcode.</summary>
     public static Opcode ShlEbCL { get; } = new("shl", Execution.Shl.EbCL, 0, null);
 
+    /// <summary>The <c>SHL Eb, Ib</c> opcode.</summary>
+    public static Opcode ShlEbIb { get; } = new("shl", Execution.Shl.EbIb, 0, ImmediateSizes.Byte);
+
     /// <summary>The <c>SHL Ew, 1</c> opcode.</summary>
     public static Opcode ShlEw1 { get; } = new("shl", Execution.Shl.Ew1, 0, null);
 
     /// <summary>The <c>SHL Ew, CL</c> opcode.</summary>
     public static Opcode ShlEwCL { get; } = new("shl", Execution.Shl.EwCL, 0, null);
+
+    /// <summary>The <c>SHL Ew, Ib</c> opcode.</summary>
+    public static Opcode ShlEwIb { get; } = new("shl", Execution.Shl.EwIb, 0, ImmediateSizes.Byte);
 
     /// <summary>The <c>SHR Eb, 1</c> opcode.</summary>
     public static Opcode ShrEb1 { get; } = new("shr", Execution.Shr.Eb1, 0, null);
@@ -576,11 +651,17 @@ public static class Opcodes
     /// <summary>The <c>SHR Eb, CL</c> opcode.</summary>
     public static Opcode ShrEbCL { get; } = new("shr", Execution.Shr.EbCL, 0, null);
 
+    /// <summary>The <c>SHR Eb, Ib</c> opcode.</summary>
+    public static Opcode ShrEbIb { get; } = new("shr", Execution.Shr.EbIb, 0, ImmediateSizes.Byte);
+
     /// <summary>The <c>SHR Ew, 1</c> opcode.</summary>
     public static Opcode ShrEw1 { get; } = new("shr", Execution.Shr.Ew1, 0, null);
 
     /// <summary>The <c>SHR Ew, CL</c> opcode.</summary>
     public static Opcode ShrEwCL { get; } = new("shr", Execution.Shr.EwCL, 0, null);
+
+    /// <summary>The <c>SHR Ew, Ib</c> opcode.</summary>
+    public static Opcode ShrEwIb { get; } = new("shr", Execution.Shr.EwIb, 0, ImmediateSizes.Byte);
 
     /// <summary>The <c>STC</c> opcode.</summary>
     public static Opcode Stc { get; } = new("stc", Execution.Stc._, 0, null);

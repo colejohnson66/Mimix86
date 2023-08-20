@@ -13,6 +13,13 @@ namespace Mimix86.Core.Cpu.Isa;
 public static class IsaExtensions
 {
     /// <summary>
+    /// The instructions added with the 80186.
+    /// </summary>
+    public static IsaExtension I80186 { get; } = new()
+    {
+    };
+
+    /// <summary>
     /// The instructions added with the original 8086.
     /// Undefined instructions are available with <see cref="I8086Undefined" />.
     /// </summary>

@@ -37,9 +37,15 @@ public static class Shr
     public static void EbCL(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
+    public static void EbIb(CpuCore cpu, DecodedInstruction instruction) =>
+        throw new NotImplementedException();
+
     public static void Ew1(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 
     public static void EwCL(CpuCore cpu, DecodedInstruction instruction) =>
+        throw new NotImplementedException();
+
+    public static void EwIb(CpuCore cpu, DecodedInstruction instruction) =>
         throw new NotImplementedException();
 }
