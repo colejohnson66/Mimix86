@@ -33,8 +33,8 @@ namespace Mimix86.Core.Cpu.Decoder.OpcodeMap;
 /// </summary>
 public class Opmap
 {
-    public static readonly int[] MapToStorageIndex;
-    public static readonly int SupportedMapCount;
+    internal static readonly int[] MapToStorageIndex;
+    internal static readonly int SupportedMapCount;
 
     static Opmap()
     {
@@ -42,10 +42,10 @@ public class Opmap
         MapToStorageIndex[(int)OpcodeMaps.OneByte] = 0;
         MapToStorageIndex[(int)OpcodeMaps.TwoByte] = -1;
         MapToStorageIndex[(int)OpcodeMaps._3DNow] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.ThreeByte0F24] = -1;
+        MapToStorageIndex[(int)OpcodeMaps.ThreeByte0F25] = -1;
         MapToStorageIndex[(int)OpcodeMaps.ThreeByte0F38] = -1;
         MapToStorageIndex[(int)OpcodeMaps.ThreeByte0F3A] = -1;
-        MapToStorageIndex[(int)OpcodeMaps.Drex0F24] = -1;
-        MapToStorageIndex[(int)OpcodeMaps.Drex0F25] = -1;
         MapToStorageIndex[(int)OpcodeMaps.Drex0F7A] = -1;
         MapToStorageIndex[(int)OpcodeMaps.Drex0F7B] = -1;
         MapToStorageIndex[(int)OpcodeMaps.Vex0F] = -1;

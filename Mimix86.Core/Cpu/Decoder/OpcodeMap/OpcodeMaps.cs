@@ -45,6 +45,16 @@ public enum OpcodeMaps
     _3DNow,
 
     /// <summary>
+    /// Indicates that the relevant opcode is in the three-byte <c>[0F 24]</c> opcode map.
+    /// </summary>
+    ThreeByte0F24,
+
+    /// <summary>
+    /// Indicates that the relevant opcode is in the three-byte <c>[0F 25]</c> opcode map.
+    /// </summary>
+    ThreeByte0F25,
+
+    /// <summary>
     /// Indicates that the relevant opcode is in the three-byte <c>[0F 38]</c> opcode space.
     /// </summary>
     ThreeByte0F38,
@@ -53,16 +63,6 @@ public enum OpcodeMaps
     /// Indicates that the relevant opcode is in the three-byte <c>[0F 3A]</c> opcode space.
     /// </summary>
     ThreeByte0F3A,
-
-    /// <summary>
-    /// Indicates that the relevant opcode is in the DREX opcode space, prefixed by <c>[0F 24]</c>.
-    /// </summary>
-    Drex0F24,
-
-    /// <summary>
-    /// Indicates that the relevant opcode is in the DREX opcode space, prefixed by <c>[0F 25]</c>.
-    /// </summary>
-    Drex0F25,
 
     /// <summary>
     /// Indicates that the relevant opcode is in the DREX opcode space, prefixed by <c>[0F 7A]</c>.
